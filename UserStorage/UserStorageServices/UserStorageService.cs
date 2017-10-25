@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace UserStorageServices
 {
@@ -7,11 +8,24 @@ namespace UserStorageServices
     /// </summary>
     public class UserStorageService
     {
+        public readonly List<User> Users;
+
+        /// <summary>
+        /// Create an instance of <see cref="UserStorageService"/>
+        /// </summary>
+        public UserStorageService()
+        {
+            Users = new List<User>();
+        }
+
         /// <summary>
         /// Gets the number of elements contained in the storage.
         /// </summary>
         /// <returns>An amount of users in the storage.</returns>
-        public int Count { get; }
+        public int Count
+        {
+            get { return Users.Count; }
+        }
 
         /// <summary>
         /// Adds a new <see cref="User"/> to the storage.
