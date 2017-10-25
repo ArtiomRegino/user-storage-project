@@ -38,12 +38,17 @@ namespace UserStorageServices
                 throw new ArgumentNullException(nameof(user));
             }
 
-            if (string.IsNullOrWhiteSpace(user.FirstName))
+            if (string.IsNullOrWhiteSpace(user.LastName) || string.IsNullOrWhiteSpace(user.FirstName))
             {
-                throw new ArgumentException("FirstName is null or empty or whitespace", nameof(user));
+                throw new ArgumentException("LastName or FirstName is null or empty or whitespace", nameof(user));
             }
 
-            // TODO: Implement Add() method and all other validation rules.
+            if (user.Age < 0)
+            {
+                throw new ArgumentException("Age is null less or equal to 0.", nameof(user));
+            }
+
+            Users.Add(user);
         }
 
         /// <summary>
