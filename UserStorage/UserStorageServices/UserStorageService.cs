@@ -54,9 +54,14 @@ namespace UserStorageServices
         /// <summary>
         /// Removes an existed <see cref="User"/> from the storage.
         /// </summary>
-        public void Remove()
+        public bool Remove(User user)
         {
-            // TODO: Implement Remove() method.
+            if (user == null)
+            {
+                throw new ArgumentNullException(nameof(user));
+            }
+
+            return Users.Remove(user); 
         }
 
         /// <summary>
