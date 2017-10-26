@@ -19,6 +19,8 @@ namespace UserStorageServices
             Users = new List<User>();
         }
 
+        public bool IsLoggingEnabled { get; set; }
+
         /// <summary>
         /// Gets the number of elements contained in the storage.
         /// </summary>
@@ -34,6 +36,11 @@ namespace UserStorageServices
         /// <param name="user">A new <see cref="User"/> that will be added to the storage.</param>
         public void Add(User user)
         {
+            if (IsLoggingEnabled)
+            {
+                Console.WriteLine("Add() method is called.");
+            }
+
             if (user == null)
             {
                 throw new ArgumentNullException(nameof(user));
@@ -57,6 +64,11 @@ namespace UserStorageServices
         /// </summary>
         public bool Remove(User user)
         {
+            if (IsLoggingEnabled)
+            {
+                Console.WriteLine("Remove() method is called.");
+            }
+
             if (user == null)
             {
                 throw new ArgumentNullException(nameof(user));
@@ -70,6 +82,11 @@ namespace UserStorageServices
         /// </summary>
         public IEnumerable<User> SearchByAge(int age)
         {
+            if (IsLoggingEnabled)
+            {
+                Console.WriteLine("SearchByAge() method is called.");
+            }
+
             if (age <= 0)
             {
                 throw new ArgumentException("Age can't be less than 0.", nameof(age));
@@ -83,6 +100,11 @@ namespace UserStorageServices
         /// </summary>
         public IEnumerable<User> SearchByLastName(string lastName)
         {
+            if (IsLoggingEnabled)
+            {
+                Console.WriteLine("SearchByLastName() method is called.");
+            }
+
             if (string.IsNullOrWhiteSpace(lastName))
             {
                 throw new ArgumentException("FirstName is null or empty or whitespace", nameof(lastName));
@@ -96,12 +118,17 @@ namespace UserStorageServices
         /// </summary>
         public IEnumerable<User> SearchByFirstName(string firstName)
         {
+            if (IsLoggingEnabled)
+            {
+                Console.WriteLine("SearchByFirstName() method is called.");
+            }
+
             if (string.IsNullOrWhiteSpace(firstName))
             {
                 throw new ArgumentException("FirstName is null or empty or whitespace", nameof(firstName));
             }
 
-            return SearchByPredicate(u=> firstName == u.FirstName);
+            return SearchByPredicate(u => firstName == u.FirstName);
         }
 
         /// <summary>
@@ -109,6 +136,11 @@ namespace UserStorageServices
         /// </summary>
         public User SearchFirstByPredicate(Predicate<User> predicate)
         {
+            if (IsLoggingEnabled)
+            {
+                Console.WriteLine("SearchFirstByPredicate() method is called.");
+            }
+
             if (predicate == null)
             {
                 throw new ArgumentNullException();
@@ -124,6 +156,11 @@ namespace UserStorageServices
         /// </summary>
         public IEnumerable<User> SearchByPredicate(Predicate<User> predicate)
         {
+            if (IsLoggingEnabled)
+            {
+                Console.WriteLine("SearchByPredicate() method is called.");
+            }
+
             if (predicate == null)
             {
                 throw new ArgumentNullException();
