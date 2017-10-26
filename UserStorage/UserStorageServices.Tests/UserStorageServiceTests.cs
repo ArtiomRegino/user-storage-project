@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace UserStorageServices.Tests
@@ -145,7 +147,7 @@ namespace UserStorageServices.Tests
                 Age = 23
             });
 
-            // Assert - [ExpectedException]
+            // Assert
         }
 
         [TestMethod]
@@ -167,10 +169,8 @@ namespace UserStorageServices.Tests
             // Arrange
             var userStorageService = new UserStorageService();
 
-            // Act
-            
+            // Act and Assert
             Assert.IsFalse(userStorageService.Remove(new User()));
-            // Assert - [ExpectedException]
         }
 
         [TestMethod]
@@ -188,8 +188,250 @@ namespace UserStorageServices.Tests
             };
             userStorageService.Add(user);
 
-            Assert.IsTrue(userStorageService.Remove(user));
+            // Assert 
+            Assert.IsTrue(userStorageService.Remove(user));            
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public void SearchByAge_ArgumentLessThanZero_ExceptionThrown()
+        {
+            // Arrange
+            var userStorageService = new UserStorageService();
+
+            // Act
+            userStorageService.SearchByAge(-3);
+
             // Assert - [ExpectedException]
+        }
+
+        [TestMethod]
+        public void SearchByAge_NoSuchAUser_Returned()
+        {
+            // Arrange
+            var userStorageService = new UserStorageService();
+
+            // Act and Assert 
+            Assert.IsInstanceOfType(userStorageService.SearchByAge(3), typeof(IEnumerable<User>));
+        }
+
+        [TestMethod]
+        public void SearchByAge_SearchForAnExistingUser_ReturnedIEnumerableWithCurrentUser()
+        {
+            // Arrange
+            var userStorageService = new UserStorageService();
+            var user = new User()
+            {
+                Age = 27,
+                FirstName = "Michael",
+                LastName = "Fresko"
+            };
+            userStorageService.Add(user);
+
+            // Act and Assert 
+            Assert.AreEqual(user, userStorageService.SearchByAge(27).FirstOrDefault());
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public void SearchByLastName_ArgumentIsNull_ExceptionThrown()
+        {
+            // Arrange
+            var userStorageService = new UserStorageService();
+
+            // Act
+            userStorageService.SearchByLastName(null);
+
+            // Assert - [ExpectedException]
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public void SearchByLastName_ArgumentIsWhiteSpace_ExceptionThrown()
+        {
+            // Arrange
+            var userStorageService = new UserStorageService();
+
+            // Act
+            userStorageService.SearchByLastName("   ");
+
+            // Assert - [ExpectedException]
+        }
+
+        [TestMethod]
+        public void SearchByLastName_NoSuchAUser_ReturnedEmptyIEnumerable()
+        {
+            // Arrange
+            var userStorageService = new UserStorageService();
+
+            // Act
+            Assert.IsInstanceOfType(userStorageService.SearchByLastName("Freeman"), typeof(IEnumerable<User>));
+
+            // Assert 
+        }
+
+        [TestMethod]
+        public void SearchByLastName_SearchForAnExistingUser_Returned()
+        {
+            // Arrange
+            var userStorageService = new UserStorageService();
+            var user = new User()
+            {
+                Age = 27,
+                FirstName = "Michael",
+                LastName = "Fresko"
+            };
+            userStorageService.Add(user);
+
+            // Act
+            Assert.AreEqual(user, userStorageService.SearchByLastName("Fresko").FirstOrDefault());
+
+            // Assert 
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public void SearchByFirstName_ArgumentIsNull_ExceptionThrown()
+        {
+            // Arrange
+            var userStorageService = new UserStorageService();
+
+            // Act
+            userStorageService.SearchByFirstName(null);
+
+            // Assert - [ExpectedException]
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public void SearchByFirstName_ArgumentIsWhiteSpace_ExceptionThrown()
+        {
+            // Arrange
+            var userStorageService = new UserStorageService();
+
+            // Act
+            userStorageService.SearchByFirstName("   ");
+
+            // Assert - [ExpectedException]
+        }
+
+        [TestMethod]
+        public void SearchByFirstName_NoSuchAUser_ReturnedEmptyIEnumerable()
+        {
+            // Arrange
+            var userStorageService = new UserStorageService();
+
+            // Act
+            Assert.IsInstanceOfType(userStorageService.SearchByFirstName("Morgan"), typeof(IEnumerable<User>));
+
+            // Assert 
+        }
+
+        [TestMethod]
+        public void SearchByFirstName_SearchForAnExistingUser_ReturnedIEnumerableWithCurrentUser()
+        {
+            // Arrange
+            var userStorageService = new UserStorageService();
+            var user = new User()
+            {
+                Age = 27,
+                FirstName = "Michael",
+                LastName = "Fresko"
+            };
+            userStorageService.Add(user);
+
+            // Act
+            Assert.AreEqual(user, userStorageService.SearchByFirstName("Michael").FirstOrDefault());
+
+            // Assert 
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void SearchByPredicate_ArgumentIsNull_ExceptionThrown()
+        {
+            // Arrange
+            var userStorageService = new UserStorageService();
+
+            // Act
+            userStorageService.SearchByPredicate(null);
+
+            // Assert - [ExpectedException]
+        }
+
+        [TestMethod]
+        public void SearchByPredicate_NoSuchAUser_ReturnedEmptyIEnumerable()
+        {
+            // Arrange
+            var userStorageService = new UserStorageService();
+
+            // Act
+            Assert.IsInstanceOfType(userStorageService.SearchByPredicate(u => u.Age == 11), typeof(IEnumerable<User>));
+
+            // Assert 
+        }
+
+        [TestMethod]
+        public void SearchByPredicate_SearchForAnExistingUser_ReturnedIEnumerableWithCurrentUser()
+        {
+            // Arrange
+            var userStorageService = new UserStorageService();
+            var user = new User()
+            {
+                Age = 27,
+                FirstName = "Michael",
+                LastName = "Fresko"
+            };
+            userStorageService.Add(user);
+
+            // Act
+            Assert.AreEqual(user, userStorageService.SearchByPredicate(u => u.Age == 27).FirstOrDefault());
+
+            // Assert 
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void SearchFirstByPredicate_ArgumentIsNull_ExceptionThrown()
+        {
+            // Arrange
+            var userStorageService = new UserStorageService();
+
+            // Act
+            userStorageService.SearchFirstByPredicate(null);
+
+            // Assert - [ExpectedException]
+        }
+
+        [TestMethod]
+        public void SearchFirstByPredicate_NoSuchAUser_ReturnedNull()
+        {
+            // Arrange
+            var userStorageService = new UserStorageService();
+
+            // Act
+            Assert.IsNull(userStorageService.SearchFirstByPredicate(u => u.Age == 11));
+
+            // Assert 
+        }
+
+        [TestMethod]
+        public void SearchFirstByPredicate_SearchForAnExistingUser_ReturnedCurrentUser()
+        {
+            // Arrange
+            var userStorageService = new UserStorageService();
+            var user = new User()
+            {
+                Age = 27,
+                FirstName = "Michael",
+                LastName = "Fresko"
+            };
+            userStorageService.Add(user);
+
+            // Act
+            Assert.AreEqual(user, userStorageService.SearchFirstByPredicate(u => u.Age == 27));
+
+            // Assert 
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace UserStorageServices
 {
@@ -65,11 +66,72 @@ namespace UserStorageServices
         }
 
         /// <summary>
+        /// Searches through the storage for a <see cref="IEnumerable&lt;User&gt;"/> that have such an age.
+        /// </summary>
+        public IEnumerable<User> SearchByAge(int age)
+        {
+            if (age <= 0)
+            {
+                throw new ArgumentException("Age can't be less than 0.", nameof(age));
+            }
+
+            return SearchByPredicate(u => age == u.Age);
+        }
+
+        /// <summary>
+        /// Searches through the storage for a <see cref="IEnumerable&lt;User&gt;"/> that have such a last name.
+        /// </summary>
+        public IEnumerable<User> SearchByLastName(string lastName)
+        {
+            if (string.IsNullOrWhiteSpace(lastName))
+            {
+                throw new ArgumentException("FirstName is null or empty or whitespace", nameof(lastName));
+            }
+
+            return SearchByPredicate(u => lastName == u.LastName);
+        }
+
+        /// <summary>
+        /// Searches through the storage for a <see cref="IEnumerable&lt;User&gt;"/> that have such a first name.
+        /// </summary>
+        public IEnumerable<User> SearchByFirstName(string firstName)
+        {
+            if (string.IsNullOrWhiteSpace(firstName))
+            {
+                throw new ArgumentException("FirstName is null or empty or whitespace", nameof(firstName));
+            }
+
+            return SearchByPredicate(u=> firstName == u.FirstName);
+        }
+
+        /// <summary>
         /// Searches through the storage for a <see cref="User"/> that matches specified criteria.
         /// </summary>
-        public void Search()
+        public User SearchFirstByPredicate(Predicate<User> predicate)
         {
-            // TODO: Implement Search() method.
+            if (predicate == null)
+            {
+                throw new ArgumentNullException();
+            }
+
+            var currentUsers = Users.FirstOrDefault(u => predicate(u));
+
+            return currentUsers;
+        }
+
+        /// <summary>
+        /// Searches through the storage for a <see cref="User"/> that matches specified criteria.
+        /// </summary>
+        public IEnumerable<User> SearchByPredicate(Predicate<User> predicate)
+        {
+            if (predicate == null)
+            {
+                throw new ArgumentNullException();
+            }
+
+            var currentUsers = Users.Where(u => predicate(u));
+
+            return currentUsers;
         }
     }
 }
