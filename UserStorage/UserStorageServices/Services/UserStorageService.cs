@@ -8,20 +8,20 @@ namespace UserStorageServices
     /// <summary>
     /// Represents a service that stores a set of <see cref="User"/>s and allows to search through them.
     /// </summary>
-    public class UserStorageService
+    public class UserStorageService : IUserStorageService
     {
         public readonly List<User> Users;
 
-        private readonly IUserIdGenerationService idGenerationService;
-        private readonly IUserValidationService validationService;
+        private readonly IUserIdGenerationService _generationService;
+        private readonly IUserValidationService _validationService;
 
         /// <summary>
         /// Create an instance of <see cref="UserStorageService"/>
         /// </summary>
-        public UserStorageService(IUserIdGenerationService idGenerationService, IUserValidationService validationService)
+        public UserStorageService(IUserIdGenerationService generationService, IUserValidationService validationService)
         {
-            this.idGenerationService = idGenerationService;
-            this.validationService = validationService;
+            _generationService = generationService;
+            _validationService = validationService;
 
             Users = new List<User>();
         }
@@ -45,8 +45,8 @@ namespace UserStorageServices
                 Console.WriteLine("Add() method is called.");
             }
 
-            validationService.Validate(user);
-            user.Id = idGenerationService.Generate();
+            _validationService.Validate(user);
+            user.Id = _generationService.Generate();
 
             Users.Add(user);
         }
