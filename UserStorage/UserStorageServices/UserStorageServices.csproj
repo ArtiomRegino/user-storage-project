@@ -47,7 +47,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Interfaces\IUserIdGenerationService.cs" />
+    <Compile Include="Interfaces\IUserValidationService.cs" />
     <Compile Include="Services\UserIdGenerationService.cs" />
+    <Compile Include="Services\UserValidationService.cs" />
     <Compile Include="User.cs" />
     <Compile Include="UserStorageService.cs">
       <ExcludeFromStyleCop>False</ExcludeFromStyleCop>

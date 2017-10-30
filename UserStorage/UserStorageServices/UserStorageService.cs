@@ -13,13 +13,16 @@ namespace UserStorageServices
         public readonly List<User> Users;
 
         private readonly IUserIdGenerationService idGenerationService;
+        private readonly IUserValidationService validationService;
 
         /// <summary>
         /// Create an instance of <see cref="UserStorageService"/>
         /// </summary>
-        public UserStorageService(IUserIdGenerationService idGenerationService)
+        public UserStorageService(IUserIdGenerationService idGenerationService, IUserValidationService validationService)
         {
             this.idGenerationService = idGenerationService;
+            this.validationService = validationService;
+
             Users = new List<User>();
         }
 
@@ -29,10 +32,7 @@ namespace UserStorageServices
         /// Gets the number of elements contained in the storage.
         /// </summary>
         /// <returns>An amount of users in the storage.</returns>
-        public int Count
-        {
-            get { return Users.Count; }
-        }
+        public int Count => Users.Count;
 
         /// <summary>
         /// Adds a new <see cref="User"/> to the storage.
@@ -45,20 +45,8 @@ namespace UserStorageServices
                 Console.WriteLine("Add() method is called.");
             }
 
-            if (user == null)
-            {
-                throw new ArgumentNullException(nameof(user));
-            }
-
-            if (string.IsNullOrWhiteSpace(user.LastName) || string.IsNullOrWhiteSpace(user.FirstName))
-            {
-                throw new ArgumentException("LastName or FirstName is null or empty or whitespace", nameof(user));
-            }
-
-            if (user.Age < 0)
-            {
-                throw new ArgumentException("Age is null less or equal to 0.", nameof(user));
-            }
+            validationService.Validate(user);
+            user.Id = idGenerationService.Generate();
 
             Users.Add(user);
         }
@@ -78,8 +66,6 @@ namespace UserStorageServices
                 throw new ArgumentNullException(nameof(user));
             }
 
-            user.Id = idGenerationService.Generate();
-
             return Users.Remove(user); 
         }
 
@@ -93,7 +79,7 @@ namespace UserStorageServices
                 Console.WriteLine("SearchByAge() method is called.");
             }
 
-            if (age <= 0)
+            if (age <= 0 || age > 150)
             {
                 throw new ArgumentException("Age can't be less than 0.", nameof(age));
             }
