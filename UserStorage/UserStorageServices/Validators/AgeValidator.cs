@@ -1,4 +1,4 @@
-﻿using System;
+﻿using UserStorageServices.Exceptions;
 using UserStorageServices.Interfaces;
 
 namespace UserStorageServices.Validators
@@ -9,7 +9,7 @@ namespace UserStorageServices.Validators
         {
             if (user.Age < 0 || user.Age > 150)
             {
-                throw new ArgumentException("Age is out of range (0 - 150).", nameof(user));
+                throw new AgeExceedsLimitsException("Age is out of range (0 - 150).");
             }
         }
     }

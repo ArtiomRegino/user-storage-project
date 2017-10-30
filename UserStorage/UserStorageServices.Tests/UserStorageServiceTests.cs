@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using UserStorageServices.Exceptions;
 using UserStorageServices.Interfaces;
 using UserStorageServices.Services;
 using UserStorageServices.Validators;
@@ -12,14 +13,14 @@ namespace UserStorageServices.Tests
     public class UserStorageServiceTests
     {
         private UserIdGenerationService userIdGenerationService = new UserIdGenerationService();
-        private IValidator validationService = new CompositeValidator();
+        private IValidator _validator = new CompositeValidator();
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
         public void Add_NullAsUserArgument_ExceptionThrown()
         {
             // Arrange
-            var userStorageService = new UserStorageService(userIdGenerationService, validationService);
+            var userStorageService = new UserStorageService(userIdGenerationService, _validator);
 
             // Act
             userStorageService.Add(null);
@@ -28,11 +29,11 @@ namespace UserStorageServices.Tests
         }
 
         [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [ExpectedException(typeof(FirstNameNullEmptyOrWhitespace))]
         public void Add_UserFirstNameIsNull_ExceptionThrown()
         {
             // Arrange
-            var userStorageService = new UserStorageService(userIdGenerationService, validationService);
+            var userStorageService = new UserStorageService(userIdGenerationService, _validator);
 
             // Act
             userStorageService.Add(new User
@@ -44,11 +45,11 @@ namespace UserStorageServices.Tests
         }
 
         [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [ExpectedException(typeof(FirstNameNullEmptyOrWhitespace))]
         public void Add_UserFirstNameConsistsOfWhiteSpaces_ExceptionThrown()
         {
             // Arrange
-            var userStorageService = new UserStorageService(userIdGenerationService, validationService);
+            var userStorageService = new UserStorageService(userIdGenerationService, _validator);
 
             // Act
             userStorageService.Add(new User
@@ -60,11 +61,11 @@ namespace UserStorageServices.Tests
         }
 
         [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [ExpectedException(typeof(FirstNameNullEmptyOrWhitespace))]
         public void Add_UserFirstNameIsEmptyString_ExceptionThrown()
         {
             // Arrange
-            var userStorageService = new UserStorageService(userIdGenerationService, validationService);
+            var userStorageService = new UserStorageService(userIdGenerationService, _validator);
 
             // Act
             userStorageService.Add(new User
@@ -76,15 +77,16 @@ namespace UserStorageServices.Tests
         }
 
         [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [ExpectedException(typeof(LastNameNullEmptyOrWhitespace))]
         public void Add_UserLastNameIsNull_ExceptionThrown()
         {
             // Arrange
-            var userStorageService = new UserStorageService(userIdGenerationService, validationService);
+            var userStorageService = new UserStorageService(userIdGenerationService, _validator);
 
             // Act
             userStorageService.Add(new User
             {
+                FirstName = "Alan",
                 LastName = null
             });
 
@@ -92,15 +94,16 @@ namespace UserStorageServices.Tests
         }
 
         [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [ExpectedException(typeof(LastNameNullEmptyOrWhitespace))]
         public void Add_UserLastNameConsistsOfWhiteSpaces_ExceptionThrown()
         {
             // Arrange
-            var userStorageService = new UserStorageService(userIdGenerationService, validationService);
+            var userStorageService = new UserStorageService(userIdGenerationService, _validator);
 
             // Act
             userStorageService.Add(new User
             {
+                FirstName = "Alan",
                 LastName = "    "
             });
 
@@ -108,14 +111,15 @@ namespace UserStorageServices.Tests
         }
 
         [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [ExpectedException(typeof(LastNameNullEmptyOrWhitespace))]
         public void Add_UserLastNameIsEmptyString_ExceptionThrown()
         {
-            var userStorageService = new UserStorageService(userIdGenerationService, validationService);
+            var userStorageService = new UserStorageService(userIdGenerationService, _validator);
 
             // Act
             userStorageService.Add(new User
             {
+                FirstName = "Alan",
                 LastName = string.Empty
             });
 
@@ -123,11 +127,11 @@ namespace UserStorageServices.Tests
         }
 
         [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [ExpectedException(typeof(AgeExceedsLimitsException))]
         public void Add_UserAgeIsLessThanZero_ExceptionThrown()
         {
             // Arrange
-            var userStorageService = new UserStorageService(userIdGenerationService, validationService);
+            var userStorageService = new UserStorageService(userIdGenerationService, _validator);
 
             // Act
             userStorageService.Add(new User
@@ -142,7 +146,7 @@ namespace UserStorageServices.Tests
         public void Add_StandartUser_NothingHappen()
         {
             // Arrange
-            var userStorageService = new UserStorageService(userIdGenerationService, validationService);
+            var userStorageService = new UserStorageService(userIdGenerationService, _validator);
 
             // Act
             userStorageService.Add(new User
@@ -160,7 +164,7 @@ namespace UserStorageServices.Tests
         public void Remove_NullAsUserArgument_ExceptionThrown()
         {
             // Arrange
-            var userStorageService = new UserStorageService(userIdGenerationService, validationService);
+            var userStorageService = new UserStorageService(userIdGenerationService, _validator);
 
             // Act
             userStorageService.Remove(null);
@@ -172,7 +176,7 @@ namespace UserStorageServices.Tests
         public void Remove_UserNotExist_ReturnedFalse()
         {
             // Arrange
-            var userStorageService = new UserStorageService(userIdGenerationService, validationService);
+            var userStorageService = new UserStorageService(userIdGenerationService, _validator);
 
             // Act and Assert
             Assert.IsFalse(userStorageService.Remove(new User()));
@@ -182,7 +186,7 @@ namespace UserStorageServices.Tests
         public void Remove_CorrectUser_ReturnedTrue()
         {
             // Arrange
-            var userStorageService = new UserStorageService(userIdGenerationService, validationService);
+            var userStorageService = new UserStorageService(userIdGenerationService, _validator);
 
             // Act
             var user = new User()
@@ -202,7 +206,7 @@ namespace UserStorageServices.Tests
         public void SearchByAge_ArgumentLessThanZero_ExceptionThrown()
         {
             // Arrange
-            var userStorageService = new UserStorageService(userIdGenerationService, validationService);
+            var userStorageService = new UserStorageService(userIdGenerationService, _validator);
 
             // Act
             userStorageService.SearchByAge(-3);
@@ -214,7 +218,7 @@ namespace UserStorageServices.Tests
         public void SearchByAge_NoSuchAUser_Returned()
         {
             // Arrange
-            var userStorageService = new UserStorageService(userIdGenerationService, validationService);
+            var userStorageService = new UserStorageService(userIdGenerationService, _validator);
 
             // Act and Assert 
             Assert.IsInstanceOfType(userStorageService.SearchByAge(3), typeof(IEnumerable<User>));
@@ -224,7 +228,7 @@ namespace UserStorageServices.Tests
         public void SearchByAge_SearchForAnExistingUser_ReturnedIEnumerableWithCurrentUser()
         {
             // Arrange
-            var userStorageService = new UserStorageService(userIdGenerationService, validationService);
+            var userStorageService = new UserStorageService(userIdGenerationService, _validator);
             var user = new User()
             {
                 Age = 27,
@@ -242,7 +246,7 @@ namespace UserStorageServices.Tests
         public void SearchByLastName_ArgumentIsNull_ExceptionThrown()
         {
             // Arrange
-            var userStorageService = new UserStorageService(userIdGenerationService, validationService);
+            var userStorageService = new UserStorageService(userIdGenerationService, _validator);
 
             // Act
             userStorageService.SearchByLastName(null);
@@ -255,7 +259,7 @@ namespace UserStorageServices.Tests
         public void SearchByLastName_ArgumentIsWhiteSpace_ExceptionThrown()
         {
             // Arrange
-            var userStorageService = new UserStorageService(userIdGenerationService, validationService);
+            var userStorageService = new UserStorageService(userIdGenerationService, _validator);
 
             // Act
             userStorageService.SearchByLastName("   ");
@@ -267,7 +271,7 @@ namespace UserStorageServices.Tests
         public void SearchByLastName_NoSuchAUser_ReturnedEmptyIEnumerable()
         {
             // Arrange
-            var userStorageService = new UserStorageService(userIdGenerationService, validationService);
+            var userStorageService = new UserStorageService(userIdGenerationService, _validator);
 
             // Act
             Assert.IsInstanceOfType(userStorageService.SearchByLastName("Freeman"), typeof(IEnumerable<User>));
@@ -279,7 +283,7 @@ namespace UserStorageServices.Tests
         public void SearchByLastName_SearchForAnExistingUser_Returned()
         {
             // Arrange
-            var userStorageService = new UserStorageService(userIdGenerationService, validationService);
+            var userStorageService = new UserStorageService(userIdGenerationService, _validator);
             var user = new User()
             {
                 Age = 27,
@@ -299,7 +303,7 @@ namespace UserStorageServices.Tests
         public void SearchByFirstName_ArgumentIsNull_ExceptionThrown()
         {
             // Arrange
-            var userStorageService = new UserStorageService(userIdGenerationService, validationService);
+            var userStorageService = new UserStorageService(userIdGenerationService, _validator);
 
             // Act
             userStorageService.SearchByFirstName(null);
@@ -312,7 +316,7 @@ namespace UserStorageServices.Tests
         public void SearchByFirstName_ArgumentIsWhiteSpace_ExceptionThrown()
         {
             // Arrange
-            var userStorageService = new UserStorageService(userIdGenerationService, validationService);
+            var userStorageService = new UserStorageService(userIdGenerationService, _validator);
 
             // Act
             userStorageService.SearchByFirstName("   ");
@@ -324,7 +328,7 @@ namespace UserStorageServices.Tests
         public void SearchByFirstName_NoSuchAUser_ReturnedEmptyIEnumerable()
         {
             // Arrange
-            var userStorageService = new UserStorageService(userIdGenerationService, validationService);
+            var userStorageService = new UserStorageService(userIdGenerationService, _validator);
 
             // Act
             Assert.IsInstanceOfType(userStorageService.SearchByFirstName("Morgan"), typeof(IEnumerable<User>));
@@ -336,7 +340,7 @@ namespace UserStorageServices.Tests
         public void SearchByFirstName_SearchForAnExistingUser_ReturnedIEnumerableWithCurrentUser()
         {
             // Arrange
-            var userStorageService = new UserStorageService(userIdGenerationService, validationService);
+            var userStorageService = new UserStorageService(userIdGenerationService, _validator);
             var user = new User()
             {
                 Age = 27,
@@ -356,7 +360,7 @@ namespace UserStorageServices.Tests
         public void SearchByPredicate_ArgumentIsNull_ExceptionThrown()
         {
             // Arrange
-            var userStorageService = new UserStorageService(userIdGenerationService, validationService);
+            var userStorageService = new UserStorageService(userIdGenerationService, _validator);
 
             // Act
             userStorageService.SearchByPredicate(null);
@@ -368,7 +372,7 @@ namespace UserStorageServices.Tests
         public void SearchByPredicate_NoSuchAUser_ReturnedEmptyIEnumerable()
         {
             // Arrange
-            var userStorageService = new UserStorageService(userIdGenerationService, validationService);
+            var userStorageService = new UserStorageService(userIdGenerationService, _validator);
 
             // Act
             Assert.IsInstanceOfType(userStorageService.SearchByPredicate(u => u.Age == 11), typeof(IEnumerable<User>));
@@ -380,7 +384,7 @@ namespace UserStorageServices.Tests
         public void SearchByPredicate_SearchForAnExistingUser_ReturnedIEnumerableWithCurrentUser()
         {
             // Arrange
-            var userStorageService = new UserStorageService(userIdGenerationService, validationService);
+            var userStorageService = new UserStorageService(userIdGenerationService, _validator);
             var user = new User()
             {
                 Age = 27,
@@ -400,7 +404,7 @@ namespace UserStorageServices.Tests
         public void SearchFirstByPredicate_ArgumentIsNull_ExceptionThrown()
         {
             // Arrange
-            var userStorageService = new UserStorageService(userIdGenerationService, validationService);
+            var userStorageService = new UserStorageService(userIdGenerationService, _validator);
 
             // Act
             userStorageService.SearchFirstByPredicate(null);
@@ -412,7 +416,7 @@ namespace UserStorageServices.Tests
         public void SearchFirstByPredicate_NoSuchAUser_ReturnedNull()
         {
             // Arrange
-            var userStorageService = new UserStorageService(userIdGenerationService, validationService);
+            var userStorageService = new UserStorageService(userIdGenerationService, _validator);
 
             // Act
             Assert.IsNull(userStorageService.SearchFirstByPredicate(u => u.Age == 11));
@@ -424,7 +428,7 @@ namespace UserStorageServices.Tests
         public void SearchFirstByPredicate_SearchForAnExistingUser_ReturnedCurrentUser()
         {
             // Arrange
-            var userStorageService = new UserStorageService(userIdGenerationService, validationService);
+            var userStorageService = new UserStorageService(userIdGenerationService, _validator);
             var user = new User()
             {
                 Age = 27,
