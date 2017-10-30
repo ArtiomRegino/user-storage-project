@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace UserStorageServices.Interfaces
 {
-    public interface IUserValidationService
+    public interface IValidator
     {
         void Validate(User user);
     }

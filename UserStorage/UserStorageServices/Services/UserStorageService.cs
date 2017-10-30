@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using UserStorageServices.Interfaces;
 
-namespace UserStorageServices
+namespace UserStorageServices.Services
 {
     /// <summary>
     /// Represents a service that stores a set of <see cref="User"/>s and allows to search through them.
@@ -14,18 +13,15 @@ namespace UserStorageServices
         public readonly List<User> Users;
 
         private readonly IUserIdGenerationService _generationService;
-        private readonly IUserValidationService _validationService;
-
-        private readonly BooleanSwitch _logging = new BooleanSwitch(
-            "enableLogging", "management from app.config");
+        private readonly IValidator _validator;
         
         /// <summary>
         /// Create an instance of <see cref="UserStorageService"/>
         /// </summary>
-        public UserStorageService(IUserIdGenerationService generationService, IUserValidationService validationService)
+        public UserStorageService(IUserIdGenerationService generationService, IValidator validator)
         {
             _generationService = generationService;
-            _validationService = validationService;
+            _validator = validator;
 
             Users = new List<User>();
         }
@@ -42,12 +38,7 @@ namespace UserStorageServices
         /// <param name="user">A new <see cref="User"/> that will be added to the storage.</param>
         public void Add(User user)
         {
-            if (_logging.Enabled)
-            {
-                Console.WriteLine("Add() method is called.");
-            }
-
-            _validationService.Validate(user);
+            _validator.Validate(user);
             user.Id = _generationService.Generate();
 
             Users.Add(user);
@@ -58,11 +49,6 @@ namespace UserStorageServices
         /// </summary>
         public bool Remove(User user)
         {
-            if (_logging.Enabled)
-            {
-                Console.WriteLine("Remove() method is called.");
-            }
-
             if (user == null)
             {
                 throw new ArgumentNullException(nameof(user));
@@ -76,11 +62,6 @@ namespace UserStorageServices
         /// </summary>
         public IEnumerable<User> SearchByAge(int age)
         {
-            if (_logging.Enabled)
-            {
-                Console.WriteLine("SearchByAge() method is called.");
-            }
-
             if (age <= 0 || age > 150)
             {
                 throw new ArgumentException("Age can't be less than 0.", nameof(age));
@@ -94,11 +75,6 @@ namespace UserStorageServices
         /// </summary>
         public IEnumerable<User> SearchByLastName(string lastName)
         {
-            if (_logging.Enabled)
-            {
-                Console.WriteLine("SearchByLastName() method is called.");
-            }
-
             if (string.IsNullOrWhiteSpace(lastName))
             {
                 throw new ArgumentException("FirstName is null or empty or whitespace", nameof(lastName));
@@ -112,11 +88,6 @@ namespace UserStorageServices
         /// </summary>
         public IEnumerable<User> SearchByFirstName(string firstName)
         {
-            if (_logging.Enabled)
-            {
-                Console.WriteLine("SearchByFirstName() method is called.");
-            }
-
             if (string.IsNullOrWhiteSpace(firstName))
             {
                 throw new ArgumentException("FirstName is null or empty or whitespace", nameof(firstName));
@@ -130,11 +101,6 @@ namespace UserStorageServices
         /// </summary>
         public User SearchFirstByPredicate(Predicate<User> predicate)
         {
-            if (_logging.Enabled)
-            {
-                Console.WriteLine("SearchFirstByPredicate() method is called.");
-            }
-
             if (predicate == null)
             {
                 throw new ArgumentNullException();
@@ -150,11 +116,6 @@ namespace UserStorageServices
         /// </summary>
         public IEnumerable<User> SearchByPredicate(Predicate<User> predicate)
         {
-            if (_logging.Enabled)
-            {
-                Console.WriteLine("SearchByPredicate() method is called.");
-            }
-
             if (predicate == null)
             {
                 throw new ArgumentNullException();

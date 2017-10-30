@@ -46,16 +46,24 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Exceptions\AgeExceedsLimitsException.cs" />
+    <Compile Include="Exceptions\FirstNameNullEmptyOrWhitespace.cs" />
+    <Compile Include="Exceptions\LastNameNullEmptyOrWhitespace.cs" />
     <Compile Include="Interfaces\IUserIdGenerationService.cs" />
     <Compile Include="Interfaces\IUserStorageService.cs" />
     <Compile Include="Interfaces\IUserValidationService.cs" />
     <Compile Include="Services\UserIdGenerationService.cs" />
-    <Compile Include="Services\UserValidationService.cs" />
+    <Compile Include="Services\UserStorageServiceDecorator.cs" />
+    <Compile Include="Services\UserStorageServiceLog.cs" />
     <Compile Include="User.cs" />
     <Compile Include="Services\UserStorageService.cs">
       <ExcludeFromStyleCop>False</ExcludeFromStyleCop>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Validators\AgeValidator.cs" />
+    <Compile Include="Validators\CompositeValidator.cs" />
+    <Compile Include="Validators\FirstNameValidator.cs" />
+    <Compile Include="Validators\LastNameValidator.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
