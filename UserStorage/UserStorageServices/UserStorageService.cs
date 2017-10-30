@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using UserStorageServices.Interfaces;
 
 namespace UserStorageServices
 {
@@ -11,11 +12,14 @@ namespace UserStorageServices
     {
         public readonly List<User> Users;
 
+        private readonly IUserIdGenerationService idGenerationService;
+
         /// <summary>
         /// Create an instance of <see cref="UserStorageService"/>
         /// </summary>
-        public UserStorageService()
+        public UserStorageService(IUserIdGenerationService idGenerationService)
         {
+            this.idGenerationService = idGenerationService;
             Users = new List<User>();
         }
 
@@ -73,6 +77,8 @@ namespace UserStorageServices
             {
                 throw new ArgumentNullException(nameof(user));
             }
+
+            user.Id = idGenerationService.Generate();
 
             return Users.Remove(user); 
         }
