@@ -9,15 +9,14 @@ namespace UserStorageServices.Tests
     [TestClass]
     public class UserStorageServiceTests
     {
-        UserIdGenerationService userIdGenerationService = new UserIdGenerationService();
-        UserValidationService validationService = new UserValidationService();
+        private UserIdGenerationService userIdGenerationService = new UserIdGenerationService();
+        private UserValidationService validationService = new UserValidationService();
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
         public void Add_NullAsUserArgument_ExceptionThrown()
         {
             // Arrange
-            
             var userStorageService = new UserStorageService(userIdGenerationService, validationService);
 
             // Act

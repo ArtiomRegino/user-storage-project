@@ -3,7 +3,7 @@ using UserStorageServices.Interfaces;
 
 namespace UserStorageServices.Services
 {
-    public class UserIdGenerationService: IUserIdGenerationService
+    public class UserIdGenerationService : IUserIdGenerationService
     {
         public Guid Generate()
         {

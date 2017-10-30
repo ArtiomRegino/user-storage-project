@@ -7,7 +7,7 @@ using UserStorageServices.Interfaces;
 
 namespace UserStorageServices.Services
 {
-    public class UserValidationService: IUserValidationService
+    public class UserValidationService : IUserValidationService
     {
         public void Validate(User user)
         {
