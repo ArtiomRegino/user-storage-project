@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using UserStorageServices.Interfaces;
 
@@ -15,6 +16,9 @@ namespace UserStorageServices
         private readonly IUserIdGenerationService _generationService;
         private readonly IUserValidationService _validationService;
 
+        private readonly BooleanSwitch _logging = new BooleanSwitch(
+            "enableLogging", "management from app.config");
+        
         /// <summary>
         /// Create an instance of <see cref="UserStorageService"/>
         /// </summary>
@@ -25,8 +29,6 @@ namespace UserStorageServices
 
             Users = new List<User>();
         }
-
-        public bool IsLoggingEnabled { get; set; }
 
         /// <summary>
         /// Gets the number of elements contained in the storage.
@@ -40,7 +42,7 @@ namespace UserStorageServices
         /// <param name="user">A new <see cref="User"/> that will be added to the storage.</param>
         public void Add(User user)
         {
-            if (IsLoggingEnabled)
+            if (_logging.Enabled)
             {
                 Console.WriteLine("Add() method is called.");
             }
@@ -56,7 +58,7 @@ namespace UserStorageServices
         /// </summary>
         public bool Remove(User user)
         {
-            if (IsLoggingEnabled)
+            if (_logging.Enabled)
             {
                 Console.WriteLine("Remove() method is called.");
             }
@@ -74,7 +76,7 @@ namespace UserStorageServices
         /// </summary>
         public IEnumerable<User> SearchByAge(int age)
         {
-            if (IsLoggingEnabled)
+            if (_logging.Enabled)
             {
                 Console.WriteLine("SearchByAge() method is called.");
             }
@@ -92,7 +94,7 @@ namespace UserStorageServices
         /// </summary>
         public IEnumerable<User> SearchByLastName(string lastName)
         {
-            if (IsLoggingEnabled)
+            if (_logging.Enabled)
             {
                 Console.WriteLine("SearchByLastName() method is called.");
             }
@@ -110,7 +112,7 @@ namespace UserStorageServices
         /// </summary>
         public IEnumerable<User> SearchByFirstName(string firstName)
         {
-            if (IsLoggingEnabled)
+            if (_logging.Enabled)
             {
                 Console.WriteLine("SearchByFirstName() method is called.");
             }
@@ -128,7 +130,7 @@ namespace UserStorageServices
         /// </summary>
         public User SearchFirstByPredicate(Predicate<User> predicate)
         {
-            if (IsLoggingEnabled)
+            if (_logging.Enabled)
             {
                 Console.WriteLine("SearchFirstByPredicate() method is called.");
             }
@@ -148,7 +150,7 @@ namespace UserStorageServices
         /// </summary>
         public IEnumerable<User> SearchByPredicate(Predicate<User> predicate)
         {
-            if (IsLoggingEnabled)
+            if (_logging.Enabled)
             {
                 Console.WriteLine("SearchByPredicate() method is called.");
             }
