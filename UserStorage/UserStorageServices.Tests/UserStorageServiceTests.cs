@@ -22,6 +22,7 @@ namespace UserStorageServices.Tests
             // Arrange
             var userStorageService = new UserStorageService(userIdGenerationService, _validator);
             var storageLog = new UserStorageServiceLog(userStorageService);
+
             // Act
             storageLog.Add(null);
 
@@ -486,6 +487,7 @@ namespace UserStorageServices.Tests
             storageLog.Add(user);
             var userAfterSearch  =
                 storageLog.SearchFirstByPredicate(u => u.FirstName == "Michael" && u.LastName == "Fresko");
+           
             // Act
             Assert.AreEqual(user, userAfterSearch);
 
@@ -507,6 +509,7 @@ namespace UserStorageServices.Tests
             storageLog.Add(user);
             var userAfterSearch =
                 storageLog.SearchFirstByPredicate(u => u.FirstName == "Michael" && u.Age == 27);
+           
             // Act
             Assert.AreEqual(user, userAfterSearch);
 
@@ -528,6 +531,7 @@ namespace UserStorageServices.Tests
             storageLog.Add(user);
             var userAfterSearch =
                 storageLog.SearchFirstByPredicate(u => u.LastName == "Fresko" && u.Age == 27);
+            
             // Act
             Assert.AreEqual(user, userAfterSearch);
 
@@ -549,6 +553,7 @@ namespace UserStorageServices.Tests
             storageLog.Add(user);
             var userAfterSearch =
                 storageLog.SearchFirstByPredicate(u => u.LastName == "Fresko" && u.Age == 27 && u.FirstName == "Michael");
+           
             // Act
             Assert.AreEqual(user, userAfterSearch);
 
