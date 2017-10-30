@@ -1,4 +1,5 @@
 ﻿using UserStorageServices;
+using UserStorageServices.Interfaces;
 
 namespace UserStorageApp
 {
@@ -7,14 +8,14 @@ namespace UserStorageApp
     /// </summary>
     public class Client
     {
-        private readonly UserStorageService _userStorageService;
+        private readonly IUserStorageService _userStorageService;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Client"/> class.
         /// </summary>
-        public Client()
+        public Client(IUserStorageService userStorageService)
         {
-            _userStorageService = new UserStorageService();
+            _userStorageService = userStorageService;
         }
 
         /// <summary>
@@ -29,9 +30,9 @@ namespace UserStorageApp
                 Age = 25
             });
 
-            _userStorageService.Remove();
+            ////_userStorageService.Remove();
 
-            _userStorageService.Search();
+            ////_userStorageService.Search();
         }
     }
 }
