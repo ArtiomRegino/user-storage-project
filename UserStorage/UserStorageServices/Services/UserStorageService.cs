@@ -4,7 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using UserStorageServices.Interfaces;
 
-namespace UserStorageServices
+namespace UserStorageServices.Services
 {
     /// <summary>
     /// Represents a service that stores a set of <see cref="User"/>s and allows to search through them.
@@ -14,7 +14,7 @@ namespace UserStorageServices
         public readonly List<User> Users;
 
         private readonly IUserIdGenerationService _generationService;
-        private readonly IUserValidationService _validationService;
+        private readonly IValidator _validator;
 
         private readonly BooleanSwitch _logging = new BooleanSwitch(
             "enableLogging", "management from app.config");
@@ -22,10 +22,10 @@ namespace UserStorageServices
         /// <summary>
         /// Create an instance of <see cref="UserStorageService"/>
         /// </summary>
-        public UserStorageService(IUserIdGenerationService generationService, IUserValidationService validationService)
+        public UserStorageService(IUserIdGenerationService generationService, IValidator validator)
         {
             _generationService = generationService;
-            _validationService = validationService;
+            _validator = validator;
 
             Users = new List<User>();
         }
@@ -47,7 +47,7 @@ namespace UserStorageServices
                 Console.WriteLine("Add() method is called.");
             }
 
-            _validationService.Validate(user);
+            _validator.Validate(user);
             user.Id = _generationService.Generate();
 
             Users.Add(user);

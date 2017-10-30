@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using UserStorageServices.Interfaces;
 using UserStorageServices.Services;
+using UserStorageServices.Validators;
 
 namespace UserStorageServices.Tests
 {
@@ -10,7 +12,7 @@ namespace UserStorageServices.Tests
     public class UserStorageServiceTests
     {
         private UserIdGenerationService userIdGenerationService = new UserIdGenerationService();
-        private UserValidationService validationService = new UserValidationService();
+        private IValidator validationService = new CompositeValidator();
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
