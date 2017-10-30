@@ -20,7 +20,7 @@ namespace UserStorageServices.Services
             {
                 if (_logging.Enabled)
                 {
-                    Console.WriteLine("Count() method is called.");
+                    Trace.TraceInformation("Count() method is called.");
                 }
 
                 return _storageService.Count;
@@ -31,7 +31,7 @@ namespace UserStorageServices.Services
         {
             if (_logging.Enabled)
             {
-                Console.WriteLine("Add() method is called.");
+                Trace.TraceInformation("Add() method is called.");
             }
 
             _storageService.Add(user);
@@ -41,7 +41,7 @@ namespace UserStorageServices.Services
         {
             if (_logging.Enabled)
             {
-                Console.WriteLine("Remove() method is called.");
+                Trace.TraceInformation("Remove() method is called.");
             }
 
             return _storageService.Remove(user);
@@ -51,7 +51,7 @@ namespace UserStorageServices.Services
         {
             if (_logging.Enabled)
             {
-                Console.WriteLine("SearchByAge() method is called.");
+                Trace.TraceInformation("SearchByAge() method is called.");
             }
 
             return _storageService.SearchByAge(age);
@@ -61,7 +61,7 @@ namespace UserStorageServices.Services
         {
             if (_logging.Enabled)
             {
-                Console.WriteLine("SearchByLastName() method is called.");
+                Trace.TraceInformation("SearchByLastName() method is called.");
             }
 
             return _storageService.SearchByLastName(lastName);
@@ -71,7 +71,7 @@ namespace UserStorageServices.Services
         {
             if (_logging.Enabled)
             {
-                Console.WriteLine("SearchByFirstName() method is called.");
+                Trace.TraceInformation("SearchByFirstName() method is called.");
             }
 
             return _storageService.SearchByFirstName(firstName);
@@ -81,7 +81,7 @@ namespace UserStorageServices.Services
         {
             if (_logging.Enabled)
             {
-                Console.WriteLine("SearchFirstByPredicate() method is called.");
+                Trace.TraceInformation("SearchFirstByPredicate() method is called.");
             }
 
             return _storageService.SearchFirstByPredicate(predicate);
@@ -91,7 +91,7 @@ namespace UserStorageServices.Services
         {
             if (_logging.Enabled)
             {
-                Console.WriteLine("SearchByPredicate() method is called.");
+                Trace.TraceInformation("SearchByPredicate() method is called.");
             }
 
             return _storageService.SearchByPredicate(predicate);
