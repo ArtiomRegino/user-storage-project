@@ -442,5 +442,85 @@ namespace UserStorageServices.Tests
 
             // Assert 
         }
+
+        [TestMethod]
+        public void SearchFirstByPredicate_SearchByFirstNameAndLastNameForAnExistingUser_ReturnedCurrentUser()
+        {
+            // Arrange
+            var userStorageService = new UserStorageService(userIdGenerationService, _validator);
+            var user = new User()
+            {
+                Age = 27,
+                FirstName = "Michael",
+                LastName = "Fresko"
+            };
+            userStorageService.Add(user);
+            var userAfterSearch  =
+                userStorageService.SearchFirstByPredicate(u => u.FirstName == "Michael" && u.LastName == "Fresko");
+            // Act
+            Assert.AreEqual(user, userAfterSearch);
+
+            // Assert 
+        }
+
+        [TestMethod]
+        public void SearchFirstByPredicate_SearchByFirstNameAndAgeForAnExistingUser_ReturnedCurrentUser()
+        {
+            // Arrange
+            var userStorageService = new UserStorageService(userIdGenerationService, _validator);
+            var user = new User()
+            {
+                Age = 27,
+                FirstName = "Michael",
+                LastName = "Fresko"
+            };
+            userStorageService.Add(user);
+            var userAfterSearch =
+                userStorageService.SearchFirstByPredicate(u => u.FirstName == "Michael" && u.Age == 27);
+            // Act
+            Assert.AreEqual(user, userAfterSearch);
+
+            // Assert 
+        }
+
+        [TestMethod]
+        public void SearchFirstByPredicate_SearchByLastNameAndAgeForAnExistingUser_ReturnedCurrentUser()
+        {
+            // Arrange
+            var userStorageService = new UserStorageService(userIdGenerationService, _validator);
+            var user = new User()
+            {
+                Age = 27,
+                FirstName = "Michael",
+                LastName = "Fresko"
+            };
+            userStorageService.Add(user);
+            var userAfterSearch =
+                userStorageService.SearchFirstByPredicate(u => u.LastName == "Fresko" && u.Age == 27);
+            // Act
+            Assert.AreEqual(user, userAfterSearch);
+
+            // Assert 
+        }
+
+        [TestMethod]
+        public void SearchFirstByPredicate_SearchByFirstNameLastNameAndAgeForAnExistingUser_ReturnedCurrentUser()
+        {
+            // Arrange
+            var userStorageService = new UserStorageService(userIdGenerationService, _validator);
+            var user = new User()
+            {
+                Age = 27,
+                FirstName = "Michael",
+                LastName = "Fresko"
+            };
+            userStorageService.Add(user);
+            var userAfterSearch =
+                userStorageService.SearchFirstByPredicate(u => u.LastName == "Fresko" && u.Age == 27 && u.FirstName == "Michael");
+            // Act
+            Assert.AreEqual(user, userAfterSearch);
+
+            // Assert 
+        }
     }
 }
