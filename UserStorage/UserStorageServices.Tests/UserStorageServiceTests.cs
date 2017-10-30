@@ -21,9 +21,9 @@ namespace UserStorageServices.Tests
         {
             // Arrange
             var userStorageService = new UserStorageService(userIdGenerationService, _validator);
-
+            var storageLog = new UserStorageServiceLog(userStorageService);
             // Act
-            userStorageService.Add(null);
+            storageLog.Add(null);
 
             // Assert - [ExpectedException]
         }
@@ -34,9 +34,10 @@ namespace UserStorageServices.Tests
         {
             // Arrange
             var userStorageService = new UserStorageService(userIdGenerationService, _validator);
+            var storageLog = new UserStorageServiceLog(userStorageService);
 
             // Act
-            userStorageService.Add(new User
+            storageLog.Add(new User
             {
                 FirstName = null
             });
@@ -50,9 +51,10 @@ namespace UserStorageServices.Tests
         {
             // Arrange
             var userStorageService = new UserStorageService(userIdGenerationService, _validator);
+            var storageLog = new UserStorageServiceLog(userStorageService);
 
             // Act
-            userStorageService.Add(new User
+            storageLog.Add(new User
             {
                 FirstName = "    "
             });
@@ -66,9 +68,10 @@ namespace UserStorageServices.Tests
         {
             // Arrange
             var userStorageService = new UserStorageService(userIdGenerationService, _validator);
+            var storageLog = new UserStorageServiceLog(userStorageService);
 
             // Act
-            userStorageService.Add(new User
+            storageLog.Add(new User
             {
                 FirstName = string.Empty
             });
@@ -82,9 +85,10 @@ namespace UserStorageServices.Tests
         {
             // Arrange
             var userStorageService = new UserStorageService(userIdGenerationService, _validator);
+            var storageLog = new UserStorageServiceLog(userStorageService);
 
             // Act
-            userStorageService.Add(new User
+            storageLog.Add(new User
             {
                 FirstName = "Alan",
                 LastName = null
@@ -99,9 +103,10 @@ namespace UserStorageServices.Tests
         {
             // Arrange
             var userStorageService = new UserStorageService(userIdGenerationService, _validator);
+            var storageLog = new UserStorageServiceLog(userStorageService);
 
             // Act
-            userStorageService.Add(new User
+            storageLog.Add(new User
             {
                 FirstName = "Alan",
                 LastName = "    "
@@ -115,9 +120,10 @@ namespace UserStorageServices.Tests
         public void Add_UserLastNameIsEmptyString_ExceptionThrown()
         {
             var userStorageService = new UserStorageService(userIdGenerationService, _validator);
+            var storageLog = new UserStorageServiceLog(userStorageService);
 
             // Act
-            userStorageService.Add(new User
+            storageLog.Add(new User
             {
                 FirstName = "Alan",
                 LastName = string.Empty
@@ -132,9 +138,10 @@ namespace UserStorageServices.Tests
         {
             // Arrange
             var userStorageService = new UserStorageService(userIdGenerationService, _validator);
+            var storageLog = new UserStorageServiceLog(userStorageService);
 
             // Act
-            userStorageService.Add(new User
+            storageLog.Add(new User
             {
                 Age = -2
             });
@@ -147,9 +154,10 @@ namespace UserStorageServices.Tests
         {
             // Arrange
             var userStorageService = new UserStorageService(userIdGenerationService, _validator);
+            var storageLog = new UserStorageServiceLog(userStorageService);
 
             // Act
-            userStorageService.Add(new User
+            storageLog.Add(new User
             {
                 FirstName = "Lorem",
                 LastName = "Ipsum",
@@ -165,9 +173,10 @@ namespace UserStorageServices.Tests
         {
             // Arrange
             var userStorageService = new UserStorageService(userIdGenerationService, _validator);
+            var storageLog = new UserStorageServiceLog(userStorageService);
 
             // Act
-            userStorageService.Remove(null);
+            storageLog.Remove(null);
 
             // Assert - [ExpectedException]
         }
@@ -177,9 +186,10 @@ namespace UserStorageServices.Tests
         {
             // Arrange
             var userStorageService = new UserStorageService(userIdGenerationService, _validator);
+            var storageLog = new UserStorageServiceLog(userStorageService);
 
             // Act and Assert
-            Assert.IsFalse(userStorageService.Remove(new User()));
+            Assert.IsFalse(storageLog.Remove(new User()));
         }
 
         [TestMethod]
@@ -187,6 +197,7 @@ namespace UserStorageServices.Tests
         {
             // Arrange
             var userStorageService = new UserStorageService(userIdGenerationService, _validator);
+            var storageLog = new UserStorageServiceLog(userStorageService);
 
             // Act
             var user = new User()
@@ -195,7 +206,7 @@ namespace UserStorageServices.Tests
                 FirstName = "Anna",
                 LastName = "Shprot"
             };
-            userStorageService.Add(user);
+            storageLog.Add(user);
 
             // Assert 
             Assert.IsTrue(userStorageService.Remove(user));            
@@ -207,9 +218,10 @@ namespace UserStorageServices.Tests
         {
             // Arrange
             var userStorageService = new UserStorageService(userIdGenerationService, _validator);
+            var storageLog = new UserStorageServiceLog(userStorageService);
 
             // Act
-            userStorageService.SearchByAge(-3);
+            storageLog.SearchByAge(-3);
 
             // Assert - [ExpectedException]
         }
@@ -219,9 +231,10 @@ namespace UserStorageServices.Tests
         {
             // Arrange
             var userStorageService = new UserStorageService(userIdGenerationService, _validator);
+            var storageLog = new UserStorageServiceLog(userStorageService);
 
             // Act and Assert 
-            Assert.IsInstanceOfType(userStorageService.SearchByAge(3), typeof(IEnumerable<User>));
+            Assert.IsInstanceOfType(storageLog.SearchByAge(3), typeof(IEnumerable<User>));
         }
 
         [TestMethod]
@@ -229,16 +242,17 @@ namespace UserStorageServices.Tests
         {
             // Arrange
             var userStorageService = new UserStorageService(userIdGenerationService, _validator);
+            var storageLog = new UserStorageServiceLog(userStorageService);
             var user = new User()
             {
                 Age = 27,
                 FirstName = "Michael",
                 LastName = "Fresko"
             };
-            userStorageService.Add(user);
+            storageLog.Add(user);
 
             // Act and Assert 
-            Assert.AreEqual(user, userStorageService.SearchByAge(27).FirstOrDefault());
+            Assert.AreEqual(user, storageLog.SearchByAge(27).FirstOrDefault());
         }
 
         [TestMethod]
@@ -247,9 +261,10 @@ namespace UserStorageServices.Tests
         {
             // Arrange
             var userStorageService = new UserStorageService(userIdGenerationService, _validator);
+            var storageLog = new UserStorageServiceLog(userStorageService);
 
             // Act
-            userStorageService.SearchByLastName(null);
+            storageLog.SearchByLastName(null);
 
             // Assert - [ExpectedException]
         }
@@ -260,9 +275,10 @@ namespace UserStorageServices.Tests
         {
             // Arrange
             var userStorageService = new UserStorageService(userIdGenerationService, _validator);
+            var storageLog = new UserStorageServiceLog(userStorageService);
 
             // Act
-            userStorageService.SearchByLastName("   ");
+            storageLog.SearchByLastName("   ");
 
             // Assert - [ExpectedException]
         }
@@ -272,9 +288,10 @@ namespace UserStorageServices.Tests
         {
             // Arrange
             var userStorageService = new UserStorageService(userIdGenerationService, _validator);
+            var storageLog = new UserStorageServiceLog(userStorageService);
 
             // Act
-            Assert.IsInstanceOfType(userStorageService.SearchByLastName("Freeman"), typeof(IEnumerable<User>));
+            Assert.IsInstanceOfType(storageLog.SearchByLastName("Freeman"), typeof(IEnumerable<User>));
 
             // Assert 
         }
@@ -284,16 +301,17 @@ namespace UserStorageServices.Tests
         {
             // Arrange
             var userStorageService = new UserStorageService(userIdGenerationService, _validator);
+            var storageLog = new UserStorageServiceLog(userStorageService);
             var user = new User()
             {
                 Age = 27,
                 FirstName = "Michael",
                 LastName = "Fresko"
             };
-            userStorageService.Add(user);
+            storageLog.Add(user);
 
             // Act
-            Assert.AreEqual(user, userStorageService.SearchByLastName("Fresko").FirstOrDefault());
+            Assert.AreEqual(user, storageLog.SearchByLastName("Fresko").FirstOrDefault());
 
             // Assert 
         }
@@ -304,9 +322,10 @@ namespace UserStorageServices.Tests
         {
             // Arrange
             var userStorageService = new UserStorageService(userIdGenerationService, _validator);
+            var storageLog = new UserStorageServiceLog(userStorageService);
 
             // Act
-            userStorageService.SearchByFirstName(null);
+            storageLog.SearchByFirstName(null);
 
             // Assert - [ExpectedException]
         }
@@ -317,9 +336,10 @@ namespace UserStorageServices.Tests
         {
             // Arrange
             var userStorageService = new UserStorageService(userIdGenerationService, _validator);
+            var storageLog = new UserStorageServiceLog(userStorageService);
 
             // Act
-            userStorageService.SearchByFirstName("   ");
+            storageLog.SearchByFirstName("   ");
 
             // Assert - [ExpectedException]
         }
@@ -329,9 +349,10 @@ namespace UserStorageServices.Tests
         {
             // Arrange
             var userStorageService = new UserStorageService(userIdGenerationService, _validator);
+            var storageLog = new UserStorageServiceLog(userStorageService);
 
             // Act
-            Assert.IsInstanceOfType(userStorageService.SearchByFirstName("Morgan"), typeof(IEnumerable<User>));
+            Assert.IsInstanceOfType(storageLog.SearchByFirstName("Morgan"), typeof(IEnumerable<User>));
 
             // Assert 
         }
@@ -341,16 +362,17 @@ namespace UserStorageServices.Tests
         {
             // Arrange
             var userStorageService = new UserStorageService(userIdGenerationService, _validator);
+            var storageLog = new UserStorageServiceLog(userStorageService);
             var user = new User()
             {
                 Age = 27,
                 FirstName = "Michael",
                 LastName = "Fresko"
             };
-            userStorageService.Add(user);
+            storageLog.Add(user);
 
             // Act
-            Assert.AreEqual(user, userStorageService.SearchByFirstName("Michael").FirstOrDefault());
+            Assert.AreEqual(user, storageLog.SearchByFirstName("Michael").FirstOrDefault());
 
             // Assert 
         }
@@ -361,9 +383,10 @@ namespace UserStorageServices.Tests
         {
             // Arrange
             var userStorageService = new UserStorageService(userIdGenerationService, _validator);
+            var storageLog = new UserStorageServiceLog(userStorageService);
 
             // Act
-            userStorageService.SearchByPredicate(null);
+            storageLog.SearchByPredicate(null);
 
             // Assert - [ExpectedException]
         }
@@ -373,9 +396,10 @@ namespace UserStorageServices.Tests
         {
             // Arrange
             var userStorageService = new UserStorageService(userIdGenerationService, _validator);
+            var storageLog = new UserStorageServiceLog(userStorageService);
 
             // Act
-            Assert.IsInstanceOfType(userStorageService.SearchByPredicate(u => u.Age == 11), typeof(IEnumerable<User>));
+            Assert.IsInstanceOfType(storageLog.SearchByPredicate(u => u.Age == 11), typeof(IEnumerable<User>));
 
             // Assert 
         }
@@ -385,16 +409,17 @@ namespace UserStorageServices.Tests
         {
             // Arrange
             var userStorageService = new UserStorageService(userIdGenerationService, _validator);
+            var storageLog = new UserStorageServiceLog(userStorageService);
             var user = new User()
             {
                 Age = 27,
                 FirstName = "Michael",
                 LastName = "Fresko"
             };
-            userStorageService.Add(user);
+            storageLog.Add(user);
 
             // Act
-            Assert.AreEqual(user, userStorageService.SearchByPredicate(u => u.Age == 27).FirstOrDefault());
+            Assert.AreEqual(user, storageLog.SearchByPredicate(u => u.Age == 27).FirstOrDefault());
 
             // Assert 
         }
@@ -405,9 +430,10 @@ namespace UserStorageServices.Tests
         {
             // Arrange
             var userStorageService = new UserStorageService(userIdGenerationService, _validator);
+            var storageLog = new UserStorageServiceLog(userStorageService);
 
             // Act
-            userStorageService.SearchFirstByPredicate(null);
+            storageLog.SearchFirstByPredicate(null);
 
             // Assert - [ExpectedException]
         }
@@ -417,9 +443,10 @@ namespace UserStorageServices.Tests
         {
             // Arrange
             var userStorageService = new UserStorageService(userIdGenerationService, _validator);
+            var storageLog = new UserStorageServiceLog(userStorageService);
 
             // Act
-            Assert.IsNull(userStorageService.SearchFirstByPredicate(u => u.Age == 11));
+            Assert.IsNull(storageLog.SearchFirstByPredicate(u => u.Age == 11));
 
             // Assert 
         }
@@ -429,16 +456,17 @@ namespace UserStorageServices.Tests
         {
             // Arrange
             var userStorageService = new UserStorageService(userIdGenerationService, _validator);
+            var storageLog = new UserStorageServiceLog(userStorageService);
             var user = new User()
             {
                 Age = 27,
                 FirstName = "Michael",
                 LastName = "Fresko"
             };
-            userStorageService.Add(user);
+            storageLog.Add(user);
 
             // Act
-            Assert.AreEqual(user, userStorageService.SearchFirstByPredicate(u => u.Age == 27));
+            Assert.AreEqual(user, storageLog.SearchFirstByPredicate(u => u.Age == 27));
 
             // Assert 
         }
@@ -448,15 +476,16 @@ namespace UserStorageServices.Tests
         {
             // Arrange
             var userStorageService = new UserStorageService(userIdGenerationService, _validator);
+            var storageLog = new UserStorageServiceLog(userStorageService);
             var user = new User()
             {
                 Age = 27,
                 FirstName = "Michael",
                 LastName = "Fresko"
             };
-            userStorageService.Add(user);
+            storageLog.Add(user);
             var userAfterSearch  =
-                userStorageService.SearchFirstByPredicate(u => u.FirstName == "Michael" && u.LastName == "Fresko");
+                storageLog.SearchFirstByPredicate(u => u.FirstName == "Michael" && u.LastName == "Fresko");
             // Act
             Assert.AreEqual(user, userAfterSearch);
 
@@ -468,15 +497,16 @@ namespace UserStorageServices.Tests
         {
             // Arrange
             var userStorageService = new UserStorageService(userIdGenerationService, _validator);
+            var storageLog = new UserStorageServiceLog(userStorageService);
             var user = new User()
             {
                 Age = 27,
                 FirstName = "Michael",
                 LastName = "Fresko"
             };
-            userStorageService.Add(user);
+            storageLog.Add(user);
             var userAfterSearch =
-                userStorageService.SearchFirstByPredicate(u => u.FirstName == "Michael" && u.Age == 27);
+                storageLog.SearchFirstByPredicate(u => u.FirstName == "Michael" && u.Age == 27);
             // Act
             Assert.AreEqual(user, userAfterSearch);
 
@@ -488,15 +518,16 @@ namespace UserStorageServices.Tests
         {
             // Arrange
             var userStorageService = new UserStorageService(userIdGenerationService, _validator);
+            var storageLog = new UserStorageServiceLog(userStorageService);
             var user = new User()
             {
                 Age = 27,
                 FirstName = "Michael",
                 LastName = "Fresko"
             };
-            userStorageService.Add(user);
+            storageLog.Add(user);
             var userAfterSearch =
-                userStorageService.SearchFirstByPredicate(u => u.LastName == "Fresko" && u.Age == 27);
+                storageLog.SearchFirstByPredicate(u => u.LastName == "Fresko" && u.Age == 27);
             // Act
             Assert.AreEqual(user, userAfterSearch);
 
@@ -508,15 +539,16 @@ namespace UserStorageServices.Tests
         {
             // Arrange
             var userStorageService = new UserStorageService(userIdGenerationService, _validator);
+            var storageLog = new UserStorageServiceLog(userStorageService);
             var user = new User()
             {
                 Age = 27,
                 FirstName = "Michael",
                 LastName = "Fresko"
             };
-            userStorageService.Add(user);
+            storageLog.Add(user);
             var userAfterSearch =
-                userStorageService.SearchFirstByPredicate(u => u.LastName == "Fresko" && u.Age == 27 && u.FirstName == "Michael");
+                storageLog.SearchFirstByPredicate(u => u.LastName == "Fresko" && u.Age == 27 && u.FirstName == "Michael");
             // Act
             Assert.AreEqual(user, userAfterSearch);
 

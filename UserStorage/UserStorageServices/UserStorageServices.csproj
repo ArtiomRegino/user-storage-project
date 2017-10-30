@@ -53,6 +53,8 @@
     <Compile Include="Interfaces\IUserStorageService.cs" />
     <Compile Include="Interfaces\IUserValidationService.cs" />
     <Compile Include="Services\UserIdGenerationService.cs" />
+    <Compile Include="Services\UserStorageServiceDecorator.cs" />
+    <Compile Include="Services\UserStorageServiceLog.cs" />
     <Compile Include="User.cs" />
     <Compile Include="Services\UserStorageService.cs">
       <ExcludeFromStyleCop>False</ExcludeFromStyleCop>
