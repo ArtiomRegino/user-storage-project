@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using UserStorageServices.Enums;
 using UserStorageServices.Interfaces;
 
 namespace UserStorageServices.Services
@@ -14,12 +16,21 @@ namespace UserStorageServices.Services
 
         private readonly IUserIdGenerationService _generationService;
         private readonly IValidator _validator;
-        
+        private readonly UserStorageServiceMode _mode;
+        private readonly IList<IUserStorageService> _slaveServices;
+
         /// <summary>
         /// Create an instance of <see cref="UserStorageService"/>
         /// </summary>
-        public UserStorageService(IUserIdGenerationService generationService, IValidator validator)
+        public UserStorageService(IUserIdGenerationService generationService, IValidator validator,
+            UserStorageServiceMode mode, IEnumerable<IUserStorageService> services = null)
         {
+            if (services != null)
+            {
+                _slaveServices = services.ToList();
+            }
+
+            _mode = mode;
             _generationService = generationService;
             _validator = validator;
 
@@ -38,10 +49,23 @@ namespace UserStorageServices.Services
         /// <param name="user">A new <see cref="User"/> that will be added to the storage.</param>
         public void Add(User user)
         {
-            _validator.Validate(user);
-            user.Id = _generationService.Generate();
+            if (HaveMaster())
+            {
+                _validator.Validate(user);
+                user.Id = _generationService.Generate();
+                Users.Add(user);
 
-            Users.Add(user);
+                if (_slaveServices == null) return;
+
+                foreach (var item in _slaveServices)
+                {
+                    item.Add(user);
+                }
+            }
+            else 
+            {
+                throw new NotSupportedException("This action is not allowed. Change service mode.");
+            }
         }
 
         /// <summary>
@@ -54,7 +78,25 @@ namespace UserStorageServices.Services
                 throw new ArgumentNullException(nameof(user));
             }
 
-            return Users.Remove(user); 
+            bool flag;
+
+            if (HaveMaster())
+            {
+                flag = Users.Remove(user);
+
+                if (_slaveServices == null) return false;
+
+                foreach (var item in _slaveServices)
+                {
+                    item.Remove(user);
+                }
+            }
+            else
+            {
+                throw new NotSupportedException("This action is not allowed. Change service mode.");
+            }
+
+            return flag;
         }
 
         /// <summary>
@@ -125,5 +167,26 @@ namespace UserStorageServices.Services
 
             return currentUsers;
         }
-    }
+
+        private bool HaveMaster()
+        {
+            var stTrace = new StackTrace();
+            var currentCalled = stTrace.GetFrame(1).GetMethod();
+            var frames = stTrace.GetFrames();
+            int flag;
+            if (frames != null)
+            {
+                flag = frames
+                    .Select(x => x.GetMethod())
+                    .Count(x => x == currentCalled);
+            }
+            else
+            {
+                throw new InvalidOperationException();
+            }
+
+            return _mode == UserStorageServiceMode.MasterNode || flag >= 2;
+        }
+    
+}
 }
