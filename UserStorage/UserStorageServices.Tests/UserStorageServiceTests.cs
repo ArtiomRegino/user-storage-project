@@ -191,7 +191,7 @@ namespace UserStorageServices.Tests
             var storageLog = new UserStorageServiceLog(userStorageService);
 
             // Act and Assert
-            Assert.IsFalse(storageLog.Remove(new User()));
+            Assert.IsFalse(storageLog.Remove(new User() { Id = Guid.NewGuid() }));
         }
 
         [TestMethod]
@@ -566,7 +566,8 @@ namespace UserStorageServices.Tests
         {
             // Arrange
             var user1 = new User()
-            {
+            {   
+                Id = Guid.NewGuid(),
                 LastName = "Dani",
                 FirstName = "Kar",
                 Age = 23
@@ -591,7 +592,7 @@ namespace UserStorageServices.Tests
             storageLog.Add(user2);
             var user = storageLog.SearchFirstByPredicate(u => u.LastName == "Danialis" && u.FirstName == "Karl" && u.Age == 23);
 
-            storageLog.Remove(user2);
+            storageLog.Remove(user);
             storageLog.Remove(user1);
 
             //Assert
@@ -614,10 +615,8 @@ namespace UserStorageServices.Tests
 
             var slaveServiceCollection = new List<IUserStorageService>() { slaveService };
 
-
             var userStorageService = new UserStorageService(userIdGenerationService, _validator, UserStorageServiceMode.MasterNode, slaveServiceCollection);
             var storageLog = new UserStorageServiceLog(userStorageService);
-
 
             storageLog.Add(user1);
 
@@ -630,5 +629,73 @@ namespace UserStorageServices.Tests
             Assert.IsTrue(result);
         }
 
+        [TestMethod]
+        public void Add_AddingUserServiceWithSubscribers_ReturnedTrue()
+        {
+            // Arrange
+            var user1 = new User()
+            {
+                LastName = "Danialis",
+                FirstName = "Karl",
+                Age = 23
+            };
+
+            var subscriber = new UserStorageService(userIdGenerationService, _validator,
+                UserStorageServiceMode.SlaveNode);
+
+            var userStorageService = new UserStorageService(userIdGenerationService, _validator, UserStorageServiceMode.MasterNode);
+
+            userStorageService.AddSubscriber(subscriber);
+
+            var storageLog = new UserStorageServiceLog(userStorageService);
+
+            storageLog.Add(user1);
+
+            var user = storageLog.SearchFirstByPredicate(u => u.LastName == "Danialis" && u.FirstName == "Karl" && u.Age == 23);
+            var userSlave = subscriber.SearchFirstByPredicate(u => u.LastName == "Danialis" && u.FirstName == "Karl" && u.Age == 23);
+
+            bool result = userSlave.FirstName == user.FirstName && userSlave.LastName == user.LastName && userSlave.Age == user.Age;
+
+            //Assert
+            Assert.IsTrue(result);
+        }
+
+        [TestMethod]
+        public void Remove_UserNotExistAndUserExistsServiceWithSubscribers_ReturnedTrue()
+        {
+            // Arrange
+            var user1 = new User()
+            {
+                Id = Guid.NewGuid(),
+                LastName = "Dani",
+                FirstName = "Kar",
+                Age = 23
+            };
+
+            var user2 = new User()
+            {
+                LastName = "Danialis",
+                FirstName = "Karl",
+                Age = 23
+            };
+
+            var subscriber = new UserStorageService(userIdGenerationService, _validator,
+                UserStorageServiceMode.SlaveNode);
+
+            var userStorageService = new UserStorageService(userIdGenerationService, _validator, UserStorageServiceMode.MasterNode);
+
+            userStorageService.AddSubscriber(subscriber);
+
+            var storageLog = new UserStorageServiceLog(userStorageService);
+
+            storageLog.Add(user2);
+            var user = storageLog.SearchFirstByPredicate(u => u.LastName == "Danialis" && u.FirstName == "Karl" && u.Age == 23);
+
+            storageLog.Remove(user);
+            storageLog.Remove(user1);
+
+            //Assert
+            Assert.IsTrue(subscriber.Count == 0);
+        }
     }
 }

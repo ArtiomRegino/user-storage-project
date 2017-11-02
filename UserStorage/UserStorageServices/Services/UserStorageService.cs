@@ -10,7 +10,7 @@ namespace UserStorageServices.Services
     /// <summary>
     /// Represents a service that stores a set of <see cref="User"/>s and allows to search through them.
     /// </summary>
-    public class UserStorageService : IUserStorageService
+    public class UserStorageService : IUserStorageService, INotificationSubscriber
     {
         public readonly List<User> Users;
 
@@ -18,6 +18,7 @@ namespace UserStorageServices.Services
         private readonly IValidator _validator;
         private readonly UserStorageServiceMode _mode;
         private readonly IList<IUserStorageService> _slaveServices;
+        private HashSet<INotificationSubscriber> _subscribers;
 
         /// <summary>
         /// Create an instance of <see cref="UserStorageService"/>
@@ -33,6 +34,7 @@ namespace UserStorageServices.Services
             _mode = mode;
             _generationService = generationService;
             _validator = validator;
+            _subscribers = new HashSet<INotificationSubscriber>();
 
             Users = new List<User>();
         }
@@ -54,6 +56,11 @@ namespace UserStorageServices.Services
                 _validator.Validate(user);
                 user.Id = _generationService.Generate();
                 Users.Add(user);
+
+                foreach (var item in _subscribers)
+                {
+                    item.UserAdded(user);
+                }
 
                 if (_slaveServices == null) return;
 
@@ -78,13 +85,23 @@ namespace UserStorageServices.Services
                 throw new ArgumentNullException(nameof(user));
             }
 
+            if (user.Id == Guid.Empty)
+            {
+                throw new ArgumentException("Id of user must be initialized", nameof(user));
+            }
+
             bool flag;
 
             if (HaveMaster())
             {
                 flag = Users.Remove(user);
 
-                if (_slaveServices == null) return false;
+                foreach (var item in _subscribers)
+                {
+                    item.UserRemoved(user);
+                }
+
+                if (_slaveServices == null) return flag;
 
                 foreach (var item in _slaveServices)
                 {
@@ -168,6 +185,30 @@ namespace UserStorageServices.Services
             return currentUsers;
         }
 
+        public void UserAdded(User user)
+        {
+            Add(user);
+        }
+
+        public void UserRemoved(User user)
+        {
+            Remove(user);
+        }
+
+        public void AddSubscriber(INotificationSubscriber subscriber)
+        {
+            if (subscriber == null) throw new ArgumentNullException(nameof(subscriber));
+
+            _subscribers.Add(subscriber);
+        }
+
+        public void RemoveSubscriber(INotificationSubscriber subscriber)
+        {
+            if (subscriber == null) throw new ArgumentNullException(nameof(subscriber));
+
+            _subscribers.Remove(subscriber);
+        }
+
         private bool HaveMaster()
         {
             var stTrace = new StackTrace();
@@ -187,6 +228,7 @@ namespace UserStorageServices.Services
 
             return _mode == UserStorageServiceMode.MasterNode || flag >= 2;
         }
-    
-}
+
+       
+    }
 }
