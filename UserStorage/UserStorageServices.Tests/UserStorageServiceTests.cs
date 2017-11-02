@@ -551,7 +551,6 @@ namespace UserStorageServices.Tests
 
             var slaveServiceCollection = new List<IUserStorageService>() { slaveService };
 
-            
             var userStorageService = new UserStorageServiceMaster(userIdGenerationService, _validator, slaveServiceCollection);
             var storageLog = new UserStorageServiceLog(userStorageService);
 
@@ -561,7 +560,7 @@ namespace UserStorageServices.Tests
             storageLog.Remove(user);
             storageLog.Remove(user1);
 
-            //Assert
+            ////Assert
             Assert.IsTrue(slaveService.Count == 0);
         }
 
@@ -590,7 +589,7 @@ namespace UserStorageServices.Tests
 
             bool result = userSlave.FirstName == user.FirstName && userSlave.LastName == user.LastName && userSlave.Age == user.Age;
 
-            //Assert
+            ////Assert
             Assert.IsTrue(result);
         }
 
@@ -620,7 +619,7 @@ namespace UserStorageServices.Tests
 
             bool result = userSlave.FirstName == user.FirstName && userSlave.LastName == user.LastName && userSlave.Age == user.Age;
 
-            //Assert
+            ////Assert
             Assert.IsTrue(result);
         }
 
@@ -657,7 +656,7 @@ namespace UserStorageServices.Tests
             storageLog.Remove(user);
             storageLog.Remove(user1);
 
-            //Assert
+            ////Assert
             Assert.IsTrue(subscriber.Count == 0);
         }
 

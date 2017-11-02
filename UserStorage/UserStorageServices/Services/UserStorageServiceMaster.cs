@@ -13,15 +13,16 @@ namespace UserStorageServices.Services
         private readonly IEnumerable<IUserStorageService> _slaveServices;
         private readonly HashSet<INotificationSubscriber> _subscribers;
 
-        private event Action<User> AddedToStorage;
-        private event Action<User> RemoveedFromStorage;
-
         public UserStorageServiceMaster(IUserIdGenerationService generationService, IValidator validator, IEnumerable<IUserStorageService> services = null)
             : base(generationService, validator)
         {
-            _slaveServices = services?.ToList() ?? new List<IUserStorageService>();
-            _subscribers = new HashSet<INotificationSubscriber>();
+            this._slaveServices = services?.ToList() ?? new List<IUserStorageService>();
+            this._subscribers = new HashSet<INotificationSubscriber>();
         }
+
+        private event Action<User> AddedToStorage;
+
+        private event Action<User> RemoveedFromStorage;
 
         public override UserStorageServiceMode ServiceMode => UserStorageServiceMode.MasterNode;
 
@@ -29,9 +30,9 @@ namespace UserStorageServices.Services
         {
             base.Add(user);
 
-            OnUserAdded(user);
+            this.OnUserAdded(user);
 
-            foreach (var item in _slaveServices)
+            foreach (var item in this._slaveServices)
             {
                 item.Add(user);
             }
@@ -41,9 +42,9 @@ namespace UserStorageServices.Services
         {
             var flag = base.Remove(user);
 
-            OnUserRemoved(user);
+            this.OnUserRemoved(user);
 
-            foreach (var item in _slaveServices)
+            foreach (var item in this._slaveServices)
             {
                 item.Remove(user);
             }
@@ -51,32 +52,38 @@ namespace UserStorageServices.Services
             return flag;
         }
 
-        private void OnUserAdded(User user)
-        {
-            AddedToStorage?.Invoke(user);
-        }
-
-        private void OnUserRemoved(User user)
-        {
-            RemoveedFromStorage?.Invoke(user);
-        }
-
         public void AddSubscriber(INotificationSubscriber subscriber)
         {
-            if (subscriber == null) throw new ArgumentNullException(nameof(subscriber));
+            if (subscriber == null)
+            {
+                throw new ArgumentNullException(nameof(subscriber));
+            }
 
-            _subscribers.Add(subscriber);
-            AddedToStorage += subscriber.UserAdded;
-            RemoveedFromStorage += subscriber.UserRemoved;
+            this._subscribers.Add(subscriber);
+            this.AddedToStorage += subscriber.UserAdded;
+            this.RemoveedFromStorage += subscriber.UserRemoved;
         }
 
         public void RemoveSubscriber(INotificationSubscriber subscriber)
         {
-            if (subscriber == null) throw new ArgumentNullException(nameof(subscriber));
+            if (subscriber == null)
+            {
+                throw new ArgumentNullException(nameof(subscriber));
+            }
 
-            _subscribers.Remove(subscriber);
-            AddedToStorage -= subscriber.UserAdded;
-            RemoveedFromStorage -= subscriber.UserRemoved;
+            this._subscribers.Remove(subscriber);
+            this.AddedToStorage -= subscriber.UserAdded;
+            this.RemoveedFromStorage -= subscriber.UserRemoved;
+        }
+
+        private void OnUserAdded(User user)
+        {
+            this.AddedToStorage?.Invoke(user);
+        }
+
+        private void OnUserRemoved(User user)
+        {
+            this.RemoveedFromStorage?.Invoke(user);
         }
     }
 }

@@ -16,7 +16,7 @@ namespace UserStorageServices.Services
 
         public override void Add(User user)
         {
-            if (HaveMaster())
+            if (this.HaveMaster())
             {
                 base.Add(user);
             }
@@ -24,12 +24,11 @@ namespace UserStorageServices.Services
             {
                 throw new NotSupportedException("This action is not allowed. Change service mode.");
             }
-            
         }
 
         public override bool Remove(User user)
         {
-            if (HaveMaster())
+            if (this.HaveMaster())
             {
                 return base.Remove(user);
             }
@@ -39,20 +38,20 @@ namespace UserStorageServices.Services
 
         public void UserAdded(User user)
         {
-            Add(user);
+            this.Add(user);
         }
 
         public void UserRemoved(User user)
         {
-            Remove(user);
+            this.Remove(user);
         }
 
         private bool HaveMaster()
         {
-            var stTrace = new StackTrace();
-            var currentCalled = stTrace.GetFrame(1).GetMethod();
+            var stackTrace = new StackTrace();
+            var currentCalled = stackTrace.GetFrame(1).GetMethod();
             var calledMetod = typeof(UserStorageServiceMaster).GetMethod(currentCalled.Name);
-            var frames = stTrace.GetFrames();
+            var frames = stackTrace.GetFrames();
             bool flag;
             if (frames != null)
             {
