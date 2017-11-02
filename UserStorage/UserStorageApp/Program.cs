@@ -23,11 +23,11 @@ namespace UserStorageApp
             using (var host = new ServiceHost(MyDiagnostics.Create(serviceConfiguration)))
             {
                 host.SmartOpen();
-                var slaveNode1 = new UserStorageService(new UserIdGenerationService(), new CompositeValidator(), UserStorageServiceMode.SlaveNode);
-                var slaveNode2 = new UserStorageService(new UserIdGenerationService(), new CompositeValidator(), UserStorageServiceMode.SlaveNode);
+                var slaveNode1 = new UserStorageServiceSlave(new UserIdGenerationService(), new CompositeValidator());
+                var slaveNode2 = new UserStorageServiceSlave(new UserIdGenerationService(), new CompositeValidator());
                 var slaveServiceCollection = new List<IUserStorageService>() { slaveNode1, slaveNode2 };
 
-                var storage = new UserStorageService(new UserIdGenerationService(), new CompositeValidator(), UserStorageServiceMode.MasterNode, slaveServiceCollection);
+                var storage = new UserStorageServiceMaster(new UserIdGenerationService(), new CompositeValidator(), slaveServiceCollection);
                 var storageLog = new UserStorageServiceLog(storage);
                 var client = new Client(storageLog);
 

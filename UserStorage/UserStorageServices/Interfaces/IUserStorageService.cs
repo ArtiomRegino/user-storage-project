@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using UserStorageServices.Enums;
 
 namespace UserStorageServices.Interfaces
 {
     public interface IUserStorageService
     {
         int Count { get; }
+
+        UserStorageServiceMode ServiceMode { get; }
 
         void Add(User user);
 
