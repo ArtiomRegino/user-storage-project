@@ -13,6 +13,9 @@ namespace UserStorageServices.Services
         private readonly IEnumerable<IUserStorageService> _slaveServices;
         private readonly HashSet<INotificationSubscriber> _subscribers;
 
+        private event Action<User> AddedToStorage;
+        private event Action<User> RemoveedFromStorage;
+
         public UserStorageServiceMaster(IUserIdGenerationService generationService, IValidator validator, IEnumerable<IUserStorageService> services = null)
             : base(generationService, validator)
         {
@@ -26,10 +29,7 @@ namespace UserStorageServices.Services
         {
             base.Add(user);
 
-            foreach (var item in _subscribers)
-            {
-                item.UserAdded(user);
-            }
+            OnUserAdded(user);
 
             foreach (var item in _slaveServices)
             {
@@ -41,10 +41,7 @@ namespace UserStorageServices.Services
         {
             var flag = base.Remove(user);
 
-            foreach (var item in _subscribers)
-            {
-                item.UserRemoved(user);
-            }
+            OnUserRemoved(user);
 
             foreach (var item in _slaveServices)
             {
@@ -54,11 +51,23 @@ namespace UserStorageServices.Services
             return flag;
         }
 
+        private void OnUserAdded(User user)
+        {
+            AddedToStorage?.Invoke(user);
+        }
+
+        private void OnUserRemoved(User user)
+        {
+            RemoveedFromStorage?.Invoke(user);
+        }
+
         public void AddSubscriber(INotificationSubscriber subscriber)
         {
             if (subscriber == null) throw new ArgumentNullException(nameof(subscriber));
 
             _subscribers.Add(subscriber);
+            AddedToStorage += subscriber.UserAdded;
+            RemoveedFromStorage += subscriber.UserRemoved;
         }
 
         public void RemoveSubscriber(INotificationSubscriber subscriber)
@@ -66,6 +75,8 @@ namespace UserStorageServices.Services
             if (subscriber == null) throw new ArgumentNullException(nameof(subscriber));
 
             _subscribers.Remove(subscriber);
+            AddedToStorage -= subscriber.UserAdded;
+            RemoveedFromStorage -= subscriber.UserRemoved;
         }
     }
 }
