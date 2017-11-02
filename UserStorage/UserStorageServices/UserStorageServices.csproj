@@ -46,17 +46,21 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Enums\UserStorageServiceMode.cs" />
     <Compile Include="Exceptions\AgeExceedsLimitsException.cs" />
     <Compile Include="Exceptions\FirstNameNullEmptyOrWhitespace.cs" />
     <Compile Include="Exceptions\LastNameNullEmptyOrWhitespace.cs" />
+    <Compile Include="Interfaces\INotificationSubscriber.cs" />
     <Compile Include="Interfaces\IUserIdGenerationService.cs" />
     <Compile Include="Interfaces\IUserStorageService.cs" />
     <Compile Include="Interfaces\IUserValidationService.cs" />
     <Compile Include="Services\UserIdGenerationService.cs" />
     <Compile Include="Services\UserStorageServiceDecorator.cs" />
     <Compile Include="Services\UserStorageServiceLog.cs" />
+    <Compile Include="Services\UserStorageServiceMaster.cs" />
+    <Compile Include="Services\UserStorageServiceSlave.cs" />
     <Compile Include="User.cs" />
-    <Compile Include="Services\UserStorageService.cs">
+    <Compile Include="Services\UserStorageServiceBase.cs">
       <ExcludeFromStyleCop>False</ExcludeFromStyleCop>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using UserStorageServices.Enums;
 using UserStorageServices.Interfaces;
 
 namespace UserStorageServices.Services
@@ -14,6 +15,8 @@ namespace UserStorageServices.Services
         }
 
         public abstract int Count { get; }
+
+        public abstract UserStorageServiceMode ServiceMode { get; }
 
         public abstract void Add(User user);
 

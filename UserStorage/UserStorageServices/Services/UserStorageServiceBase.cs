@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using UserStorageServices.Enums;
 using UserStorageServices.Interfaces;
 
 namespace UserStorageServices.Services
@@ -8,53 +9,59 @@ namespace UserStorageServices.Services
     /// <summary>
     /// Represents a service that stores a set of <see cref="User"/>s and allows to search through them.
     /// </summary>
-    public class UserStorageService : IUserStorageService
+    public abstract class UserStorageServiceBase : IUserStorageService
     {
-        public readonly List<User> Users;
-
-        private readonly IUserIdGenerationService _generationService;
+        private readonly List<User> _users;
+        private readonly IUserIdGenerationService _generator;
         private readonly IValidator _validator;
-        
+
         /// <summary>
-        /// Create an instance of <see cref="UserStorageService"/>
+        /// Create an instance of <see cref="UserStorageServiceBase"/>
         /// </summary>
-        public UserStorageService(IUserIdGenerationService generationService, IValidator validator)
+        protected UserStorageServiceBase(IUserIdGenerationService generationService, IValidator validator)
         {
-            _generationService = generationService;
+            _generator = generationService;
             _validator = validator;
 
-            Users = new List<User>();
+            _users = new List<User>();
         }
 
         /// <summary>
         /// Gets the number of elements contained in the storage.
         /// </summary>
         /// <returns>An amount of users in the storage.</returns>
-        public int Count => Users.Count;
+        public int Count => _users.Count;
+
+        public abstract UserStorageServiceMode ServiceMode { get; }
 
         /// <summary>
         /// Adds a new <see cref="User"/> to the storage.
         /// </summary>
         /// <param name="user">A new <see cref="User"/> that will be added to the storage.</param>
-        public void Add(User user)
+        public virtual void Add(User user)
         {
             _validator.Validate(user);
-            user.Id = _generationService.Generate();
+            user.Id = _generator.Generate();
 
-            Users.Add(user);
+            _users.Add(user);
         }
 
         /// <summary>
         /// Removes an existed <see cref="User"/> from the storage.
         /// </summary>
-        public bool Remove(User user)
+        public virtual bool Remove(User user)
         {
             if (user == null)
             {
                 throw new ArgumentNullException(nameof(user));
             }
 
-            return Users.Remove(user); 
+            if (user.Id == Guid.Empty)
+            {
+                throw new ArgumentException("Id of user must be initialized", nameof(user));
+            }
+
+            return _users.Remove(user); 
         }
 
         /// <summary>
@@ -106,7 +113,7 @@ namespace UserStorageServices.Services
                 throw new ArgumentNullException();
             }
 
-            var currentUsers = Users.FirstOrDefault(u => predicate(u));
+            var currentUsers = _users.FirstOrDefault(u => predicate(u));
 
             return currentUsers;
         }
@@ -121,9 +128,9 @@ namespace UserStorageServices.Services
                 throw new ArgumentNullException();
             }
 
-            var currentUsers = Users.Where(u => predicate(u));
+            var currentUsers = _users.Where(u => predicate(u));
 
             return currentUsers;
-        }
+        } 
     }
 }

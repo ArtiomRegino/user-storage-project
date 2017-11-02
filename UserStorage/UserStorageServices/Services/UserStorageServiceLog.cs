@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using UserStorageServices.Enums;
 using UserStorageServices.Interfaces;
 
 namespace UserStorageServices.Services
@@ -26,6 +27,8 @@ namespace UserStorageServices.Services
                 return StorageService.Count;
             }
         }
+
+        public override UserStorageServiceMode ServiceMode => StorageService.ServiceMode;
 
         public override void Add(User user)
         {
