@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UserStorageServices.Enums;
 using UserStorageServices.Interfaces;
+using UserStorageServices.Repository;
 
 namespace UserStorageServices.Services
 {
@@ -14,6 +15,7 @@ namespace UserStorageServices.Services
         private readonly List<User> _users;
         private readonly IUserIdGenerationService _generator;
         private readonly IValidator _validator;
+        private readonly IUserRepository _userRepository;
 
         /// <summary>
         /// Create an instance of <see cref="UserStorageServiceBase"/>
