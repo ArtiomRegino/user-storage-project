@@ -1,12 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using UserStorageServices.Interfaces;
 
 namespace UserStorageServices.Repository
 {
     class UserMemoryCacheWithState : UserMemoryCache
     {
+        public UserMemoryCacheWithState(IUserIdGenerationService generationService) : base(generationService)
+        {
+        }
+
     }
 }

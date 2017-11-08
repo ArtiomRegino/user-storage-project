@@ -5,6 +5,7 @@ using System.ServiceModel;
 using UserStorageServices;
 using UserStorageServices.Enums;
 using UserStorageServices.Interfaces;
+using UserStorageServices.Repository;
 using UserStorageServices.Services;
 using UserStorageServices.Validators;
 using ServiceConfiguration = ServiceConfigurationSection.ServiceConfigurationSection;
@@ -23,11 +24,13 @@ namespace UserStorageApp
             using (var host = new ServiceHost(MyDiagnostics.Create(serviceConfiguration)))
             {
                 host.SmartOpen();
-                var slaveNode1 = new UserStorageServiceSlave(new UserIdGenerationService(), new CompositeValidator());
-                var slaveNode2 = new UserStorageServiceSlave(new UserIdGenerationService(), new CompositeValidator());
+
+                var generator = new UserIdGenerationService();
+                var slaveNode1 = new UserStorageServiceSlave(new UserMemoryCache(generator));
+                var slaveNode2 = new UserStorageServiceSlave(new UserMemoryCache(generator));
                 var slaveServiceCollection = new List<IUserStorageService>() { slaveNode1, slaveNode2 };
 
-                var storage = new UserStorageServiceMaster(new UserIdGenerationService(), new CompositeValidator(), slaveServiceCollection);
+                var storage = new UserStorageServiceMaster(new CompositeValidator(),new UserMemoryCache(generator), slaveServiceCollection);
                 var storageLog = new UserStorageServiceLog(storage);
                 var client = new Client(storageLog);
 

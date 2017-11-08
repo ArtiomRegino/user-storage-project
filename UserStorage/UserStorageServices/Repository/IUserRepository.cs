@@ -1,15 +1,22 @@
-﻿namespace UserStorageServices.Repository
+﻿using System;
+using System.Collections.Generic;
+
+namespace UserStorageServices.Repository
 {
-    interface IUserRepository
+    public interface IUserRepository
     {
+        int Count { get; }
+
         void Start();
 
         void Stop();
 
-        void Get();
+        User Get(Guid id);
 
-        void Set();
+        bool Delete(User user);
 
-        void Query();
+        void Set(User user);
+
+        IEnumerable<User> Query(Predicate<User> predicate);
     }
 }

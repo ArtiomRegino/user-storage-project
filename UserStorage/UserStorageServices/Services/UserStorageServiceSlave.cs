@@ -3,12 +3,13 @@ using System.Diagnostics;
 using System.Linq;
 using UserStorageServices.Enums;
 using UserStorageServices.Interfaces;
+using UserStorageServices.Repository;
 
 namespace UserStorageServices.Services
 {
     public class UserStorageServiceSlave : UserStorageServiceBase, INotificationSubscriber
     {
-        public UserStorageServiceSlave(IUserIdGenerationService generator, IValidator validator) : base(generator, validator)
+        public UserStorageServiceSlave(IUserRepository repository) : base(repository)
         {
         }
 
