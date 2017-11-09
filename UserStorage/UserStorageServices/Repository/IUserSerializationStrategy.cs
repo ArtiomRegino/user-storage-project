@@ -10,6 +10,7 @@ namespace UserStorageServices.Repository
     public interface IUserSerializationStrategy
     {
         void SerializeUsers(FileStream fs, List<User> users);
+
         List<User> DeserializeUsers(FileStream fs);
     }
 }

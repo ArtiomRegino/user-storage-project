@@ -12,27 +12,27 @@ namespace UserStorageServices.Repository
 
         public UserPermanentRepository(IUserSerializationStrategy strategy, string filePath = null, IUserIdGenerationService generationService = null) : base(generationService)
         {
-            _serializer = strategy;
-            _filePath = string.IsNullOrEmpty(filePath) ? "repository.bin" : filePath;
+            this._serializer = strategy;
+            this._filePath = string.IsNullOrEmpty(filePath) ? "repository.bin" : filePath;
         }
 
         public override void Start()
         {
-            using (var fs = new FileStream(_filePath, FileMode.OpenOrCreate))
+            using (var fs = new FileStream(this._filePath, FileMode.OpenOrCreate))
             {
                 if (fs.Length != 0)
                 {
-                    _users = _serializer.DeserializeUsers(fs);
-                    _generator.LastId = _users.FindLast(u => u != null).Id;
+                    this.Users = this._serializer.DeserializeUsers(fs);
+                    this.Generator.LastId = this.Users.FindLast(u => u != null).Id;
                 }
             }
         }
 
         public override void Stop()
         {
-            using (var fs = new FileStream(_filePath, FileMode.Create))
+            using (var fs = new FileStream(this._filePath, FileMode.Create))
             {
-                _serializer.SerializeUsers(fs, _users);
+                this._serializer.SerializeUsers(fs, this.Users);
             }
         }
     }

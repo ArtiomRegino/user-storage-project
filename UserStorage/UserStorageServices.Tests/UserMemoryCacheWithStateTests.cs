@@ -20,7 +20,6 @@ namespace UserStorageServices.Tests
                 File.Delete("binRepository.bin");
             }
             
-
             repository.Start();
 
             var users = new List<User>();

@@ -7,16 +7,17 @@ namespace UserStorageServices.Repository
 {
     public class UserTemproraryRepository : IUserRepository
     {
-        protected List<User> _users;
-        protected readonly IUserIdGenerationService _generator;
+        protected readonly IUserIdGenerationService Generator;
 
         public UserTemproraryRepository(IUserIdGenerationService generationService = null)
         {
-            _generator = generationService ?? new UserIdGenerationService();
-            _users = new List<User>();
+            Generator = generationService ?? new UserIdGenerationService();
+            Users = new List<User>();
         }
 
-        public int Count => _users.Count;
+        public int Count => Users.Count;
+
+        protected List<User> Users { get; set; }
 
         public virtual void Start()
         {
@@ -33,7 +34,7 @@ namespace UserStorageServices.Repository
         /// <returns>Current user.</returns>
         public User Get(int id)
         {
-            return _users.Find(u => u.Id == id);
+            return Users.Find(u => u.Id == id);
         }
 
         /// <summary>
@@ -53,18 +54,18 @@ namespace UserStorageServices.Repository
                 throw new ArgumentException("Id of user must be more than zero.", nameof(user));
             }
 
-            return _users.Remove(user);
+            return Users.Remove(user);
         }
 
         /// <summary>
-        /// Add userto repository.
+        /// Add user to repository.
         /// </summary>
         /// <param name="user">User to be added to repository.</param>
         public void Set(User user)
         {
-            user.Id = _generator.Generate();
+            user.Id = Generator.Generate();
 
-            _users.Add(user);
+            Users.Add(user);
         }
 
         /// <summary>
@@ -74,7 +75,7 @@ namespace UserStorageServices.Repository
         /// <returns>Sequence of users.</returns>
         public IEnumerable<User> Query(Predicate<User> predicate)
         {
-            return _users.FindAll(predicate);
+            return Users.FindAll(predicate);
         }
     }
 }

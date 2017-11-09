@@ -187,7 +187,7 @@ namespace UserStorageServices.Tests
         public void Remove_CorrectUserWithoutSlaveNodes_ReturnedTrue()
         {
             // Arrange
-            var userStorageService = new UserStorageServiceMaster( new UserTemproraryRepository(_idGenerator));
+            var userStorageService = new UserStorageServiceMaster(new UserTemproraryRepository(_idGenerator));
             var storageLog = new UserStorageServiceLog(userStorageService);
 
             // Act
@@ -552,7 +552,7 @@ namespace UserStorageServices.Tests
 
             var slaveServiceCollection = new List<IUserStorageService>() { slaveService };
 
-            var userStorageService = new UserStorageServiceMaster( new UserTemproraryRepository(_idGenerator), _validator, slaveServiceCollection);
+            var userStorageService = new UserStorageServiceMaster(new UserTemproraryRepository(_idGenerator), _validator, slaveServiceCollection);
             var storageLog = new UserStorageServiceLog(userStorageService);
 
             storageLog.Add(user2);

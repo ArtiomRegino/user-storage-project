@@ -32,7 +32,7 @@ namespace UserStorageServices.Services
 
         public override void Add(User user)
         {
-            _validator.Validate(user);
+            this._validator.Validate(user);
             base.Add(user);
 
             this.OnUserAdded(user);

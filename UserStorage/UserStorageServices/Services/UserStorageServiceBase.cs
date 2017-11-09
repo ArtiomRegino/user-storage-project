@@ -29,7 +29,7 @@ namespace UserStorageServices.Services
         public int Count => _userRepository.Count;
 
         /// <summary>
-        /// Sets the specified mode of servise.
+        /// Sets the specified mode of service.
         /// </summary>
         public abstract UserStorageServiceMode ServiceMode { get; }
 
