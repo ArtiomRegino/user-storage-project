@@ -4,6 +4,8 @@ namespace UserStorageServices.Interfaces
 {
     public interface IUserIdGenerationService
     {
-        Guid Generate();
+        int LastId { get; set; }
+
+        int Generate();
     }
 }

@@ -19,7 +19,7 @@ namespace UserStorageServices.Validators
 
         public void Validate(User user)
         {
-            if (user == null)
+            if (ReferenceEquals(user, null))
             {
                 throw new ArgumentNullException(nameof(user));
             }

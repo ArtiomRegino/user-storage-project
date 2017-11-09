@@ -5,9 +5,11 @@ namespace UserStorageServices.Services
 {
     public class UserIdGenerationService : IUserIdGenerationService
     {
-        public Guid Generate()
+        public int LastId { get; set; } = -1;
+
+        public int Generate()
         {
-            return Guid.NewGuid();
+            return ++LastId;
         }
     }
 }

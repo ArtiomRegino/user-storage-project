@@ -4,6 +4,7 @@ using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using UserStorageServices.Exceptions;
 using UserStorageServices.Interfaces;
+using UserStorageServices.Repository;
 using UserStorageServices.Services;
 using UserStorageServices.Validators;
 
@@ -12,7 +13,7 @@ namespace UserStorageServices.Tests
     [TestClass]
     public class UserStorageServiceTests
     {
-        private UserIdGenerationService userIdGenerationService = new UserIdGenerationService();
+        private UserIdGenerationService _idGenerator = new UserIdGenerationService();
         private IValidator _validator = new CompositeValidator();
 
         [TestMethod]
@@ -179,14 +180,14 @@ namespace UserStorageServices.Tests
             var storageLog = GetServiceLog();
 
             // Act and Assert
-            Assert.IsFalse(storageLog.Remove(new User() { Id = Guid.NewGuid() }));
+            Assert.IsFalse(storageLog.Remove(new User() { Id = 23 }));
         }
 
         [TestMethod]
         public void Remove_CorrectUserWithoutSlaveNodes_ReturnedTrue()
         {
             // Arrange
-            var userStorageService = new UserStorageServiceMaster(userIdGenerationService, _validator);
+            var userStorageService = new UserStorageServiceMaster(new UserTemproraryRepository(_idGenerator));
             var storageLog = new UserStorageServiceLog(userStorageService);
 
             // Act
@@ -534,7 +535,7 @@ namespace UserStorageServices.Tests
             // Arrange
             var user1 = new User()
             {   
-                Id = Guid.NewGuid(),
+                Id = 23,
                 LastName = "Dani",
                 FirstName = "Kar",
                 Age = 23
@@ -547,11 +548,11 @@ namespace UserStorageServices.Tests
                 Age = 23
             };
 
-            var slaveService = new UserStorageServiceSlave(userIdGenerationService, _validator);
+            var slaveService = new UserStorageServiceSlave(new UserTemproraryRepository(_idGenerator));
 
             var slaveServiceCollection = new List<IUserStorageService>() { slaveService };
 
-            var userStorageService = new UserStorageServiceMaster(userIdGenerationService, _validator, slaveServiceCollection);
+            var userStorageService = new UserStorageServiceMaster(new UserTemproraryRepository(_idGenerator), _validator, slaveServiceCollection);
             var storageLog = new UserStorageServiceLog(userStorageService);
 
             storageLog.Add(user2);
@@ -575,11 +576,11 @@ namespace UserStorageServices.Tests
                 Age = 23
             };
 
-            var slaveService = new UserStorageServiceSlave(userIdGenerationService, _validator);
+            var slaveService = new UserStorageServiceSlave(new UserTemproraryRepository(_idGenerator));
 
             var slaveServiceCollection = new List<IUserStorageService>() { slaveService };
 
-            var userStorageService = new UserStorageServiceMaster(userIdGenerationService, _validator, slaveServiceCollection);
+            var userStorageService = new UserStorageServiceMaster(new UserTemproraryRepository(_idGenerator), _validator, slaveServiceCollection);
             var storageLog = new UserStorageServiceLog(userStorageService);
 
             storageLog.Add(user1);
@@ -604,9 +605,9 @@ namespace UserStorageServices.Tests
                 Age = 23
             };
 
-            var subscriber = new UserStorageServiceSlave(userIdGenerationService, _validator);
+            var subscriber = new UserStorageServiceSlave(new UserTemproraryRepository(_idGenerator));
 
-            var userStorageService = new UserStorageServiceMaster(userIdGenerationService, _validator);
+            var userStorageService = new UserStorageServiceMaster(new UserTemproraryRepository(_idGenerator), _validator);
 
             userStorageService.AddSubscriber(subscriber);
 
@@ -629,7 +630,7 @@ namespace UserStorageServices.Tests
             // Arrange
             var user1 = new User()
             {
-                Id = Guid.NewGuid(),
+                Id = 23,
                 LastName = "Dani",
                 FirstName = "Kar",
                 Age = 23
@@ -642,9 +643,9 @@ namespace UserStorageServices.Tests
                 Age = 23
             };
 
-            var subscriber = new UserStorageServiceSlave(userIdGenerationService, _validator);
+            var subscriber = new UserStorageServiceSlave(new UserTemproraryRepository(_idGenerator));
 
-            var userStorageService = new UserStorageServiceMaster(userIdGenerationService, _validator);
+            var userStorageService = new UserStorageServiceMaster(new UserTemproraryRepository(_idGenerator), _validator);
 
             userStorageService.AddSubscriber(subscriber);
 
@@ -662,7 +663,7 @@ namespace UserStorageServices.Tests
 
         private UserStorageServiceLog GetServiceLog()
         {
-            var userStorageService = new UserStorageServiceMaster(userIdGenerationService, _validator);
+            var userStorageService = new UserStorageServiceMaster(new UserTemproraryRepository(_idGenerator), _validator);
             return new UserStorageServiceLog(userStorageService);
         }
     }

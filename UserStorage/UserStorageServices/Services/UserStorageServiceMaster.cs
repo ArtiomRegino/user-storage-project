@@ -5,6 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using UserStorageServices.Enums;
 using UserStorageServices.Interfaces;
+using UserStorageServices.Repository;
+using UserStorageServices.Validators;
 
 namespace UserStorageServices.Services
 {
@@ -12,10 +14,12 @@ namespace UserStorageServices.Services
     {
         private readonly IEnumerable<IUserStorageService> _slaveServices;
         private readonly HashSet<INotificationSubscriber> _subscribers;
+        private readonly IValidator _validator;
 
-        public UserStorageServiceMaster(IUserIdGenerationService generationService, IValidator validator, IEnumerable<IUserStorageService> services = null)
-            : base(generationService, validator)
+        public UserStorageServiceMaster(IUserRepository repository, IValidator validator = null, IEnumerable<IUserStorageService> services = null)
+            : base(repository)
         {
+            this._validator = validator ?? new CompositeValidator();
             this._slaveServices = services?.ToList() ?? new List<IUserStorageService>();
             this._subscribers = new HashSet<INotificationSubscriber>();
         }
@@ -28,6 +32,7 @@ namespace UserStorageServices.Services
 
         public override void Add(User user)
         {
+            this._validator.Validate(user);
             base.Add(user);
 
             this.OnUserAdded(user);

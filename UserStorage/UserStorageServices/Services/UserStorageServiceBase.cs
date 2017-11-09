@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UserStorageServices.Enums;
 using UserStorageServices.Interfaces;
+using UserStorageServices.Repository;
 
 namespace UserStorageServices.Services
 {
@@ -11,27 +12,25 @@ namespace UserStorageServices.Services
     /// </summary>
     public abstract class UserStorageServiceBase : IUserStorageService
     {
-        private readonly List<User> _users;
-        private readonly IUserIdGenerationService _generator;
-        private readonly IValidator _validator;
+        private readonly IUserRepository _userRepository;
 
         /// <summary>
         /// Create an instance of <see cref="UserStorageServiceBase"/>
         /// </summary>
-        protected UserStorageServiceBase(IUserIdGenerationService generationService, IValidator validator)
+        protected UserStorageServiceBase(IUserRepository userRepository)
         {
-            _generator = generationService;
-            _validator = validator;
-
-            _users = new List<User>();
+            _userRepository = userRepository;
         }
 
         /// <summary>
         /// Gets the number of elements contained in the storage.
         /// </summary>
         /// <returns>An amount of users in the storage.</returns>
-        public int Count => _users.Count;
+        public int Count => _userRepository.Count;
 
+        /// <summary>
+        /// Sets the specified mode of service.
+        /// </summary>
         public abstract UserStorageServiceMode ServiceMode { get; }
 
         /// <summary>
@@ -40,10 +39,7 @@ namespace UserStorageServices.Services
         /// <param name="user">A new <see cref="User"/> that will be added to the storage.</param>
         public virtual void Add(User user)
         {
-            _validator.Validate(user);
-            user.Id = _generator.Generate();
-
-            _users.Add(user);
+            _userRepository.Set(user);
         }
 
         /// <summary>
@@ -51,17 +47,7 @@ namespace UserStorageServices.Services
         /// </summary>
         public virtual bool Remove(User user)
         {
-            if (user == null)
-            {
-                throw new ArgumentNullException(nameof(user));
-            }
-
-            if (user.Id == Guid.Empty)
-            {
-                throw new ArgumentException("Id of user must be initialized", nameof(user));
-            }
-
-            return _users.Remove(user); 
+            return _userRepository.Delete(user); 
         }
 
         /// <summary>
@@ -113,7 +99,7 @@ namespace UserStorageServices.Services
                 throw new ArgumentNullException();
             }
 
-            var currentUsers = _users.FirstOrDefault(u => predicate(u));
+            var currentUsers = _userRepository.Query(predicate).FirstOrDefault();
 
             return currentUsers;
         }
@@ -128,7 +114,7 @@ namespace UserStorageServices.Services
                 throw new ArgumentNullException();
             }
 
-            var currentUsers = _users.Where(u => predicate(u));
+            var currentUsers = _userRepository.Query(predicate);
 
             return currentUsers;
         } 
