@@ -11,7 +11,7 @@ namespace UserStorageServices
         /// <summary>
         /// Gets a user id.
         /// </summary>
-        public Guid Id { get; set; }
+        public int Id { get; set; }
 
         /// <summary>
         /// Gets or sets a user first name.

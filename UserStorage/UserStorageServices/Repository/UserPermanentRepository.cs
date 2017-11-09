@@ -23,13 +23,14 @@ namespace UserStorageServices.Repository
                 if (fs.Length != 0)
                 {
                     _users = _serializer.DeserializeUsers(fs);
+                    _generator.LastId = _users.FindLast(u => u != null).Id;
                 }
             }
         }
 
         public override void Stop()
         {
-            using (var fs = new FileStream("repository.bin", FileMode.Create))
+            using (var fs = new FileStream(_filePath, FileMode.Create))
             {
                 _serializer.SerializeUsers(fs, _users);
             }

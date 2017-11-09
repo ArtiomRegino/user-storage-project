@@ -11,7 +11,7 @@ namespace UserStorageServices.Repository
 
         void Stop();
 
-        User Get(Guid id);
+        User Get(int id);
 
         bool Delete(User user);
 

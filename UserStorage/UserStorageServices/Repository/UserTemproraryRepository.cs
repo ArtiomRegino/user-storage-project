@@ -31,7 +31,7 @@ namespace UserStorageServices.Repository
         /// </summary>
         /// <param name="id">Id of user.</param>
         /// <returns>Current user.</returns>
-        public User Get(Guid id)
+        public User Get(int id)
         {
             return _users.Find(u => u.Id == id);
         }
@@ -48,9 +48,9 @@ namespace UserStorageServices.Repository
                 throw new ArgumentNullException(nameof(user));
             }
 
-            if (user.Id == Guid.Empty)
+            if (user.Id < 0)
             {
-                throw new ArgumentException("Id of user must be initialized", nameof(user));
+                throw new ArgumentException("Id of user must be more than zero.", nameof(user));
             }
 
             return _users.Remove(user);

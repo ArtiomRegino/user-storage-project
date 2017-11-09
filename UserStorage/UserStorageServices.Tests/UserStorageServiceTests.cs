@@ -180,7 +180,7 @@ namespace UserStorageServices.Tests
             var storageLog = GetServiceLog();
 
             // Act and Assert
-            Assert.IsFalse(storageLog.Remove(new User() { Id = Guid.NewGuid() }));
+            Assert.IsFalse(storageLog.Remove(new User() { Id = 23 }));
         }
 
         [TestMethod]
@@ -535,7 +535,7 @@ namespace UserStorageServices.Tests
             // Arrange
             var user1 = new User()
             {   
-                Id = Guid.NewGuid(),
+                Id = 23,
                 LastName = "Dani",
                 FirstName = "Kar",
                 Age = 23
@@ -630,7 +630,7 @@ namespace UserStorageServices.Tests
             // Arrange
             var user1 = new User()
             {
-                Id = Guid.NewGuid(),
+                Id = 23,
                 LastName = "Dani",
                 FirstName = "Kar",
                 Age = 23
