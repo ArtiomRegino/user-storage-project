@@ -52,11 +52,14 @@
     <Compile Include="Exceptions\LastNameNullEmptyOrWhitespace.cs" />
     <Compile Include="Interfaces\INotificationSubscriber.cs" />
     <Compile Include="Interfaces\IUserIdGenerationService.cs" />
+    <Compile Include="Repository\BinaryUserSerializationStrategy.cs" />
     <Compile Include="Repository\IUserRepository.cs" />
     <Compile Include="Interfaces\IUserStorageService.cs" />
     <Compile Include="Interfaces\IUserValidationService.cs" />
+    <Compile Include="Repository\IUserSerializationStrategy.cs" />
     <Compile Include="Repository\UserMemoryCache.cs" />
     <Compile Include="Repository\UserMemoryCacheWithState.cs" />
+    <Compile Include="Repository\XmlUserSerializationStrategy.cs" />
     <Compile Include="Services\UserIdGenerationService.cs" />
     <Compile Include="Services\UserStorageServiceDecorator.cs" />
     <Compile Include="Services\UserStorageServiceLog.cs" />

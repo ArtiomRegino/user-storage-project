@@ -8,9 +8,11 @@ namespace UserStorageServices.Repository
     public class UserMemoryCacheWithState : UserMemoryCache
     {
         private readonly string _filePath;
+        private readonly IUserSerializationStrategy _serializer;
 
-        public UserMemoryCacheWithState(string filePath = null, IUserIdGenerationService generationService = null) : base(generationService)
+        public UserMemoryCacheWithState(IUserSerializationStrategy strategy, string filePath = null, IUserIdGenerationService generationService = null) : base(generationService)
         {
+            _serializer = strategy;
             _filePath = string.IsNullOrEmpty(filePath) ? "repository.bin" : filePath;
         }
 
@@ -18,10 +20,9 @@ namespace UserStorageServices.Repository
         {
             using (var fs = new FileStream(_filePath, FileMode.OpenOrCreate))
             {
-                var formatter = new BinaryFormatter();
                 if (fs.Length != 0)
                 {
-                    _users = (List<User>) formatter.Deserialize(fs);
+                    _users = _serializer.DeserializeUsers(fs);
                 }
             }
         }
@@ -30,9 +31,7 @@ namespace UserStorageServices.Repository
         {
             using (var fs = new FileStream("repository.bin", FileMode.Create))
             {
-                var formatter = new BinaryFormatter();
-
-                formatter.Serialize(fs, _users);
+                _serializer.SerializeUsers(fs, _users);
             }
         }
     }
