@@ -43,7 +43,7 @@ namespace UserStorageServices.Repository
         /// <returns>Logic value (true - deleted).</returns>
         public bool Delete(User user)
         {
-            if (user == null)
+            if (ReferenceEquals(user, null))
             {
                 throw new ArgumentNullException(nameof(user));
             }

@@ -7,13 +7,16 @@ namespace UserStorageServices.Repository
 {
     public class UserMemoryCacheWithState : UserMemoryCache
     {
-        public UserMemoryCacheWithState(IUserIdGenerationService generationService = null) : base(generationService)
+        private readonly string _filePath;
+
+        public UserMemoryCacheWithState(string filePath = null, IUserIdGenerationService generationService = null) : base(generationService)
         {
+            _filePath = string.IsNullOrEmpty(filePath) ? "repository.bin" : filePath;
         }
 
         public override void Start()
         {
-            using (var fs = new FileStream("repository.bin", FileMode.OpenOrCreate))
+            using (var fs = new FileStream(_filePath, FileMode.OpenOrCreate))
             {
                 var formatter = new BinaryFormatter();
                 if (fs.Length != 0)
