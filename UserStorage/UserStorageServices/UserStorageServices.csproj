@@ -57,8 +57,8 @@
     <Compile Include="Interfaces\IUserStorageService.cs" />
     <Compile Include="Interfaces\IUserValidationService.cs" />
     <Compile Include="Repository\IUserSerializationStrategy.cs" />
-    <Compile Include="Repository\UserMemoryCache.cs" />
-    <Compile Include="Repository\UserMemoryCacheWithState.cs" />
+    <Compile Include="Repository\UserTemproraryRepository.cs" />
+    <Compile Include="Repository\UserPermanentRepository.cs" />
     <Compile Include="Repository\XmlUserSerializationStrategy.cs" />
     <Compile Include="Services\UserIdGenerationService.cs" />
     <Compile Include="Services\UserStorageServiceDecorator.cs" />

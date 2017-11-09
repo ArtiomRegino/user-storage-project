@@ -21,7 +21,7 @@ namespace UserStorageApp
         {
             var filePath = ConfigurationManager.AppSettings["FilePath"];
 
-            _repository = repository ?? new UserMemoryCacheWithState(new BinaryUserSerializationStrategy(), filePath);
+            _repository = repository ?? new UserPermanentRepository(new BinaryUserSerializationStrategy(), filePath);
             _userStorageService = userStorageService ?? new UserStorageServiceLog(new UserStorageServiceMaster(_repository));
         }
 

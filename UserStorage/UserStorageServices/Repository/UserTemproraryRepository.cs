@@ -5,12 +5,12 @@ using UserStorageServices.Services;
 
 namespace UserStorageServices.Repository
 {
-    public class UserMemoryCache : IUserRepository
+    public class UserTemproraryRepository : IUserRepository
     {
         protected List<User> _users;
         protected readonly IUserIdGenerationService _generator;
 
-        public UserMemoryCache(IUserIdGenerationService generationService = null)
+        public UserTemproraryRepository(IUserIdGenerationService generationService = null)
         {
             _generator = generationService ?? new UserIdGenerationService();
             _users = new List<User>();

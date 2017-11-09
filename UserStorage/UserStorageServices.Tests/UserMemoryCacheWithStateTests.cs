@@ -13,7 +13,7 @@ namespace UserStorageServices.Tests
         public void StartAndStopMethods_NormalLoadingWithBinaryUserSerializationStrategy_Success()
         {
             // Arrange
-            var repository = new UserMemoryCacheWithState(new BinaryUserSerializationStrategy(), "binRepository.bin");
+            var repository = new UserPermanentRepository(new BinaryUserSerializationStrategy(), "binRepository.bin");
 
             if (File.Exists("binRepository.bin"))
             {
@@ -57,7 +57,7 @@ namespace UserStorageServices.Tests
         public void StartAndStopMethods_NormalLoadingWithXmlUserSerializationStrategy_Success()
         {
             // Arrange
-            var repository = new UserMemoryCacheWithState(new XmlUserSerializationStrategy(), "xmlRepository.xml");
+            var repository = new UserPermanentRepository(new XmlUserSerializationStrategy(), "xmlRepository.xml");
 
             if (File.Exists("xmlRepository.xml"))
             {

@@ -5,12 +5,12 @@ using UserStorageServices.Interfaces;
 
 namespace UserStorageServices.Repository
 {
-    public class UserMemoryCacheWithState : UserMemoryCache
+    public class UserPermanentRepository : UserTemproraryRepository
     {
         private readonly string _filePath;
         private readonly IUserSerializationStrategy _serializer;
 
-        public UserMemoryCacheWithState(IUserSerializationStrategy strategy, string filePath = null, IUserIdGenerationService generationService = null) : base(generationService)
+        public UserPermanentRepository(IUserSerializationStrategy strategy, string filePath = null, IUserIdGenerationService generationService = null) : base(generationService)
         {
             _serializer = strategy;
             _filePath = string.IsNullOrEmpty(filePath) ? "repository.bin" : filePath;

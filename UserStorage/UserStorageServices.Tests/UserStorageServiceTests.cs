@@ -187,7 +187,7 @@ namespace UserStorageServices.Tests
         public void Remove_CorrectUserWithoutSlaveNodes_ReturnedTrue()
         {
             // Arrange
-            var userStorageService = new UserStorageServiceMaster( new UserMemoryCache(_idGenerator));
+            var userStorageService = new UserStorageServiceMaster( new UserTemproraryRepository(_idGenerator));
             var storageLog = new UserStorageServiceLog(userStorageService);
 
             // Act
@@ -548,11 +548,11 @@ namespace UserStorageServices.Tests
                 Age = 23
             };
 
-            var slaveService = new UserStorageServiceSlave(new UserMemoryCache(_idGenerator));
+            var slaveService = new UserStorageServiceSlave(new UserTemproraryRepository(_idGenerator));
 
             var slaveServiceCollection = new List<IUserStorageService>() { slaveService };
 
-            var userStorageService = new UserStorageServiceMaster( new UserMemoryCache(_idGenerator), _validator);
+            var userStorageService = new UserStorageServiceMaster( new UserTemproraryRepository(_idGenerator), _validator, slaveServiceCollection);
             var storageLog = new UserStorageServiceLog(userStorageService);
 
             storageLog.Add(user2);
@@ -576,11 +576,11 @@ namespace UserStorageServices.Tests
                 Age = 23
             };
 
-            var slaveService = new UserStorageServiceSlave(new UserMemoryCache(_idGenerator));
+            var slaveService = new UserStorageServiceSlave(new UserTemproraryRepository(_idGenerator));
 
             var slaveServiceCollection = new List<IUserStorageService>() { slaveService };
 
-            var userStorageService = new UserStorageServiceMaster(new UserMemoryCache(_idGenerator), _validator, slaveServiceCollection);
+            var userStorageService = new UserStorageServiceMaster(new UserTemproraryRepository(_idGenerator), _validator, slaveServiceCollection);
             var storageLog = new UserStorageServiceLog(userStorageService);
 
             storageLog.Add(user1);
@@ -605,9 +605,9 @@ namespace UserStorageServices.Tests
                 Age = 23
             };
 
-            var subscriber = new UserStorageServiceSlave(new UserMemoryCache(_idGenerator));
+            var subscriber = new UserStorageServiceSlave(new UserTemproraryRepository(_idGenerator));
 
-            var userStorageService = new UserStorageServiceMaster(new UserMemoryCache(_idGenerator), _validator);
+            var userStorageService = new UserStorageServiceMaster(new UserTemproraryRepository(_idGenerator), _validator);
 
             userStorageService.AddSubscriber(subscriber);
 
@@ -643,9 +643,9 @@ namespace UserStorageServices.Tests
                 Age = 23
             };
 
-            var subscriber = new UserStorageServiceSlave(new UserMemoryCache(_idGenerator));
+            var subscriber = new UserStorageServiceSlave(new UserTemproraryRepository(_idGenerator));
 
-            var userStorageService = new UserStorageServiceMaster(new UserMemoryCache(_idGenerator), _validator);
+            var userStorageService = new UserStorageServiceMaster(new UserTemproraryRepository(_idGenerator), _validator);
 
             userStorageService.AddSubscriber(subscriber);
 
@@ -663,7 +663,7 @@ namespace UserStorageServices.Tests
 
         private UserStorageServiceLog GetServiceLog()
         {
-            var userStorageService = new UserStorageServiceMaster(new UserMemoryCache(_idGenerator), _validator);
+            var userStorageService = new UserStorageServiceMaster(new UserTemproraryRepository(_idGenerator), _validator);
             return new UserStorageServiceLog(userStorageService);
         }
     }
