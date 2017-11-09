@@ -1,5 +1,6 @@
 ﻿using UserStorageServices;
 using UserStorageServices.Interfaces;
+using UserStorageServices.Repository;
 using UserStorageServices.Services;
 
 namespace UserStorageApp
@@ -10,13 +11,15 @@ namespace UserStorageApp
     public class Client
     {
         private readonly IUserStorageService _userStorageService;
+        private readonly IUserRepository _repository;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Client"/> class.
         /// </summary>
-        public Client(IUserStorageService userStorageService)
+        public Client(IUserStorageService userStorageService = null, IUserRepository repository = null)
         {
-            _userStorageService = userStorageService;
+            _repository = repository ?? new UserMemoryCacheWithState();
+            _userStorageService = userStorageService ?? new UserStorageServiceLog(new UserStorageServiceMaster(_repository));
         }
 
         /// <summary>
@@ -24,16 +27,22 @@ namespace UserStorageApp
         /// </summary>
         public void Run()
         {
-            _userStorageService.Add(new User
+            var user = new User
             {
                 FirstName = "Alex",
                 LastName = "Black",
                 Age = 25
-            });
+            };
 
-            ////_userStorageService.Remove();
+            _repository.Start();
 
-            ////_userStorageService.Search();
+            _userStorageService.Add(user);
+
+            _userStorageService.Remove(user);
+
+            _userStorageService.SearchByFirstName("Alex");
+
+            _repository.Stop();
         }
     }
 }

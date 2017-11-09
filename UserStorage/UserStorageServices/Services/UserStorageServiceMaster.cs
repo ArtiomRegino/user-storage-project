@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using UserStorageServices.Enums;
 using UserStorageServices.Interfaces;
 using UserStorageServices.Repository;
+using UserStorageServices.Validators;
 
 namespace UserStorageServices.Services
 {
@@ -15,10 +16,10 @@ namespace UserStorageServices.Services
         private readonly HashSet<INotificationSubscriber> _subscribers;
         private readonly IValidator _validator;
 
-        public UserStorageServiceMaster(IValidator validator, IUserRepository repository, IEnumerable<IUserStorageService> services = null)
+        public UserStorageServiceMaster(IUserRepository repository, IValidator validator = null, IEnumerable<IUserStorageService> services = null)
             : base(repository)
         {
-            this._validator = validator;
+            this._validator = validator ?? new CompositeValidator();
             this._slaveServices = services?.ToList() ?? new List<IUserStorageService>();
             this._subscribers = new HashSet<INotificationSubscriber>();
         }

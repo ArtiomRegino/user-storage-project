@@ -1,27 +1,28 @@
 ﻿using System;
 using System.Collections.Generic;
 using UserStorageServices.Interfaces;
+using UserStorageServices.Services;
 
 namespace UserStorageServices.Repository
 {
     public class UserMemoryCache : IUserRepository
     {
-        private readonly List<User> _users;
-        private readonly IUserIdGenerationService _generator;
+        protected List<User> _users;
+        protected readonly IUserIdGenerationService _generator;
 
-        public UserMemoryCache(IUserIdGenerationService generationService)
+        public UserMemoryCache(IUserIdGenerationService generationService = null)
         {
-            _generator = generationService;
+            _generator = generationService ?? new UserIdGenerationService();
             _users = new List<User>();
         }
 
         public int Count => _users.Count;
 
-        public void Start()
+        public virtual void Start()
         {
         }
 
-        public void Stop()
+        public virtual void Stop()
         {
         }
 
