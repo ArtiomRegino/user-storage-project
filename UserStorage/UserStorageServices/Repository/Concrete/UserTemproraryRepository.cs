@@ -20,14 +20,6 @@ namespace UserStorageServices.Repository.Concrete
 
         protected List<User> Users { get; set; }
 
-        public virtual void Start()
-        {
-        }
-
-        public virtual void Stop()
-        {
-        }
-
         /// <summary>
         /// Get user by id.
         /// </summary>

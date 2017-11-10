@@ -14,17 +14,17 @@ namespace UserStorageApp
     public class Client
     {
         private readonly IUserStorageService _userStorageService;
-        private readonly IUserRepository _repository;
+        private readonly IUserRepositoryManager _repository;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Client"/> class.
         /// </summary>
-        public Client(IUserStorageService userStorageService = null, IUserRepository repository = null)
+        public Client(IUserStorageService userStorageService = null, IUserRepositoryManager repository = null)
         {
             var filePath = ConfigurationManager.AppSettings["FilePath"];
 
             _repository = repository ?? new UserPermanentRepository(new BinaryUserSerializationStrategy(), filePath);
-            _userStorageService = userStorageService ?? new UserStorageServiceLog(new UserStorageServiceMaster(_repository));
+            _userStorageService = userStorageService ?? new UserStorageServiceLog(new UserStorageServiceMaster((IUserRepository)_repository));
         }
 
         /// <summary>
@@ -43,9 +43,9 @@ namespace UserStorageApp
 
             _userStorageService.Add(user);
 
-            _userStorageService.Remove(user);
+            _userStorageService.SearchByFirstName("Alex"); 
 
-            _userStorageService.SearchByFirstName("Alex");
+            _userStorageService.Remove(user);
 
             _repository.Stop();
         }

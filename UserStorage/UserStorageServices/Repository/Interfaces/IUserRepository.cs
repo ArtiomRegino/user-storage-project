@@ -7,10 +7,6 @@ namespace UserStorageServices.Repository.Interfaces
     {
         int Count { get; }
 
-        void Start();
-
-        void Stop();
-
         User Get(int id);
 
         bool Delete(User user);

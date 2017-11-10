@@ -4,7 +4,7 @@ using UserStorageServices.Repository.Interfaces;
 
 namespace UserStorageServices.Repository.Concrete
 {
-    public class UserPermanentRepository : UserTemproraryRepository
+    public class UserPermanentRepository : UserTemproraryRepository, IUserRepositoryManager
     {
         private readonly string _filePath;
         private readonly IUserSerializationStrategy _serializer;
@@ -15,7 +15,7 @@ namespace UserStorageServices.Repository.Concrete
             this._filePath = string.IsNullOrEmpty(filePath) ? "repository.bin" : filePath;
         }
 
-        public override void Start()
+        public void Start()
         {
             using (var fs = new FileStream(this._filePath, FileMode.OpenOrCreate))
             {
@@ -27,7 +27,7 @@ namespace UserStorageServices.Repository.Concrete
             }
         }
 
-        public override void Stop()
+        public void Stop()
         {
             using (var fs = new FileStream(this._filePath, FileMode.Create))
             {
