@@ -2,7 +2,8 @@
 using System.IO;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using UserStorageServices.Repository;
+using UserStorageServices.Repository.Concrete;
+using UserStorageServices.Repository.Serializators;
 
 namespace UserStorageServices.Tests
 {

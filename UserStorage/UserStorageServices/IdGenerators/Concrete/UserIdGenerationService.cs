@@ -1,7 +1,6 @@
-﻿using System;
-using UserStorageServices.Interfaces;
+﻿using UserStorageServices.IdGenerators.Interfaces;
 
-namespace UserStorageServices.Services
+namespace UserStorageServices.IdGenerators.Concrete
 {
     public class UserIdGenerationService : IUserIdGenerationService
     {

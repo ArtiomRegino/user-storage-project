@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UserStorageServices.Enums;
 
-namespace UserStorageServices.Interfaces
+namespace UserStorageServices.Services.Interfaces
 {
     public interface IUserStorageService
     {

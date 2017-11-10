@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace UserStorageServices.Interfaces
+﻿namespace UserStorageServices.IdGenerators.Interfaces
 {
     public interface IUserIdGenerationService
     {

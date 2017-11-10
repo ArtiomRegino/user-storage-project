@@ -1,14 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UserStorageServices.Enums;
-using UserStorageServices.Interfaces;
-using UserStorageServices.Repository;
-using UserStorageServices.Validators;
+using UserStorageServices.Repository.Interfaces;
+using UserStorageServices.Services.Interfaces;
+using UserStorageServices.Validators.Concrete;
+using UserStorageServices.Validators.Interfaces;
 
-namespace UserStorageServices.Services
+namespace UserStorageServices.Services.Concrete
 {
     public class UserStorageServiceMaster : UserStorageServiceBase
     {
@@ -19,9 +18,9 @@ namespace UserStorageServices.Services
         public UserStorageServiceMaster(IUserRepository repository, IValidator validator = null, IEnumerable<IUserStorageService> services = null)
             : base(repository)
         {
-            this._validator = validator ?? new CompositeValidator();
-            this._slaveServices = services?.ToList() ?? new List<IUserStorageService>();
-            this._subscribers = new HashSet<INotificationSubscriber>();
+            _validator = validator ?? new CompositeValidator();
+            _slaveServices = services?.ToList() ?? new List<IUserStorageService>();
+            _subscribers = new HashSet<INotificationSubscriber>();
         }
 
         private event Action<User> AddedToStorage;
@@ -32,12 +31,12 @@ namespace UserStorageServices.Services
 
         public override void Add(User user)
         {
-            this._validator.Validate(user);
+            _validator.Validate(user);
             base.Add(user);
 
-            this.OnUserAdded(user);
+            OnUserAdded(user);
 
-            foreach (var item in this._slaveServices)
+            foreach (var item in _slaveServices)
             {
                 item.Add(user);
             }
@@ -47,9 +46,9 @@ namespace UserStorageServices.Services
         {
             var flag = base.Remove(user);
 
-            this.OnUserRemoved(user);
+            OnUserRemoved(user);
 
-            foreach (var item in this._slaveServices)
+            foreach (var item in _slaveServices)
             {
                 item.Remove(user);
             }
@@ -64,9 +63,9 @@ namespace UserStorageServices.Services
                 throw new ArgumentNullException(nameof(subscriber));
             }
 
-            this._subscribers.Add(subscriber);
-            this.AddedToStorage += subscriber.UserAdded;
-            this.RemoveedFromStorage += subscriber.UserRemoved;
+            _subscribers.Add(subscriber);
+            AddedToStorage += subscriber.UserAdded;
+            RemoveedFromStorage += subscriber.UserRemoved;
         }
 
         public void RemoveSubscriber(INotificationSubscriber subscriber)
@@ -76,19 +75,19 @@ namespace UserStorageServices.Services
                 throw new ArgumentNullException(nameof(subscriber));
             }
 
-            this._subscribers.Remove(subscriber);
-            this.AddedToStorage -= subscriber.UserAdded;
-            this.RemoveedFromStorage -= subscriber.UserRemoved;
+            _subscribers.Remove(subscriber);
+            AddedToStorage -= subscriber.UserAdded;
+            RemoveedFromStorage -= subscriber.UserRemoved;
         }
 
         private void OnUserAdded(User user)
         {
-            this.AddedToStorage?.Invoke(user);
+            AddedToStorage?.Invoke(user);
         }
 
         private void OnUserRemoved(User user)
         {
-            this.RemoveedFromStorage?.Invoke(user);
+            RemoveedFromStorage?.Invoke(user);
         }
     }
 }

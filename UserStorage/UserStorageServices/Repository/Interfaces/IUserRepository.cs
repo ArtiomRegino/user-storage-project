@@ -1,15 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace UserStorageServices.Repository
+namespace UserStorageServices.Repository.Interfaces
 {
     public interface IUserRepository
     {
         int Count { get; }
-
-        void Start();
-
-        void Stop();
 
         User Get(int id);
 

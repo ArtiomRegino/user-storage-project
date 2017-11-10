@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using UserStorageServices.Enums;
-using UserStorageServices.Interfaces;
+using UserStorageServices.Services.Interfaces;
 
-namespace UserStorageServices.Services
+namespace UserStorageServices.Services.Concrete
 {
     public class UserStorageServiceLog : UserStorageServiceDecorator
     {
@@ -19,7 +19,7 @@ namespace UserStorageServices.Services
         {
             get
             {
-                if (this._logging.Enabled)
+                if (_logging.Enabled)
                 {
                     Trace.TraceInformation("Count() method is called.");
                 }
@@ -32,7 +32,7 @@ namespace UserStorageServices.Services
 
         public override void Add(User user)
         {
-            if (this._logging.Enabled)
+            if (_logging.Enabled)
             {
                 Trace.TraceInformation("Add() method is called.");
             }
@@ -42,7 +42,7 @@ namespace UserStorageServices.Services
 
         public override bool Remove(User user)
         {
-            if (this._logging.Enabled)
+            if (_logging.Enabled)
             {
                 Trace.TraceInformation("Remove() method is called.");
             }
@@ -52,7 +52,7 @@ namespace UserStorageServices.Services
 
         public override IEnumerable<User> SearchByAge(int age)
         {
-            if (this._logging.Enabled)
+            if (_logging.Enabled)
             {
                 Trace.TraceInformation("SearchByAge() method is called.");
             }
@@ -62,7 +62,7 @@ namespace UserStorageServices.Services
 
         public override IEnumerable<User> SearchByLastName(string lastName)
         {
-            if (this._logging.Enabled)
+            if (_logging.Enabled)
             {
                 Trace.TraceInformation("SearchByLastName() method is called.");
             }
@@ -72,7 +72,7 @@ namespace UserStorageServices.Services
 
         public override IEnumerable<User> SearchByFirstName(string firstName)
         {
-            if (this._logging.Enabled)
+            if (_logging.Enabled)
             {
                 Trace.TraceInformation("SearchByFirstName() method is called.");
             }
@@ -82,7 +82,7 @@ namespace UserStorageServices.Services
 
         public override User SearchFirstByPredicate(Predicate<User> predicate)
         {
-            if (this._logging.Enabled)
+            if (_logging.Enabled)
             {
                 Trace.TraceInformation("SearchFirstByPredicate() method is called.");
             }
@@ -92,7 +92,7 @@ namespace UserStorageServices.Services
 
         public override IEnumerable<User> SearchByPredicate(Predicate<User> predicate)
         {
-            if (this._logging.Enabled)
+            if (_logging.Enabled)
             {
                 Trace.TraceInformation("SearchByPredicate() method is called.");
             }

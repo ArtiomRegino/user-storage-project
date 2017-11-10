@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using UserStorageServices.Exceptions;
-using UserStorageServices.Interfaces;
-using UserStorageServices.Repository;
-using UserStorageServices.Services;
-using UserStorageServices.Validators;
+using UserStorageServices.IdGenerators.Concrete;
+using UserStorageServices.Repository.Concrete;
+using UserStorageServices.Services.Concrete;
+using UserStorageServices.Services.Interfaces;
+using UserStorageServices.Validators.Concrete;
+using UserStorageServices.Validators.Interfaces;
 
 namespace UserStorageServices.Tests
 {

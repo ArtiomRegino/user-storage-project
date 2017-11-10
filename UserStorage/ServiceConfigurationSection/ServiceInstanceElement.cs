@@ -58,12 +58,12 @@ namespace ServiceConfigurationSection
         {
             get
             {
-                if (this.Master.ElementInformation.IsPresent)
+                if (Master.ElementInformation.IsPresent)
                 {
                     return ServiceInstanceMode.Master;
                 }
 
-                if (this.Slave.ElementInformation.IsPresent)
+                if (Slave.ElementInformation.IsPresent)
                 {
                     return ServiceInstanceMode.Slave;
                 }

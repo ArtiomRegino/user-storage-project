@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using UserStorageServices.Interfaces;
-using UserStorageServices.Services;
+using UserStorageServices.IdGenerators.Concrete;
+using UserStorageServices.IdGenerators.Interfaces;
+using UserStorageServices.Repository.Interfaces;
 
-namespace UserStorageServices.Repository
+namespace UserStorageServices.Repository.Concrete
 {
     public class UserTemproraryRepository : IUserRepository
     {
@@ -18,14 +19,6 @@ namespace UserStorageServices.Repository
         public int Count => Users.Count;
 
         protected List<User> Users { get; set; }
-
-        public virtual void Start()
-        {
-        }
-
-        public virtual void Stop()
-        {
-        }
 
         /// <summary>
         /// Get user by id.
