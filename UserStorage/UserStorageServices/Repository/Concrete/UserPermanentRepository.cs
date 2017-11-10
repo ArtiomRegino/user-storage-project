@@ -1,9 +1,8 @@
-﻿using System.Collections.Generic;
-using System.IO;
-using System.Runtime.Serialization.Formatters.Binary;
-using UserStorageServices.Interfaces;
+﻿using System.IO;
+using UserStorageServices.IdGenerators.Interfaces;
+using UserStorageServices.Repository.Interfaces;
 
-namespace UserStorageServices.Repository
+namespace UserStorageServices.Repository.Concrete
 {
     public class UserPermanentRepository : UserTemproraryRepository
     {

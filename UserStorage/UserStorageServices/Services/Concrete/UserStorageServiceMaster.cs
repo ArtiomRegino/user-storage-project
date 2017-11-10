@@ -1,14 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UserStorageServices.Enums;
-using UserStorageServices.Interfaces;
-using UserStorageServices.Repository;
-using UserStorageServices.Validators;
+using UserStorageServices.Repository.Interfaces;
+using UserStorageServices.Services.Interfaces;
+using UserStorageServices.Validators.Concrete;
+using UserStorageServices.Validators.Interfaces;
 
-namespace UserStorageServices.Services
+namespace UserStorageServices.Services.Concrete
 {
     public class UserStorageServiceMaster : UserStorageServiceBase
     {

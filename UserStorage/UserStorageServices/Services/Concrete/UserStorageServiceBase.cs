@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using UserStorageServices.Enums;
-using UserStorageServices.Interfaces;
-using UserStorageServices.Repository;
+using UserStorageServices.Repository.Interfaces;
+using UserStorageServices.Services.Interfaces;
 
-namespace UserStorageServices.Services
+namespace UserStorageServices.Services.Concrete
 {
     /// <summary>
     /// Represents a service that stores a set of <see cref="User"/>s and allows to search through them.

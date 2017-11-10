@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using UserStorageServices.Enums;
-using UserStorageServices.Interfaces;
+using UserStorageServices.Services.Interfaces;
 
-namespace UserStorageServices.Services
+namespace UserStorageServices.Services.Concrete
 {
     public class UserStorageServiceLog : UserStorageServiceDecorator
     {

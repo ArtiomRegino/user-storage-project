@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.ServiceModel;
-using UserStorageServices.Interfaces;
-using UserStorageServices.Repository;
-using UserStorageServices.Services;
+using UserStorageServices.Repository.Concrete;
+using UserStorageServices.Services.Concrete;
+using UserStorageServices.Services.Interfaces;
 using ServiceConfiguration = ServiceConfigurationSection.ServiceConfigurationSection;
 
 namespace UserStorageApp

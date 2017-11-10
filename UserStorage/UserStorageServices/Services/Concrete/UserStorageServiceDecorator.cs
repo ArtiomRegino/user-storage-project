@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using UserStorageServices.Enums;
-using UserStorageServices.Interfaces;
+using UserStorageServices.Services.Interfaces;
 
-namespace UserStorageServices.Services
+namespace UserStorageServices.Services.Concrete
 {
     public abstract class UserStorageServiceDecorator : IUserStorageService
     {

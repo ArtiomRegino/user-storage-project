@@ -1,8 +1,10 @@
 ﻿using System.Configuration;
 using UserStorageServices;
-using UserStorageServices.Interfaces;
-using UserStorageServices.Repository;
-using UserStorageServices.Services;
+using UserStorageServices.Repository.Concrete;
+using UserStorageServices.Repository.Interfaces;
+using UserStorageServices.Repository.Serializators;
+using UserStorageServices.Services.Concrete;
+using UserStorageServices.Services.Interfaces;
 
 namespace UserStorageApp
 {

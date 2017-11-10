@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using UserStorageServices.Interfaces;
-using UserStorageServices.Services;
+using UserStorageServices.IdGenerators.Concrete;
+using UserStorageServices.IdGenerators.Interfaces;
+using UserStorageServices.Repository.Interfaces;
 
-namespace UserStorageServices.Repository
+namespace UserStorageServices.Repository.Concrete
 {
     public class UserTemproraryRepository : IUserRepository
     {

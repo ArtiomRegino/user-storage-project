@@ -1,7 +1,7 @@
 ﻿using UserStorageServices.Exceptions;
-using UserStorageServices.Interfaces;
+using UserStorageServices.Validators.Interfaces;
 
-namespace UserStorageServices.Validators
+namespace UserStorageServices.Validators.Concrete
 {
     public class AgeValidator : IValidator
     {

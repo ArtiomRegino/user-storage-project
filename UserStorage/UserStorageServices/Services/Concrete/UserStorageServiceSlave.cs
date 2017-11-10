@@ -2,10 +2,10 @@
 using System.Diagnostics;
 using System.Linq;
 using UserStorageServices.Enums;
-using UserStorageServices.Interfaces;
-using UserStorageServices.Repository;
+using UserStorageServices.Repository.Interfaces;
+using UserStorageServices.Services.Interfaces;
 
-namespace UserStorageServices.Services
+namespace UserStorageServices.Services.Concrete
 {
     public class UserStorageServiceSlave : UserStorageServiceBase, INotificationSubscriber
     {
