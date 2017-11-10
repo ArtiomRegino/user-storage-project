@@ -17,7 +17,7 @@ namespace UserStorageServices.Services.Concrete
 
         public override void Add(User user)
         {
-            if (this.HaveMaster())
+            if (HaveMaster())
             {
                 base.Add(user);
             }
@@ -29,7 +29,7 @@ namespace UserStorageServices.Services.Concrete
 
         public override bool Remove(User user)
         {
-            if (this.HaveMaster())
+            if (HaveMaster())
             {
                 return base.Remove(user);
             }
@@ -39,12 +39,12 @@ namespace UserStorageServices.Services.Concrete
 
         public void UserAdded(User user)
         {
-            this.Add(user);
+            Add(user);
         }
 
         public void UserRemoved(User user)
         {
-            this.Remove(user);
+            Remove(user);
         }
 
         private bool HaveMaster()

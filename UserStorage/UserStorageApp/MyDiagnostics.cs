@@ -18,14 +18,14 @@ namespace UserStorageApp
                 throw new ArgumentNullException(nameof(services));
             }
 
-            this._collection = new ReadOnlyCollection<ServiceInfo>(services.ToArray());
+            _collection = new ReadOnlyCollection<ServiceInfo>(services.ToArray());
         }
 
         protected override ReadOnlyCollection<ServiceInfo> ServiceInfoCollection
         {
             get
             {
-                return this._collection;
+                return _collection;
             }
         }
 
