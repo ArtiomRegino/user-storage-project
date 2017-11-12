@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Xml.Serialization;
 
 namespace UserStorageServices.Notifications
@@ -7,18 +8,30 @@ namespace UserStorageServices.Notifications
     {
         public INotificationReceiver Receiver { get; set; }
 
+        public XmlSerializer Serializer { get; set; }
+
         public NotificationSender(INotificationReceiver receiver = null)
         {
             Receiver = receiver ?? new NotificationReceiver();
+        }
+
+        public void AddReceiver(INotificationReceiver receiver)
+        {
+            if (receiver == null)
+            {
+                throw new ArgumentNullException(nameof(receiver));
+            }
+
+            Receiver = receiver;
         }
 
         public void Send(NotificationContainer container)
         {
             using (var stringWriter = new StringWriter())
             {
-                var serializer = new XmlSerializer(typeof(NotificationContainer));
+                Serializer = new XmlSerializer(typeof(NotificationContainer));
 
-                serializer.Serialize(stringWriter, container);
+                Serializer.Serialize(stringWriter, container);
 
                 Receiver.Receive(stringWriter.ToString());
             }

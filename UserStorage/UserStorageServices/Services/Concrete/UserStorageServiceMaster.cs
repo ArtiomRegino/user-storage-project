@@ -24,14 +24,14 @@ namespace UserStorageServices.Services.Concrete
             _validator = validator ?? new CompositeValidator();
             _slaveServices = services?.ToList() ?? new List<IUserStorageService>();
             _subscribers = new HashSet<INotificationSubscriber>();
-            Sender = new NotificationSender();
+            Sender = new CompositeNotificationSender();
         }
 
         private event Action<User> AddedToStorage;
 
         private event Action<User> RemoveedFromStorage;
 
-        public NotificationSender Sender { get; }
+        public INotificationSender Sender { get; }
 
         public override UserStorageServiceMode ServiceMode => UserStorageServiceMode.MasterNode;
 
