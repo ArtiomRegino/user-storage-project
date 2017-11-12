@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using UserStorageServices.Enums;
+using UserStorageServices.Notifications;
 using UserStorageServices.Repository.Interfaces;
 using UserStorageServices.Services.Interfaces;
 using UserStorageServices.Validators.Concrete;
@@ -21,11 +22,14 @@ namespace UserStorageServices.Services.Concrete
             _validator = validator ?? new CompositeValidator();
             _slaveServices = services?.ToList() ?? new List<IUserStorageService>();
             _subscribers = new HashSet<INotificationSubscriber>();
+            Sender = new NotificationSender();
         }
 
         private event Action<User> AddedToStorage;
 
         private event Action<User> RemoveedFromStorage;
+
+        public NotificationSender Sender { get; }
 
         public override UserStorageServiceMode ServiceMode => UserStorageServiceMode.MasterNode;
 
@@ -40,6 +44,21 @@ namespace UserStorageServices.Services.Concrete
             {
                 item.Add(user);
             }
+
+            Sender.Send(new NotificationContainer
+            {
+                Notifications = new[]
+                {
+                    new Notification
+                    {
+                        Type = NotificationType.AddUser,
+                        Action = new AddUserActionNotification
+                        {
+                            User = user
+                        }
+                    }
+                }
+            });
         }
 
         public override bool Remove(User user)
@@ -52,6 +71,21 @@ namespace UserStorageServices.Services.Concrete
             {
                 item.Remove(user);
             }
+
+            Sender.Send(new NotificationContainer
+            {
+                Notifications = new[]
+                {
+                    new Notification
+                    {
+                        Type = NotificationType.DeleteUser,
+                        Action = new DeleteUserActionNotification
+                        {
+                            User = user
+                        }
+                    }
+                }
+            });
 
             return flag;
         }

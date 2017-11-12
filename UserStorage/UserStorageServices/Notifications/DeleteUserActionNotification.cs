@@ -2,9 +2,9 @@
 
 namespace UserStorageServices.Notifications
 {
-    class DeleteUserActionNotification
+    public class DeleteUserActionNotification
     {
         [XmlElement("userId")]
-        public int UserId { get; set; }
+        public User User { get; set; }
     }
 }
