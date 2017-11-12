@@ -1,4 +1,6 @@
 ﻿using System;
+using System.IO;
+using System.Xml.Serialization;
 
 namespace UserStorageServices.Notifications
 {
@@ -8,11 +10,20 @@ namespace UserStorageServices.Notifications
 
         public NotificationReceiver()
         {
-            Received = container => { };
+            Received = xmlContainer => { };
         }
 
-        public void Receive(NotificationContainer container)
+        public void Receive(string xmlContainer)
         {
+            NotificationContainer container;
+
+            using (var stringReader = new StringReader(xmlContainer))
+            {
+                var serializer = new XmlSerializer(typeof(NotificationContainer));
+
+                container = (NotificationContainer)serializer.Deserialize(stringReader);
+            }
+
             Received?.Invoke(container);
         }
     }

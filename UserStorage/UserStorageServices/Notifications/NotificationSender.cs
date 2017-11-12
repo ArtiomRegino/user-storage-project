@@ -1,4 +1,7 @@
-﻿namespace UserStorageServices.Notifications
+﻿using System.IO;
+using System.Xml.Serialization;
+
+namespace UserStorageServices.Notifications
 {
     public class NotificationSender : INotificationSender
     {
@@ -11,7 +14,14 @@
 
         public void Send(NotificationContainer container)
         {
-            Receiver.Receive(container);
+            using (var stringWriter = new StringWriter())
+            {
+                var serializer = new XmlSerializer(typeof(NotificationContainer));
+
+                serializer.Serialize(stringWriter, container);
+
+                Receiver.Receive(stringWriter.ToString());
+            }
         }
     }
 }
