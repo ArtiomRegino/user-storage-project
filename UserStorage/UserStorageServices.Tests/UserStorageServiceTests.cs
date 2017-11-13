@@ -663,6 +663,144 @@ namespace UserStorageServices.Tests
             Assert.IsTrue(subscriber.Count == 0);
         }
 
+        [TestMethod]
+        public void Add_WithNotifications_ReturnedTrue()
+        {
+            // Arrange
+            var user1 = new User()
+            {
+                Id = 23,
+                LastName = "Dani",
+                FirstName = "Kar",
+                Age = 23
+            };
+
+            var user2 = new User()
+            {
+                LastName = "Danialis",
+                FirstName = "Karl",
+                Age = 23
+            };
+
+            var slave = new UserStorageServiceSlave(new UserTemproraryRepository());
+
+            var master = new UserStorageServiceMaster(new UserTemproraryRepository());
+
+            master.Sender.AddReceiver(slave.Receiver);
+
+            master.Add(user1);
+            master.Add(user2);
+
+            ////Assert
+            Assert.IsTrue(master.Count == slave.Count);
+        }
+
+        [TestMethod]
+        public void Remove_WithNotifications_ReturnedTrue()
+        {
+            // Arrange
+            var user1 = new User()
+            {
+                Id = 23,
+                LastName = "Dani",
+                FirstName = "Kar",
+                Age = 23
+            };
+
+            var user2 = new User()
+            {
+                LastName = "Danialis",
+                FirstName = "Karl",
+                Age = 23
+            };
+
+            var slave = new UserStorageServiceSlave(new UserTemproraryRepository());
+
+            var master = new UserStorageServiceMaster(new UserTemproraryRepository());
+
+            master.Sender.AddReceiver(slave.Receiver);
+
+            master.Add(user1);
+            master.Add(user2);
+
+            master.Remove(user1);
+            master.Remove(user2);
+
+            ////Assert
+            Assert.IsTrue(master.Count == slave.Count && master.Count == 0);
+        }
+
+        [TestMethod]
+        public void Add_WithNotificationsSomeSenders_ReturnedTrue()
+        {
+            // Arrange
+            var user1 = new User()
+            {
+                Id = 23,
+                LastName = "Dani",
+                FirstName = "Kar",
+                Age = 23
+            };
+
+            var user2 = new User()
+            {
+                LastName = "Danialis",
+                FirstName = "Karl",
+                Age = 23
+            };
+
+            var slaveA = new UserStorageServiceSlave(new UserTemproraryRepository());
+            var slaveB = new UserStorageServiceSlave(new UserTemproraryRepository());
+
+            var master = new UserStorageServiceMaster(new UserTemproraryRepository());
+
+            master.Sender.AddReceiver(slaveA.Receiver);
+            master.Sender.AddReceiver(slaveB.Receiver);
+
+            master.Add(user1);
+            master.Add(user2);
+
+            ////Assert
+            Assert.IsTrue(master.Count == slaveB.Count && master.Count == slaveA.Count);
+        }
+
+        [TestMethod]
+        public void Remove_WithNotificationsSomeSenders_ReturnedTrue()
+        {
+            // Arrange
+            var user1 = new User()
+            {
+                Id = 23,
+                LastName = "Dani",
+                FirstName = "Kar",
+                Age = 23
+            };
+
+            var user2 = new User()
+            {
+                LastName = "Danialis",
+                FirstName = "Karl",
+                Age = 23
+            };
+
+            var slaveA = new UserStorageServiceSlave(new UserTemproraryRepository());
+            var slaveB = new UserStorageServiceSlave(new UserTemproraryRepository());
+
+            var master = new UserStorageServiceMaster(new UserTemproraryRepository());
+
+            master.Sender.AddReceiver(slaveA.Receiver);
+            master.Sender.AddReceiver(slaveB.Receiver);
+
+            master.Add(user1);
+            master.Add(user2);
+
+            master.Remove(user1);
+            master.Remove(user2);
+
+            ////Assert
+            Assert.IsTrue(master.Count == slaveA.Count && master.Count == 0 && master.Count == slaveB.Count);
+        }
+
         private UserStorageServiceLog GetServiceLog()
         {
             var userStorageService = new UserStorageServiceMaster(new UserTemproraryRepository(_idGenerator), _validator);

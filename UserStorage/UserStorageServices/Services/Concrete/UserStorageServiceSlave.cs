@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.Linq;
 using UserStorageServices.Enums;
+using UserStorageServices.Notifications;
 using UserStorageServices.Repository.Interfaces;
 using UserStorageServices.Services.Interfaces;
 
@@ -11,7 +12,12 @@ namespace UserStorageServices.Services.Concrete
     {
         public UserStorageServiceSlave(IUserRepository repository) : base(repository)
         {
+            var receiver = new NotificationReceiver();
+            receiver.Received += NotificationReceived;
+            Receiver = receiver;
         }
+
+        public INotificationReceiver Receiver { get; }
 
         public override UserStorageServiceMode ServiceMode => UserStorageServiceMode.SlaveNode;
 
@@ -45,6 +51,23 @@ namespace UserStorageServices.Services.Concrete
         public void UserRemoved(User user)
         {
             Remove(user);
+        }
+
+        private void NotificationReceived(NotificationContainer container)
+        {
+            foreach (var item in container.Notifications)
+            {
+                if (item.Type == NotificationType.AddUser)
+                {
+                    var user = ((AddUserActionNotification)item.Action).User;
+                    Add(user);
+                }
+                else
+                {
+                    var user = ((DeleteUserActionNotification)item.Action).User;
+                    Remove(user);
+                }
+            }
         }
 
         private bool HaveMaster()
