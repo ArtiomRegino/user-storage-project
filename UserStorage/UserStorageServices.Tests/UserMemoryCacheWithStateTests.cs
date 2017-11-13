@@ -27,7 +27,7 @@ namespace UserStorageServices.Tests
 
             for (int i = 0; i < 10; i++)
             {
-                users.Add(new User()
+                users.Add(new User
                 {
                     Age = 20 + i,
                     FirstName = $"User{i}",
@@ -70,7 +70,7 @@ namespace UserStorageServices.Tests
 
             for (int i = 0; i < 10; i++)
             {
-                users.Add(new User()
+                users.Add(new User
                 {
                     Age = 20 + i,
                     FirstName = $"User{i}",

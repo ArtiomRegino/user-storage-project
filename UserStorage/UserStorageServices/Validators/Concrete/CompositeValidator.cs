@@ -3,6 +3,7 @@ using UserStorageServices.Validators.Interfaces;
 
 namespace UserStorageServices.Validators.Concrete
 {
+    [Serializable]
     public class CompositeValidator : IValidator
     {
         private readonly IValidator[] _validators;

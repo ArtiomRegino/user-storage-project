@@ -1,4 +1,5 @@
-﻿using System.Configuration;
+﻿using System;
+using System.Configuration;
 using UserStorageServices;
 using UserStorageServices.Repository.Concrete;
 using UserStorageServices.Repository.Interfaces;
@@ -40,14 +41,25 @@ namespace UserStorageApp
             };
 
             _repository.Start();
+            Console.WriteLine("Repository started.");
 
             _userStorageService.Add(user);
+            Console.WriteLine("User added.");
+            Console.WriteLine($"Now there are {_userStorageService.Count} users in storage.");
 
-            _userStorageService.SearchByFirstName("Alex"); 
+            var users = _userStorageService.SearchByFirstName("Alex");
+            Console.WriteLine("Users were found:");
+            foreach (var item in users)
+            {
+                Console.WriteLine($"{item.FirstName} {item.LastName} {item.Age}");
+            }
 
             _userStorageService.Remove(user);
+            Console.WriteLine("User removed.");
+            Console.WriteLine($"Now there are {_userStorageService.Count} users in storage.");
 
             _repository.Stop();
+            Console.WriteLine("Repository stoped.");
         }
     }
 }

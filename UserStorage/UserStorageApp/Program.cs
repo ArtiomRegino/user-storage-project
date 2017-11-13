@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.ServiceModel;
-using UserStorageServices.Repository.Concrete;
 using UserStorageServices.Services.Concrete;
-using UserStorageServices.Services.Interfaces;
 using ServiceConfiguration = ServiceConfigurationSection.ServiceConfigurationSection;
 
 namespace UserStorageApp
@@ -22,13 +19,14 @@ namespace UserStorageApp
             {
                 host.SmartOpen();
 
-                var slaveNode1 = new UserStorageServiceSlave(new UserTemproraryRepository());
-                var slaveNode2 = new UserStorageServiceSlave(new UserTemproraryRepository());
-                var slaveServiceCollection = new List<IUserStorageService>() { slaveNode1, slaveNode2 };
+                var slaveA = FactoryService.CreateSlave();
+                var slaveB = FactoryService.CreateSlave();
+                var master = FactoryService.CreateMaster();
 
-                var storage = new UserStorageServiceMaster(new UserTemproraryRepository(), services: slaveServiceCollection);
-                var storageLog = new UserStorageServiceLog(storage);
-                var client = new Client(storageLog);
+                master.Sender.AddReceiver(slaveA.Receiver);
+                master.Sender.AddReceiver(slaveB.Receiver);
+
+                var client = new Client(master);
 
                 client.Run();
 
