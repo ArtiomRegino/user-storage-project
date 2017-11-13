@@ -10,7 +10,8 @@ namespace UserStorageServices.Services.Concrete
     /// <summary>
     /// Represents a service that stores a set of <see cref="User"/>s and allows to search through them.
     /// </summary>
-    public abstract class UserStorageServiceBase : IUserStorageService
+    [Serializable]
+    public abstract class UserStorageServiceBase : MarshalByRefObject, IUserStorageService
     {
         private readonly IUserRepository _userRepository;
 

@@ -182,7 +182,7 @@ namespace UserStorageServices.Tests
             var storageLog = GetServiceLog();
 
             // Act and Assert
-            Assert.IsFalse(storageLog.Remove(new User() { Id = 23 }));
+            Assert.IsFalse(storageLog.Remove(new User { Id = 23 }));
         }
 
         [TestMethod]
@@ -193,7 +193,7 @@ namespace UserStorageServices.Tests
             var storageLog = new UserStorageServiceLog(userStorageService);
 
             // Act
-            var user = new User()
+            var user = new User
             {
                 Age = 21,
                 FirstName = "Anna",
@@ -233,7 +233,7 @@ namespace UserStorageServices.Tests
         {
             // Arrange
             var storageLog = GetServiceLog();
-            var user = new User()
+            var user = new User
             {
                 Age = 27,
                 FirstName = "Michael",
@@ -288,7 +288,7 @@ namespace UserStorageServices.Tests
         {
             // Arrange
             var storageLog = GetServiceLog();
-            var user = new User()
+            var user = new User
             {
                 Age = 27,
                 FirstName = "Michael",
@@ -345,7 +345,7 @@ namespace UserStorageServices.Tests
         {
             // Arrange
             var storageLog = GetServiceLog();
-            var user = new User()
+            var user = new User
             {
                 Age = 27,
                 FirstName = "Michael",
@@ -389,7 +389,7 @@ namespace UserStorageServices.Tests
         {
             // Arrange
             var storageLog = GetServiceLog();
-            var user = new User()
+            var user = new User
             {
                 Age = 27,
                 FirstName = "Michael",
@@ -433,7 +433,7 @@ namespace UserStorageServices.Tests
         {
             // Arrange
             var storageLog = GetServiceLog();
-            var user = new User()
+            var user = new User
             {
                 Age = 27,
                 FirstName = "Michael",
@@ -452,7 +452,7 @@ namespace UserStorageServices.Tests
         {
             // Arrange
             var storageLog = GetServiceLog();
-            var user = new User()
+            var user = new User
             {
                 Age = 27,
                 FirstName = "Michael",
@@ -473,7 +473,7 @@ namespace UserStorageServices.Tests
         {
             // Arrange
             var storageLog = GetServiceLog();
-            var user = new User()
+            var user = new User
             {
                 Age = 27,
                 FirstName = "Michael",
@@ -494,7 +494,7 @@ namespace UserStorageServices.Tests
         {
             // Arrange
             var storageLog = GetServiceLog();
-            var user = new User()
+            var user = new User
             {
                 Age = 27,
                 FirstName = "Michael",
@@ -515,7 +515,7 @@ namespace UserStorageServices.Tests
         {
             // Arrange
             var storageLog = GetServiceLog();
-            var user = new User()
+            var user = new User
             {
                 Age = 27,
                 FirstName = "Michael",
@@ -535,7 +535,7 @@ namespace UserStorageServices.Tests
         public void Remove_UserNotExistAndUserExistsServiceWithSlaveNodes_ReturnedTrue()
         {
             // Arrange
-            var user1 = new User()
+            var user1 = new User
             {   
                 Id = 23,
                 LastName = "Dani",
@@ -543,7 +543,7 @@ namespace UserStorageServices.Tests
                 Age = 23
             };
 
-            var user2 = new User()
+            var user2 = new User
             {
                 LastName = "Danialis",
                 FirstName = "Karl",
@@ -552,7 +552,7 @@ namespace UserStorageServices.Tests
 
             var slaveService = new UserStorageServiceSlave(new UserTemproraryRepository(_idGenerator));
 
-            var slaveServiceCollection = new List<IUserStorageService>() { slaveService };
+            var slaveServiceCollection = new List<IUserStorageService> { slaveService };
 
             var userStorageService = new UserStorageServiceMaster(new UserTemproraryRepository(_idGenerator), _validator, slaveServiceCollection);
             var storageLog = new UserStorageServiceLog(userStorageService);
@@ -571,7 +571,7 @@ namespace UserStorageServices.Tests
         public void Add_AddingUserServiceWithSlaveNodes_ReturnedTrue()
         {
             // Arrange
-            var user1 = new User()
+            var user1 = new User
             {
                 LastName = "Danialis",
                 FirstName = "Karl",
@@ -580,7 +580,7 @@ namespace UserStorageServices.Tests
 
             var slaveService = new UserStorageServiceSlave(new UserTemproraryRepository(_idGenerator));
 
-            var slaveServiceCollection = new List<IUserStorageService>() { slaveService };
+            var slaveServiceCollection = new List<IUserStorageService> { slaveService };
 
             var userStorageService = new UserStorageServiceMaster(new UserTemproraryRepository(_idGenerator), _validator, slaveServiceCollection);
             var storageLog = new UserStorageServiceLog(userStorageService);
@@ -600,7 +600,7 @@ namespace UserStorageServices.Tests
         public void Add_AddingUserServiceWithSubscribers_ReturnedTrue()
         {
             // Arrange
-            var user1 = new User()
+            var user1 = new User
             {
                 LastName = "Danialis",
                 FirstName = "Karl",
@@ -630,7 +630,7 @@ namespace UserStorageServices.Tests
         public void Remove_UserNotExistAndUserExistsServiceWithSubscribers_ReturnedTrue()
         {
             // Arrange
-            var user1 = new User()
+            var user1 = new User
             {
                 Id = 23,
                 LastName = "Dani",
@@ -638,7 +638,7 @@ namespace UserStorageServices.Tests
                 Age = 23
             };
 
-            var user2 = new User()
+            var user2 = new User
             {
                 LastName = "Danialis",
                 FirstName = "Karl",
@@ -667,7 +667,7 @@ namespace UserStorageServices.Tests
         public void Add_WithNotifications_ReturnedTrue()
         {
             // Arrange
-            var user1 = new User()
+            var user1 = new User
             {
                 Id = 23,
                 LastName = "Dani",
@@ -675,7 +675,7 @@ namespace UserStorageServices.Tests
                 Age = 23
             };
 
-            var user2 = new User()
+            var user2 = new User
             {
                 LastName = "Danialis",
                 FirstName = "Karl",
@@ -699,7 +699,7 @@ namespace UserStorageServices.Tests
         public void Remove_WithNotifications_ReturnedTrue()
         {
             // Arrange
-            var user1 = new User()
+            var user1 = new User
             {
                 Id = 23,
                 LastName = "Dani",
@@ -707,7 +707,7 @@ namespace UserStorageServices.Tests
                 Age = 23
             };
 
-            var user2 = new User()
+            var user2 = new User
             {
                 LastName = "Danialis",
                 FirstName = "Karl",
@@ -734,7 +734,7 @@ namespace UserStorageServices.Tests
         public void Add_WithNotificationsSomeSenders_ReturnedTrue()
         {
             // Arrange
-            var user1 = new User()
+            var user1 = new User
             {
                 Id = 23,
                 LastName = "Dani",
@@ -742,7 +742,7 @@ namespace UserStorageServices.Tests
                 Age = 23
             };
 
-            var user2 = new User()
+            var user2 = new User
             {
                 LastName = "Danialis",
                 FirstName = "Karl",
@@ -768,7 +768,7 @@ namespace UserStorageServices.Tests
         public void Remove_WithNotificationsSomeSenders_ReturnedTrue()
         {
             // Arrange
-            var user1 = new User()
+            var user1 = new User
             {
                 Id = 23,
                 LastName = "Dani",
@@ -776,7 +776,7 @@ namespace UserStorageServices.Tests
                 Age = 23
             };
 
-            var user2 = new User()
+            var user2 = new User
             {
                 LastName = "Danialis",
                 FirstName = "Karl",

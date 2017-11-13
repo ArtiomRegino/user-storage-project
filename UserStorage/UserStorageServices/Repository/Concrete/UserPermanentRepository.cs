@@ -1,6 +1,7 @@
 ﻿using System.IO;
 using UserStorageServices.IdGenerators.Interfaces;
 using UserStorageServices.Repository.Interfaces;
+using UserStorageServices.Repository.Serializators;
 
 namespace UserStorageServices.Repository.Concrete
 {
@@ -9,9 +10,9 @@ namespace UserStorageServices.Repository.Concrete
         private readonly string _filePath;
         private readonly IUserSerializationStrategy _serializer;
 
-        public UserPermanentRepository(IUserSerializationStrategy strategy, string filePath = null, IUserIdGenerationService generationService = null) : base(generationService)
+        public UserPermanentRepository(IUserSerializationStrategy strategy = null, string filePath = null, IUserIdGenerationService generationService = null) : base(generationService)
         {
-            _serializer = strategy;
+            _serializer = strategy ?? new BinaryUserSerializationStrategy();
             _filePath = string.IsNullOrEmpty(filePath) ? "repository.bin" : filePath;
         }
 
@@ -22,7 +23,11 @@ namespace UserStorageServices.Repository.Concrete
                 if (fs.Length != 0)
                 {
                     Users = _serializer.DeserializeUsers(fs);
-                    Generator.LastId = Users.FindLast(u => u != null).Id;
+                    if (Users.Count != 0)
+                    {
+                        Generator.LastId = Users.FindLast(u => u != null).Id;
+                    }
+                    
                 }
             }
         }

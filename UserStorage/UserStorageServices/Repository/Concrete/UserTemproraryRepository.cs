@@ -6,7 +6,8 @@ using UserStorageServices.Repository.Interfaces;
 
 namespace UserStorageServices.Repository.Concrete
 {
-    public class UserTemproraryRepository : IUserRepository
+    [Serializable]
+    public class UserTemproraryRepository : MarshalByRefObject, IUserRepository
     {
         protected readonly IUserIdGenerationService Generator;
 

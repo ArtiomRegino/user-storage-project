@@ -6,6 +6,7 @@ using UserStorageServices.Services.Interfaces;
 
 namespace UserStorageServices.Services.Concrete
 {
+    [Serializable]
     public class UserStorageServiceLog : UserStorageServiceDecorator
     {
         private readonly BooleanSwitch _logging = new BooleanSwitch(

@@ -1,10 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Xml.Serialization;
 using UserStorageServices.Repository.Interfaces;
 
 namespace UserStorageServices.Repository.Serializators
 {
+    [Serializable]
     public class XmlUserSerializationStrategy : IUserSerializationStrategy
     {
         public void SerializeUsers(FileStream fs, List<User> users)

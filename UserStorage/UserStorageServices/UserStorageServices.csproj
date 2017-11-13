@@ -61,6 +61,7 @@
     <Compile Include="Notifications\NotificationSender.cs" />
     <Compile Include="Notifications\NotificationType.cs" />
     <Compile Include="Repository\Interfaces\IUserRepositoryManager.cs" />
+    <Compile Include="Services\Concrete\FactoryService.cs" />
     <Compile Include="Services\Interfaces\INotificationSubscriber.cs" />
     <Compile Include="IdGenerators\Interfaces\IUserIdGenerationService.cs" />
     <Compile Include="Repository\Serializators\BinaryUserSerializationStrategy.cs" />

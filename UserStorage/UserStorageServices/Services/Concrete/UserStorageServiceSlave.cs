@@ -8,6 +8,7 @@ using UserStorageServices.Services.Interfaces;
 
 namespace UserStorageServices.Services.Concrete
 {
+    [Serializable]
     public class UserStorageServiceSlave : UserStorageServiceBase, INotificationSubscriber
     {
         public UserStorageServiceSlave(IUserRepository repository) : base(repository)

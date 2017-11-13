@@ -4,6 +4,7 @@ using System.Xml.Serialization;
 
 namespace UserStorageServices.Notifications
 {
+    [Serializable]
     public class NotificationReceiver : INotificationReceiver
     {
         public NotificationReceiver()
