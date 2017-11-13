@@ -27,7 +27,6 @@ namespace UserStorageServices.Repository.Concrete
                     {
                         Generator.LastId = Users.FindLast(u => u != null).Id;
                     }
-                    
                 }
             }
         }
