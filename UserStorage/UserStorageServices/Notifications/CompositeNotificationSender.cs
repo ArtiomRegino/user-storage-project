@@ -5,7 +5,7 @@ namespace UserStorageServices.Notifications
 {
     public class CompositeNotificationSender : INotificationSender
     {
-        private readonly List<INotificationSender>  _senders;
+        private readonly List<INotificationSender> _senders;
 
         public CompositeNotificationSender(List<INotificationSender> senders = null)
         {

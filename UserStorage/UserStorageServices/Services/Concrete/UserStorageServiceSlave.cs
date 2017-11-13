@@ -10,14 +10,14 @@ namespace UserStorageServices.Services.Concrete
 {
     public class UserStorageServiceSlave : UserStorageServiceBase, INotificationSubscriber
     {
-        public INotificationReceiver Receiver { get; }
-
         public UserStorageServiceSlave(IUserRepository repository) : base(repository)
         {
             var receiver = new NotificationReceiver();
             receiver.Received += NotificationReceived;
             Receiver = receiver;
         }
+
+        public INotificationReceiver Receiver { get; }
 
         public override UserStorageServiceMode ServiceMode => UserStorageServiceMode.SlaveNode;
 
@@ -43,23 +43,6 @@ namespace UserStorageServices.Services.Concrete
             throw new NotSupportedException("This action is not allowed. Change service mode.");
         }
 
-        private void NotificationReceived(NotificationContainer container)
-        {
-            foreach (var item in container.Notifications)
-            {
-                if (item.Type == NotificationType.AddUser)
-                {
-                    var user = ((AddUserActionNotification) item.Action).User;
-                    Add(user);
-                }
-                else
-                {
-                    var user = ((DeleteUserActionNotification)item.Action).User;
-                    Remove(user);
-                }
-            }
-        }
-
         public void UserAdded(User user)
         {
             Add(user);
@@ -68,6 +51,23 @@ namespace UserStorageServices.Services.Concrete
         public void UserRemoved(User user)
         {
             Remove(user);
+        }
+
+        private void NotificationReceived(NotificationContainer container)
+        {
+            foreach (var item in container.Notifications)
+            {
+                if (item.Type == NotificationType.AddUser)
+                {
+                    var user = ((AddUserActionNotification)item.Action).User;
+                    Add(user);
+                }
+                else
+                {
+                    var user = ((DeleteUserActionNotification)item.Action).User;
+                    Remove(user);
+                }
+            }
         }
 
         private bool HaveMaster()

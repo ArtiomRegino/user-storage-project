@@ -6,14 +6,14 @@ namespace UserStorageServices.Notifications
 {
     public class NotificationSender : INotificationSender
     {
-        public INotificationReceiver Receiver { get; set; }
-
-        public XmlSerializer Serializer { get; set; }
-
         public NotificationSender(INotificationReceiver receiver = null)
         {
             Receiver = receiver ?? new NotificationReceiver();
         }
+
+        public INotificationReceiver Receiver { get; set; }
+
+        public XmlSerializer Serializer { get; set; }
 
         public void AddReceiver(INotificationReceiver receiver)
         {
