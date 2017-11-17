@@ -19,12 +19,7 @@ namespace UserStorageApp
             {
                 host.SmartOpen();
 
-                var slaveA = FactoryService.CreateSlave();
-                var slaveB = FactoryService.CreateSlave();
-                var master = FactoryService.CreateMaster();
-
-                master.Sender.AddReceiver(slaveA.Receiver);
-                master.Sender.AddReceiver(slaveB.Receiver);
+                var master = FactoryService.DefaultCreation(serviceConfiguration);
 
                 var client = new Client(master);
 

@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Configuration;
+using System.Linq;
 using System.Reflection;
+using ServiceConfigurationSection;
 using UserStorageServices.IdGenerators.Interfaces;
 using UserStorageServices.Repository.Concrete;
 using UserStorageServices.Repository.Interfaces;
@@ -66,6 +69,27 @@ namespace UserStorageServices.Services.Concrete
                 null,
                 null) as UserStorageServiceMaster;
 
+            return master;
+        }
+
+        public static UserStorageServiceMaster DefaultCreation(ServiceConfigurationSection.ServiceConfigurationSection configurationSection, IUserSerializationStrategy strategy = null,
+            string filePath = null, IUserIdGenerationService generationService = null, IValidator validator = null)
+        {
+            if (configurationSection.ServiceInstances.Count(i => i.Mode == ServiceInstanceMode.Master) != 1)
+            {
+                throw new ConfigurationErrorsException("It should be one MasterService.");
+            }
+
+            var master = CreateMaster();
+
+            foreach (var item in configurationSection.ServiceInstances)
+            {
+                if (item.Mode == ServiceInstanceMode.Slave)
+                {
+                    master.Sender.AddReceiver(CreateSlave().Receiver);
+                }
+            }
+            
             return master;
         }
     }
