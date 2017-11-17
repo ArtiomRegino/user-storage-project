@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Configuration;
+using System.ServiceModel;
 using UserStorageServices;
 using UserStorageServices.Repository.Concrete;
 using UserStorageServices.Repository.Interfaces;
@@ -33,6 +34,7 @@ namespace UserStorageApp
         /// </summary>
         public void Run()
         {
+            var serviceConfiguration = (ServiceConfiguration)System.Configuration.ConfigurationManager.GetSection("serviceConfiguration");
             var user = new User
             {
                 FirstName = "Alex",
