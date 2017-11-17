@@ -72,8 +72,12 @@ namespace UserStorageServices.Services.Concrete
             return master;
         }
 
-        public static UserStorageServiceMaster DefaultCreation(ServiceConfigurationSection.ServiceConfigurationSection configurationSection, IUserSerializationStrategy strategy = null,
-            string filePath = null, IUserIdGenerationService generationService = null, IValidator validator = null)
+        public static UserStorageServiceMaster DefaultCreation(
+            ServiceConfigurationSection.ServiceConfigurationSection configurationSection,
+            IUserSerializationStrategy strategy = null,
+            string filePath = null,
+            IUserIdGenerationService generationService = null,
+            IValidator validator = null)
         {
             if (configurationSection.ServiceInstances.Count(i => i.Mode == ServiceInstanceMode.Master) != 1)
             {
