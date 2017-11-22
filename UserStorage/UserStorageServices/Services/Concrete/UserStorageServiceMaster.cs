@@ -4,6 +4,7 @@ using System.Linq;
 using UserStorageServices.Enums;
 using UserStorageServices.Notifications;
 using UserStorageServices.Repository.Interfaces;
+using UserStorageServices.Services.Attributes;
 using UserStorageServices.Services.Interfaces;
 using UserStorageServices.Validators.Concrete;
 using UserStorageServices.Validators.Interfaces;
@@ -11,6 +12,7 @@ using UserStorageServices.Validators.Interfaces;
 namespace UserStorageServices.Services.Concrete
 {
     [Serializable]
+    [MyApplicationService("UserStorageMaster")]
     public class UserStorageServiceMaster : UserStorageServiceBase
     {
         private readonly IEnumerable<IUserStorageService> _slaveServices;

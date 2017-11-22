@@ -4,11 +4,13 @@ using System.Linq;
 using UserStorageServices.Enums;
 using UserStorageServices.Notifications;
 using UserStorageServices.Repository.Interfaces;
+using UserStorageServices.Services.Attributes;
 using UserStorageServices.Services.Interfaces;
 
 namespace UserStorageServices.Services.Concrete
 {
     [Serializable]
+    [MyApplicationService("UserStorageSlave")]
     public class UserStorageServiceSlave : UserStorageServiceBase, INotificationSubscriber
     {
         public UserStorageServiceSlave(IUserRepository repository) : base(repository)
