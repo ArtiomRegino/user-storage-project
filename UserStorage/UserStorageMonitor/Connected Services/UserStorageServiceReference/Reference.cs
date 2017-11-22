@@ -8,26 +8,31 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
+using System;
+using System.CodeDom.Compiler;
+using System.ComponentModel;
+using System.Diagnostics;
+using System.Runtime.Serialization;
+using System.ServiceModel;
+using System.ServiceModel.Channels;
+using System.Threading.Tasks;
+
 namespace UserStorageMonitor.UserStorageServiceReference {
-    using System.Runtime.Serialization;
-    using System;
-    
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="EmptyQuery", Namespace="http://schemas.datacontract.org/2004/07/UserStorage.Diagnostics.Query")]
-    [System.SerializableAttribute()]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(UserStorageMonitor.UserStorageServiceReference.SelectAllServicesQuery))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(UserStorageMonitor.UserStorageServiceReference.SelectServicesWithSpecifiedNameQuery))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(UserStorageMonitor.UserStorageServiceReference.SelectServicesWithNameContainsQuery))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(UserStorageMonitor.UserStorageServiceReference.SelectServicesWithSpecifiedTypeQuery))]
-    public partial class EmptyQuery : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
+    [DebuggerStepThrough()]
+    [GeneratedCode("System.Runtime.Serialization", "4.0.0.0")]
+    [DataContract(Name="EmptyQuery", Namespace="http://schemas.datacontract.org/2004/07/UserStorage.Diagnostics.Query")]
+    [Serializable()]
+    [KnownType(typeof(SelectAllServicesQuery))]
+    [KnownType(typeof(SelectServicesWithSpecifiedNameQuery))]
+    [KnownType(typeof(SelectServicesWithNameContainsQuery))]
+    [KnownType(typeof(SelectServicesWithSpecifiedTypeQuery))]
+    public partial class EmptyQuery : object, IExtensibleDataObject, INotifyPropertyChanged {
         
-        [System.NonSerializedAttribute()]
-        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
+        [NonSerialized()]
+        private ExtensionDataObject extensionDataField;
         
-        [global::System.ComponentModel.BrowsableAttribute(false)]
-        public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
+        [Browsable(false)]
+        public ExtensionDataObject ExtensionData {
             get {
                 return this.extensionDataField;
             }
@@ -36,39 +41,39 @@ namespace UserStorageMonitor.UserStorageServiceReference {
             }
         }
         
-        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        public event PropertyChangedEventHandler PropertyChanged;
         
         protected void RaisePropertyChanged(string propertyName) {
-            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
             if ((propertyChanged != null)) {
-                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+                propertyChanged(this, new PropertyChangedEventArgs(propertyName));
             }
         }
     }
     
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="SelectAllServicesQuery", Namespace="http://schemas.datacontract.org/2004/07/UserStorage.Diagnostics.Query")]
-    [System.SerializableAttribute()]
-    public partial class SelectAllServicesQuery : UserStorageMonitor.UserStorageServiceReference.EmptyQuery {
+    [DebuggerStepThrough()]
+    [GeneratedCode("System.Runtime.Serialization", "4.0.0.0")]
+    [DataContract(Name="SelectAllServicesQuery", Namespace="http://schemas.datacontract.org/2004/07/UserStorage.Diagnostics.Query")]
+    [Serializable()]
+    public partial class SelectAllServicesQuery : EmptyQuery {
     }
     
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="SelectServicesWithSpecifiedNameQuery", Namespace="http://schemas.datacontract.org/2004/07/UserStorage.Diagnostics.Query")]
-    [System.SerializableAttribute()]
-    public partial class SelectServicesWithSpecifiedNameQuery : UserStorageMonitor.UserStorageServiceReference.EmptyQuery {
+    [DebuggerStepThrough()]
+    [GeneratedCode("System.Runtime.Serialization", "4.0.0.0")]
+    [DataContract(Name="SelectServicesWithSpecifiedNameQuery", Namespace="http://schemas.datacontract.org/2004/07/UserStorage.Diagnostics.Query")]
+    [Serializable()]
+    public partial class SelectServicesWithSpecifiedNameQuery : EmptyQuery {
         
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        [OptionalField()]
         private string NameField;
         
-        [System.Runtime.Serialization.DataMemberAttribute()]
+        [DataMember()]
         public string Name {
             get {
                 return this.NameField;
             }
             set {
-                if ((object.ReferenceEquals(this.NameField, value) != true)) {
+                if ((ReferenceEquals(this.NameField, value) != true)) {
                     this.NameField = value;
                     this.RaisePropertyChanged("Name");
                 }
@@ -76,22 +81,22 @@ namespace UserStorageMonitor.UserStorageServiceReference {
         }
     }
     
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="SelectServicesWithNameContainsQuery", Namespace="http://schemas.datacontract.org/2004/07/UserStorage.Diagnostics.Query")]
-    [System.SerializableAttribute()]
-    public partial class SelectServicesWithNameContainsQuery : UserStorageMonitor.UserStorageServiceReference.EmptyQuery {
+    [DebuggerStepThrough()]
+    [GeneratedCode("System.Runtime.Serialization", "4.0.0.0")]
+    [DataContract(Name="SelectServicesWithNameContainsQuery", Namespace="http://schemas.datacontract.org/2004/07/UserStorage.Diagnostics.Query")]
+    [Serializable()]
+    public partial class SelectServicesWithNameContainsQuery : EmptyQuery {
         
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        [OptionalField()]
         private string NameTextField;
         
-        [System.Runtime.Serialization.DataMemberAttribute()]
+        [DataMember()]
         public string NameText {
             get {
                 return this.NameTextField;
             }
             set {
-                if ((object.ReferenceEquals(this.NameTextField, value) != true)) {
+                if ((ReferenceEquals(this.NameTextField, value) != true)) {
                     this.NameTextField = value;
                     this.RaisePropertyChanged("NameText");
                 }
@@ -99,22 +104,22 @@ namespace UserStorageMonitor.UserStorageServiceReference {
         }
     }
     
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="SelectServicesWithSpecifiedTypeQuery", Namespace="http://schemas.datacontract.org/2004/07/UserStorage.Diagnostics.Query")]
-    [System.SerializableAttribute()]
-    public partial class SelectServicesWithSpecifiedTypeQuery : UserStorageMonitor.UserStorageServiceReference.EmptyQuery {
+    [DebuggerStepThrough()]
+    [GeneratedCode("System.Runtime.Serialization", "4.0.0.0")]
+    [DataContract(Name="SelectServicesWithSpecifiedTypeQuery", Namespace="http://schemas.datacontract.org/2004/07/UserStorage.Diagnostics.Query")]
+    [Serializable()]
+    public partial class SelectServicesWithSpecifiedTypeQuery : EmptyQuery {
         
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        [OptionalField()]
         private string TypeField;
         
-        [System.Runtime.Serialization.DataMemberAttribute()]
+        [DataMember()]
         public string Type {
             get {
                 return this.TypeField;
             }
             set {
-                if ((object.ReferenceEquals(this.TypeField, value) != true)) {
+                if ((ReferenceEquals(this.TypeField, value) != true)) {
                     this.TypeField = value;
                     this.RaisePropertyChanged("Type");
                 }
@@ -122,29 +127,29 @@ namespace UserStorageMonitor.UserStorageServiceReference {
         }
     }
     
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="ServiceInfo", Namespace="http://schemas.datacontract.org/2004/07/UserStorage.Diagnostics")]
-    [System.SerializableAttribute()]
-    public partial class ServiceInfo : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
+    [DebuggerStepThrough()]
+    [GeneratedCode("System.Runtime.Serialization", "4.0.0.0")]
+    [DataContract(Name="ServiceInfo", Namespace="http://schemas.datacontract.org/2004/07/UserStorage.Diagnostics")]
+    [Serializable()]
+    public partial class ServiceInfo : object, IExtensibleDataObject, INotifyPropertyChanged {
         
-        [System.NonSerializedAttribute()]
-        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
+        [NonSerialized()]
+        private ExtensionDataObject extensionDataField;
         
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        [OptionalField()]
         private string ServiceDebugInfoField;
         
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        [OptionalField()]
         private string ServiceNameField;
         
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        [OptionalField()]
         private string ServiceTypeField;
         
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        [OptionalField()]
         private string ServiceUrlField;
         
-        [global::System.ComponentModel.BrowsableAttribute(false)]
-        public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
+        [Browsable(false)]
+        public ExtensionDataObject ExtensionData {
             get {
                 return this.extensionDataField;
             }
@@ -153,92 +158,92 @@ namespace UserStorageMonitor.UserStorageServiceReference {
             }
         }
         
-        [System.Runtime.Serialization.DataMemberAttribute()]
+        [DataMember()]
         public string ServiceDebugInfo {
             get {
                 return this.ServiceDebugInfoField;
             }
             set {
-                if ((object.ReferenceEquals(this.ServiceDebugInfoField, value) != true)) {
+                if ((ReferenceEquals(this.ServiceDebugInfoField, value) != true)) {
                     this.ServiceDebugInfoField = value;
                     this.RaisePropertyChanged("ServiceDebugInfo");
                 }
             }
         }
         
-        [System.Runtime.Serialization.DataMemberAttribute()]
+        [DataMember()]
         public string ServiceName {
             get {
                 return this.ServiceNameField;
             }
             set {
-                if ((object.ReferenceEquals(this.ServiceNameField, value) != true)) {
+                if ((ReferenceEquals(this.ServiceNameField, value) != true)) {
                     this.ServiceNameField = value;
                     this.RaisePropertyChanged("ServiceName");
                 }
             }
         }
         
-        [System.Runtime.Serialization.DataMemberAttribute()]
+        [DataMember()]
         public string ServiceType {
             get {
                 return this.ServiceTypeField;
             }
             set {
-                if ((object.ReferenceEquals(this.ServiceTypeField, value) != true)) {
+                if ((ReferenceEquals(this.ServiceTypeField, value) != true)) {
                     this.ServiceTypeField = value;
                     this.RaisePropertyChanged("ServiceType");
                 }
             }
         }
         
-        [System.Runtime.Serialization.DataMemberAttribute()]
+        [DataMember()]
         public string ServiceUrl {
             get {
                 return this.ServiceUrlField;
             }
             set {
-                if ((object.ReferenceEquals(this.ServiceUrlField, value) != true)) {
+                if ((ReferenceEquals(this.ServiceUrlField, value) != true)) {
                     this.ServiceUrlField = value;
                     this.RaisePropertyChanged("ServiceUrl");
                 }
             }
         }
         
-        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        public event PropertyChangedEventHandler PropertyChanged;
         
         protected void RaisePropertyChanged(string propertyName) {
-            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
             if ((propertyChanged != null)) {
-                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+                propertyChanged(this, new PropertyChangedEventArgs(propertyName));
             }
         }
     }
     
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ServiceModel.ServiceContractAttribute(ConfigurationName="UserStorageServiceReference.Monitor")]
+    [GeneratedCode("System.ServiceModel", "4.0.0.0")]
+    [ServiceContract(ConfigurationName="UserStorageServiceReference.Monitor")]
     public interface Monitor {
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/Monitor/GetServicesCount", ReplyAction="http://tempuri.org/Monitor/GetServicesCountResponse")]
+        [OperationContract(Action="http://tempuri.org/Monitor/GetServicesCount", ReplyAction="http://tempuri.org/Monitor/GetServicesCountResponse")]
         int GetServicesCount();
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/Monitor/GetServicesCount", ReplyAction="http://tempuri.org/Monitor/GetServicesCountResponse")]
-        System.Threading.Tasks.Task<int> GetServicesCountAsync();
+        [OperationContract(Action="http://tempuri.org/Monitor/GetServicesCount", ReplyAction="http://tempuri.org/Monitor/GetServicesCountResponse")]
+        Task<int> GetServicesCountAsync();
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/Monitor/QueryServices", ReplyAction="http://tempuri.org/Monitor/QueryServicesResponse")]
-        UserStorageMonitor.UserStorageServiceReference.ServiceInfo[] QueryServices(UserStorageMonitor.UserStorageServiceReference.EmptyQuery queryType);
+        [OperationContract(Action="http://tempuri.org/Monitor/QueryServices", ReplyAction="http://tempuri.org/Monitor/QueryServicesResponse")]
+        ServiceInfo[] QueryServices(EmptyQuery queryType);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/Monitor/QueryServices", ReplyAction="http://tempuri.org/Monitor/QueryServicesResponse")]
-        System.Threading.Tasks.Task<UserStorageMonitor.UserStorageServiceReference.ServiceInfo[]> QueryServicesAsync(UserStorageMonitor.UserStorageServiceReference.EmptyQuery queryType);
+        [OperationContract(Action="http://tempuri.org/Monitor/QueryServices", ReplyAction="http://tempuri.org/Monitor/QueryServicesResponse")]
+        Task<ServiceInfo[]> QueryServicesAsync(EmptyQuery queryType);
     }
     
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    public interface MonitorChannel : UserStorageMonitor.UserStorageServiceReference.Monitor, System.ServiceModel.IClientChannel {
+    [GeneratedCode("System.ServiceModel", "4.0.0.0")]
+    public interface MonitorChannel : Monitor, IClientChannel {
     }
     
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    public partial class MonitorClient : System.ServiceModel.ClientBase<UserStorageMonitor.UserStorageServiceReference.Monitor>, UserStorageMonitor.UserStorageServiceReference.Monitor {
+    [DebuggerStepThrough()]
+    [GeneratedCode("System.ServiceModel", "4.0.0.0")]
+    public partial class MonitorClient : ClientBase<Monitor>, Monitor {
         
         public MonitorClient() {
         }
@@ -251,11 +256,11 @@ namespace UserStorageMonitor.UserStorageServiceReference {
                 base(endpointConfigurationName, remoteAddress) {
         }
         
-        public MonitorClient(string endpointConfigurationName, System.ServiceModel.EndpointAddress remoteAddress) : 
+        public MonitorClient(string endpointConfigurationName, EndpointAddress remoteAddress) : 
                 base(endpointConfigurationName, remoteAddress) {
         }
         
-        public MonitorClient(System.ServiceModel.Channels.Binding binding, System.ServiceModel.EndpointAddress remoteAddress) : 
+        public MonitorClient(Binding binding, EndpointAddress remoteAddress) : 
                 base(binding, remoteAddress) {
         }
         
@@ -263,15 +268,15 @@ namespace UserStorageMonitor.UserStorageServiceReference {
             return base.Channel.GetServicesCount();
         }
         
-        public System.Threading.Tasks.Task<int> GetServicesCountAsync() {
+        public Task<int> GetServicesCountAsync() {
             return base.Channel.GetServicesCountAsync();
         }
         
-        public UserStorageMonitor.UserStorageServiceReference.ServiceInfo[] QueryServices(UserStorageMonitor.UserStorageServiceReference.EmptyQuery queryType) {
+        public ServiceInfo[] QueryServices(EmptyQuery queryType) {
             return base.Channel.QueryServices(queryType);
         }
         
-        public System.Threading.Tasks.Task<UserStorageMonitor.UserStorageServiceReference.ServiceInfo[]> QueryServicesAsync(UserStorageMonitor.UserStorageServiceReference.EmptyQuery queryType) {
+        public Task<ServiceInfo[]> QueryServicesAsync(EmptyQuery queryType) {
             return base.Channel.QueryServicesAsync(queryType);
         }
     }

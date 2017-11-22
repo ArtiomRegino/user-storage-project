@@ -18,7 +18,7 @@ namespace UserStorageServices.Repository.Serializators
 
         public List<User> DeserializeUsers(FileStream fs)
         {
-            var serializer = new XmlSerializer(typeof(User));
+            var serializer = new XmlSerializer(typeof(List<User>));
 
             return (List<User>)serializer.Deserialize(fs);
         }

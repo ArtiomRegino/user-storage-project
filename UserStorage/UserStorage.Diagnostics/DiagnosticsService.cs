@@ -2,6 +2,7 @@
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.ServiceModel;
+using UserStorage.Diagnostics.Query;
 
 namespace UserStorage.Diagnostics
 {
@@ -15,32 +16,32 @@ namespace UserStorage.Diagnostics
             return ServiceInfoCollection.Count;
         }
 
-        public ServiceInfo[] Query(Query.ServiceQuery query)
+        public ServiceInfo[] Query(ServiceQuery query)
         {
-            if (query.GetType() == typeof(Query.All))
+            if (query.GetType() == typeof(All))
             {
                 return ServiceInfoCollection.ToArray();
             }
 
-            if (query.GetType() == typeof(Query.NameEquals))
+            if (query.GetType() == typeof(NameEquals))
             {
-                var nameEquals = (Query.NameEquals)query;
+                var nameEquals = (NameEquals)query;
                 return ServiceInfoCollection.Where(s => s.Name == nameEquals.Name).ToArray();
             }
 
-            if (query.GetType() == typeof(Query.NameContains))
+            if (query.GetType() == typeof(NameContains))
             {
-                var nameContains = (Query.NameContains)query;
+                var nameContains = (NameContains)query;
                 return ServiceInfoCollection.Where(s => s.Name.Contains(nameContains.Text)).ToArray();
             }
 
-            if (query.GetType() == typeof(Query.TypeEquals))
+            if (query.GetType() == typeof(TypeEquals))
             {
-                var typeEquals = (Query.TypeEquals)query;
+                var typeEquals = (TypeEquals)query;
                 return ServiceInfoCollection.Where(s => s.Type == typeEquals.Type).ToArray();
             }
 
-            if (query.GetType() == typeof(Query.ServiceQuery))
+            if (query.GetType() == typeof(ServiceQuery))
             {
                 return new ServiceInfo[] { };
             }

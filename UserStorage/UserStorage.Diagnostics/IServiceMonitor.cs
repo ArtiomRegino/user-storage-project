@@ -1,4 +1,5 @@
 ﻿using System.ServiceModel;
+using UserStorage.Diagnostics.Query;
 
 namespace UserStorage.Diagnostics
 {
@@ -9,6 +10,6 @@ namespace UserStorage.Diagnostics
         int GetCount();
 
         [OperationContract(Name = "QueryServices")]
-        ServiceInfo[] Query(Query.ServiceQuery queryType);
+        ServiceInfo[] Query(ServiceQuery queryType);
     }
 }
