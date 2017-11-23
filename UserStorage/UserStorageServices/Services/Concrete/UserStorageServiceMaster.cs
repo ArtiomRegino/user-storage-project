@@ -28,6 +28,15 @@ namespace UserStorageServices.Services.Concrete
             Sender = new CompositeNotificationSender();
         }
 
+        public UserStorageServiceMaster(IUserRepository repository)
+            : base(repository)
+        {
+            _validator = new CompositeValidator();
+            _slaveServices = new List<IUserStorageService>();
+            _subscribers = new HashSet<INotificationSubscriber>();
+            Sender = new CompositeNotificationSender();
+        }
+
         private event Action<User> AddedToStorage;
 
         private event Action<User> RemoveedFromStorage;
