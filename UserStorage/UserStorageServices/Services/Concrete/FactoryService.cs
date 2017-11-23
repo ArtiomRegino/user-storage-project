@@ -77,8 +77,12 @@ namespace UserStorageServices.Services.Concrete
             return master;
         }
 
-        public static IUserStorageService CreateService(string serviceType, IUserSerializationStrategy strategy = null,
-            string filePath = null, IUserIdGenerationService generationService = null, IValidator validator = null)
+        public static IUserStorageService CreateService(
+            string serviceType,
+            IUserSerializationStrategy strategy = null,
+            string filePath = null,
+            IUserIdGenerationService generationService = null,
+            IValidator validator = null)
         {
             var types = new List<Type>();
 
@@ -112,7 +116,8 @@ namespace UserStorageServices.Services.Concrete
                 null,
                 null) as UserTemproraryRepository;
 
-            return Activator.CreateInstance(newDomain,
+            return Activator.CreateInstance(
+                newDomain,
                 type.Assembly.FullName,
                 type.FullName,
                 false,

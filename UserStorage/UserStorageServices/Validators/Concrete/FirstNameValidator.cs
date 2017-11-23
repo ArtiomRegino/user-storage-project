@@ -20,30 +20,34 @@ namespace UserStorageServices.Validators.Concrete
             var type = typeof(User);
             var propertyInfo = type.GetProperty("FirstName");
 
-            if (propertyInfo == null) return;
-
-            var attributeNotNullOrEmpty = propertyInfo.GetCustomAttribute(typeof(ValidateNotNullOrEmptyOrWhiteSpaceAttribute));
-            var attributeMaxLength = propertyInfo.GetCustomAttribute<ValidateMaxLengthAttribute>();
-            var attributeRegex = propertyInfo.GetCustomAttribute<ValidateRegexAttribute>();
-
-            if (attributeNotNullOrEmpty != null)
+            if (propertyInfo != null)
             {
-                if (string.IsNullOrWhiteSpace(user.FirstName))
+                var attributeNotNullOrEmpty =
+                    propertyInfo.GetCustomAttribute(typeof(ValidateNotNullOrEmptyOrWhiteSpaceAttribute));
+                var attributeMaxLength = propertyInfo.GetCustomAttribute<ValidateMaxLengthAttribute>();
+                var attributeRegex = propertyInfo.GetCustomAttribute<ValidateRegexAttribute>();
+
+                if (attributeNotNullOrEmpty != null)
                 {
-                    throw new FirstNameNullEmptyOrWhitespace("FirstName is null, empty or whitespace.");
+                    if (string.IsNullOrWhiteSpace(user.FirstName))
+                    {
+                        throw new FirstNameNullEmptyOrWhitespace("FirstName is null, empty or whitespace.");
+                    }
                 }
-            }
-            if (user.FirstName.Length > attributeMaxLength?.Length)
-            {
-                throw new FirstNameExceedsLengthLimitsException(nameof(user));
-            }
-            if (attributeRegex != null)
-            {
-                var regex = new Regex(attributeRegex.Pattern);
 
-                if (!regex.IsMatch(user.FirstName))
+                if (user.FirstName.Length > attributeMaxLength?.Length)
                 {
-                    throw new FirstNameNotMatchPatternException(nameof(user));
+                    throw new FirstNameExceedsLengthLimitsException(nameof(user));
+                }
+
+                if (attributeRegex != null)
+                {
+                    var regex = new Regex(attributeRegex.Pattern);
+
+                    if (!regex.IsMatch(user.FirstName))
+                    {
+                        throw new FirstNameNotMatchPatternException(nameof(user));
+                    }
                 }
             }
         }

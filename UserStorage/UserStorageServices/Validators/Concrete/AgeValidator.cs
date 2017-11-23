@@ -18,22 +18,23 @@ namespace UserStorageServices.Validators.Concrete
             var type = typeof(User);
             var propertyInfo = type.GetProperty("Age");
 
-            if (propertyInfo == null) return;
-
-            var attributes = propertyInfo.GetCustomAttributes(true);
-
-            foreach (var item in attributes)
+            if (propertyInfo != null)
             {
-                var attribute = item as ValidateMinMaxAttribute;
+                var attributes = propertyInfo.GetCustomAttributes(true);
 
-                if (attribute != null)
+                foreach (var item in attributes)
                 {
-                    var max = attribute.Max;
-                    var min = attribute.Min;
+                    var attribute = item as ValidateMinMaxAttribute;
 
-                    if (user.Age < min || user.Age > max)
+                    if (attribute != null)
                     {
-                        throw new AgeExceedsLimitsException($"Age is out of range ({min} - {max}).");
+                        var max = attribute.Max;
+                        var min = attribute.Min;
+
+                        if (user.Age < min || user.Age > max)
+                        {
+                            throw new AgeExceedsLimitsException($"Age is out of range ({min} - {max}).");
+                        }
                     }
                 }
             }
