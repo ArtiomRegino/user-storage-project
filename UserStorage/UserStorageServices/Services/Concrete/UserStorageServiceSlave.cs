@@ -4,11 +4,13 @@ using System.Linq;
 using UserStorageServices.Enums;
 using UserStorageServices.Notifications;
 using UserStorageServices.Repository.Interfaces;
+using UserStorageServices.Services.Attributes;
 using UserStorageServices.Services.Interfaces;
 
 namespace UserStorageServices.Services.Concrete
 {
     [Serializable]
+    [MyApplicationService("UserStorageSlave")]
     public class UserStorageServiceSlave : UserStorageServiceBase, INotificationSubscriber
     {
         public UserStorageServiceSlave(IUserRepository repository) : base(repository)
@@ -74,13 +76,21 @@ namespace UserStorageServices.Services.Concrete
         private bool HaveMaster()
         {
             var stackTrace = new StackTrace();
-            var currentCalled = stackTrace.GetFrame(1).GetMethod();
-            var calledMetod = typeof(UserStorageServiceMaster).GetMethod(currentCalled.Name);
+            var currentCalledOne = stackTrace.GetFrame(1).GetMethod();
+            var currentCalledSecond = stackTrace.GetFrame(2).GetMethod();
+            var calledMetodOne = typeof(UserStorageServiceMaster).GetMethod(currentCalledOne.Name);
+            var calledMetodSecond = typeof(UserStorageServiceSlave).GetMethod(currentCalledSecond.Name);
             var frames = stackTrace.GetFrames();
             bool flag;
+
             if (frames != null)
             {
-                flag = frames.Select(x => x.GetMethod()).Contains(calledMetod);
+                flag = frames.Select(x => x.GetMethod()).Contains(calledMetodOne);
+
+                if (!flag)
+                {
+                    flag = frames.Select(x => x.GetMethod()).Contains(calledMetodSecond);
+                }
             }
             else
             {

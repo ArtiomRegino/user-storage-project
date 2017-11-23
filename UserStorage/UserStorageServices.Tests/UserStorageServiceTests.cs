@@ -41,7 +41,9 @@ namespace UserStorageServices.Tests
             // Act
             storageLog.Add(new User
             {
-                FirstName = null
+                FirstName = null,
+                Age = 18,
+                LastName = "Mariancol"
             });
 
             // Assert - [ExpectedException]
@@ -57,7 +59,9 @@ namespace UserStorageServices.Tests
             // Act
             storageLog.Add(new User
             {
-                FirstName = "    "
+                FirstName = "    ",
+                Age = 28,
+                LastName = "Regino"
             });
 
             // Assert - [ExpectedException]
@@ -73,7 +77,81 @@ namespace UserStorageServices.Tests
             // Act
             storageLog.Add(new User
             {
-                FirstName = string.Empty
+                FirstName = string.Empty,
+                Age = 24,
+                LastName = "Bolinik"
+            });
+
+            // Assert - [ExpectedException]
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(FirstNameExceedsLengthLimitsException))]
+        public void Add_UserFirstNameLengthIsMoreThenCanBeWithoutSlaveNodes_ExceptionThrown()
+        {
+            // Arrange
+            var storageLog = GetServiceLog();
+
+            // Act
+            storageLog.Add(new User
+            {
+                FirstName = "DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD",
+                Age = 24,
+                LastName = "Bolinik"
+            });
+
+            // Assert - [ExpectedException]
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(FirstNameNotMatchPatternException))]
+        public void Add_UserFirstNameRegexConditionFailWithoutSlaveNodes_ExceptionThrown()
+        {
+            // Arrange
+            var storageLog = GetServiceLog();
+
+            // Act
+            storageLog.Add(new User
+            {
+                FirstName = "Алан/",
+                Age = 24,
+                LastName = "Bolinik"
+            });
+
+            // Assert - [ExpectedException]
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(LastNameNotMatchPatternException))]
+        public void Add_UserLastNameRegexConditionFailWithoutSlaveNodes_ExceptionThrown()
+        {
+            // Arrange
+            var storageLog = GetServiceLog();
+
+            // Act
+            storageLog.Add(new User
+            {
+                FirstName = "Alan",
+                Age = 24,
+                LastName = "Алан?!"
+            });
+
+            // Assert - [ExpectedException]
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(LastNameExceedsLengthLimitsException))]
+        public void Add_UserLastNameLengthIsMoreThenCanBeWithoutSlaveNodes_ExceptionThrown()
+        {
+            // Arrange
+            var storageLog = GetServiceLog();
+
+            // Act
+            storageLog.Add(new User
+            {
+                LastName = "DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD",
+                Age = 24,
+                FirstName = "Bolinik"
             });
 
             // Assert - [ExpectedException]
@@ -90,7 +168,8 @@ namespace UserStorageServices.Tests
             storageLog.Add(new User
             {
                 FirstName = "Alan",
-                LastName = null
+                LastName = null,
+                Age = 22
             });
 
             // Assert - [ExpectedException]
@@ -107,7 +186,8 @@ namespace UserStorageServices.Tests
             storageLog.Add(new User
             {
                 FirstName = "Alan",
-                LastName = "    "
+                LastName = "    ",
+                Age = 34
             });
 
             // Assert - [ExpectedException]
@@ -123,7 +203,8 @@ namespace UserStorageServices.Tests
             storageLog.Add(new User
             {
                 FirstName = "Alan",
-                LastName = string.Empty
+                LastName = string.Empty,
+                Age = 32
             });
 
             // Assert - [ExpectedException]
@@ -139,6 +220,8 @@ namespace UserStorageServices.Tests
             // Act
             storageLog.Add(new User
             {
+                FirstName = "Tomara",
+                LastName = "Soboleva",
                 Age = -2
             });
 

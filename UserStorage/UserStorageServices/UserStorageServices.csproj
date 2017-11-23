@@ -49,7 +49,11 @@
   <ItemGroup>
     <Compile Include="Enums\UserStorageServiceMode.cs" />
     <Compile Include="Exceptions\AgeExceedsLimitsException.cs" />
+    <Compile Include="Exceptions\FirstNameExceedsLengthLimitsException.cs" />
+    <Compile Include="Exceptions\FirstNameNotMatchPatternException.cs" />
     <Compile Include="Exceptions\FirstNameNullEmptyOrWhitespace.cs" />
+    <Compile Include="Exceptions\LastNameExceedsLengthLimitsException.cs" />
+    <Compile Include="Exceptions\LastNameNotMatchPatternException.cs" />
     <Compile Include="Exceptions\LastNameNullEmptyOrWhitespace.cs" />
     <Compile Include="Notifications\AddUserActionNotification.cs" />
     <Compile Include="Notifications\CompositeNotificationSender.cs" />
@@ -62,12 +66,17 @@
     <Compile Include="Notifications\NotificationSender.cs" />
     <Compile Include="Notifications\NotificationType.cs" />
     <Compile Include="Repository\Interfaces\IUserRepositoryManager.cs" />
+    <Compile Include="Services\Attributes\MyApplicationServiceAttribute.cs" />
     <Compile Include="Services\Concrete\FactoryService.cs" />
     <Compile Include="Services\Interfaces\INotificationSubscriber.cs" />
     <Compile Include="IdGenerators\Interfaces\IUserIdGenerationService.cs" />
     <Compile Include="Repository\Serializators\BinaryUserSerializationStrategy.cs" />
     <Compile Include="Repository\Interfaces\IUserRepository.cs" />
     <Compile Include="Services\Interfaces\IUserStorageService.cs" />
+    <Compile Include="Validators\Attributes\ValidateMaxLengthAttribute.cs" />
+    <Compile Include="Validators\Attributes\ValidateMinMaxAttribute.cs" />
+    <Compile Include="Validators\Attributes\ValidateNotNullOrEmptyOrWhiteSpaceAttribute.cs" />
+    <Compile Include="Validators\Attributes\ValidateRegexAttribute.cs" />
     <Compile Include="Validators\Interfaces\IUserValidationService.cs" />
     <Compile Include="Repository\Interfaces\IUserSerializationStrategy.cs" />
     <Compile Include="Repository\Concrete\UserTemproraryRepository.cs" />
