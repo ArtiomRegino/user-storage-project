@@ -13,6 +13,8 @@ namespace UserStorageServices.Services.Concrete
     [MyApplicationService("UserStorageSlave")]
     public class UserStorageServiceSlave : UserStorageServiceBase, INotificationSubscriber
     {
+        private object _lockState = new object();
+
         public UserStorageServiceSlave(IUserRepository repository) : base(repository)
         {
             var receiver = new NotificationReceiver();
@@ -26,24 +28,30 @@ namespace UserStorageServices.Services.Concrete
 
         public override void Add(User user)
         {
-            if (HaveMaster())
+            lock (_lockState)
             {
-                base.Add(user);
-            }
-            else
-            {
-                throw new NotSupportedException("This action is not allowed. Change service mode.");
+                if (HaveMaster())
+                {
+                    base.Add(user);
+                }
+                else
+                {
+                    throw new NotSupportedException("This action is not allowed. Change service mode.");
+                }
             }
         }
 
         public override bool Remove(User user)
         {
-            if (HaveMaster())
+            lock (_lockState)
             {
-                return base.Remove(user);
-            }
+                if (HaveMaster())
+                {
+                    return base.Remove(user);
+                }
 
-            throw new NotSupportedException("This action is not allowed. Change service mode.");
+                throw new NotSupportedException("This action is not allowed. Change service mode.");
+            }
         }
 
         public void UserAdded(User user)

@@ -18,6 +18,7 @@ namespace UserStorageServices.Services.Concrete
         private readonly IEnumerable<IUserStorageService> _slaveServices;
         private readonly HashSet<INotificationSubscriber> _subscribers;
         private readonly IValidator _validator;
+        private object _lockState = new object();
 
         public UserStorageServiceMaster(IUserRepository repository, IValidator validator = null, IEnumerable<IUserStorageService> services = null)
             : base(repository)
@@ -48,57 +49,65 @@ namespace UserStorageServices.Services.Concrete
         public override void Add(User user)
         {
             _validator.Validate(user);
-            base.Add(user);
 
-            OnUserAdded(user);
-
-            foreach (var item in _slaveServices)
+            lock (_lockState)
             {
-                item.Add(user);
-            }
+                base.Add(user);
 
-            Sender.Send(new NotificationContainer
-            {
-                Notifications = new[]
+                OnUserAdded(user);
+
+                foreach (var item in _slaveServices)
                 {
-                    new Notification
+                    item.Add(user);
+                }
+
+                Sender.Send(new NotificationContainer
+                {
+                    Notifications = new[]
                     {
-                        Type = NotificationType.AddUser,
-                        Action = new AddUserActionNotification
+                        new Notification
                         {
-                            User = user
+                            Type = NotificationType.AddUser,
+                            Action = new AddUserActionNotification
+                            {
+                                User = user
+                            }
                         }
                     }
-                }
-            });
+                });
+            }
         }
 
         public override bool Remove(User user)
         {
-            var flag = base.Remove(user);
+            bool flag;
 
-            OnUserRemoved(user);
-
-            foreach (var item in _slaveServices)
+            lock (_lockState)
             {
-                item.Remove(user);
-            }
+                flag = base.Remove(user);
 
-            Sender.Send(new NotificationContainer
-            {
-                Notifications = new[]
+                OnUserRemoved(user);
+
+                foreach (var item in _slaveServices)
                 {
-                    new Notification
+                    item.Remove(user);
+                }
+
+                Sender.Send(new NotificationContainer
+                {
+                    Notifications = new[]
                     {
-                        Type = NotificationType.DeleteUser,
-                        Action = new DeleteUserActionNotification
+                        new Notification
                         {
-                            User = user
+                            Type = NotificationType.DeleteUser,
+                            Action = new DeleteUserActionNotification
+                            {
+                                User = user
+                            }
                         }
                     }
-                }
-            });
-
+                });
+            }
             return flag;
         }
 
