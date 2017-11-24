@@ -489,7 +489,7 @@ var serviceConfiguration = (ServiceConfiguration)System.Configuration.Configurat
 
 - [X] New branch "step10".
 
-- [ ] Refactor validation: create [new attribute classes](https://docs.microsoft.com/en-us/dotnet/standard/design-guidelines/attributes) and [use reflection](https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/concepts/attributes/accessing-attributes-by-using-reflection) to validate input from the client like in this example:
+- [X] Refactor validation: create [new attribute classes](https://docs.microsoft.com/en-us/dotnet/standard/design-guidelines/attributes) and [use reflection](https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/concepts/attributes/accessing-attributes-by-using-reflection) to validate input from the client like in this example:
 
 ```cs
 class User
@@ -532,17 +532,17 @@ Run tests, review, commit.
 
 ## Step 11 - Synchronize
 
-- [ ] New branch "step11".
+- [X] New branch "step11".
 
 - [ ] The collection in your repository is going to be used in multi-threading environment, and this may lead to concurrency issues. Make your repository thread-safe using [lock statement](https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/lock-statement).
 
 Run tests, review and commit.
 
-- [ ] Make your repository thread-safe using [ReaderWriterLockSlim class](https://docs.microsoft.com/en-us/dotnet/standard/threading/reader-writer-locks).
+- [X] Make your repository thread-safe using [ReaderWriterLockSlim class](https://docs.microsoft.com/en-us/dotnet/standard/threading/reader-writer-locks).
 
 Run tests, review and commit.
 
-- [ ] Run StyleCop, fix issues, commit. Mark, commit. Publish "step11". Merge "step11" into master. Publish.
+- [X] Run StyleCop, fix issues, commit. Mark, commit. Publish "step11". Merge "step11" into master. Publish.
 
 
 ## Step 12 - WCF

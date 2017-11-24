@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Linq;
+using System.Threading;
 using UserStorageServices.Enums;
 using UserStorageServices.Notifications;
 using UserStorageServices.Repository.Interfaces;
@@ -13,6 +14,8 @@ namespace UserStorageServices.Services.Concrete
     [MyApplicationService("UserStorageSlave")]
     public class UserStorageServiceSlave : UserStorageServiceBase, INotificationSubscriber
     {
+        private ReaderWriterLockSlim _lockState = new ReaderWriterLockSlim();
+
         public UserStorageServiceSlave(IUserRepository repository) : base(repository)
         {
             var receiver = new NotificationReceiver();
@@ -26,24 +29,40 @@ namespace UserStorageServices.Services.Concrete
 
         public override void Add(User user)
         {
-            if (HaveMaster())
+            _lockState.EnterReadLock();
+            try
             {
-                base.Add(user);
+                if (HaveMaster())
+                {
+                    base.Add(user);
+                }
+                else
+                {
+                    throw new NotSupportedException("This action is not allowed. Change service mode.");
+                }
             }
-            else
+            finally
             {
-                throw new NotSupportedException("This action is not allowed. Change service mode.");
+                _lockState.ExitReadLock();
             }
         }
 
         public override bool Remove(User user)
         {
-            if (HaveMaster())
+            _lockState.EnterReadLock();
+            try
             {
-                return base.Remove(user);
-            }
+                if (HaveMaster())
+                {
+                    return base.Remove(user);
+                }
 
-            throw new NotSupportedException("This action is not allowed. Change service mode.");
+                throw new NotSupportedException("This action is not allowed. Change service mode.");
+            }
+            finally
+            {
+                _lockState.ExitReadLock();
+            }
         }
 
         public void UserAdded(User user)

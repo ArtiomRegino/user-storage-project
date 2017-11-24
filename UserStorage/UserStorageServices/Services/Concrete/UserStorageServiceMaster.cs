@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using UserStorageServices.Enums;
 using UserStorageServices.Notifications;
 using UserStorageServices.Repository.Interfaces;
@@ -18,6 +19,7 @@ namespace UserStorageServices.Services.Concrete
         private readonly IEnumerable<IUserStorageService> _slaveServices;
         private readonly HashSet<INotificationSubscriber> _subscribers;
         private readonly IValidator _validator;
+        private ReaderWriterLockSlim _lockState = new ReaderWriterLockSlim();
 
         public UserStorageServiceMaster(IUserRepository repository, IValidator validator = null, IEnumerable<IUserStorageService> services = null)
             : base(repository)
@@ -48,56 +50,76 @@ namespace UserStorageServices.Services.Concrete
         public override void Add(User user)
         {
             _validator.Validate(user);
-            base.Add(user);
+            _lockState.EnterReadLock();
 
-            OnUserAdded(user);
-
-            foreach (var item in _slaveServices)
+            try
             {
-                item.Add(user);
-            }
+                base.Add(user);
 
-            Sender.Send(new NotificationContainer
-            {
-                Notifications = new[]
+                OnUserAdded(user);
+
+                foreach (var item in _slaveServices)
                 {
-                    new Notification
+                    item.Add(user);
+                }
+
+                Sender.Send(new NotificationContainer
+                {
+                    Notifications = new[]
                     {
-                        Type = NotificationType.AddUser,
-                        Action = new AddUserActionNotification
+                        new Notification
                         {
-                            User = user
+                            Type = NotificationType.AddUser,
+                            Action = new AddUserActionNotification
+                            {
+                                User = user
+                            }
                         }
                     }
-                }
-            });
+                });
+            }
+            finally
+            {
+                _lockState.ExitReadLock();
+            }
         }
 
         public override bool Remove(User user)
         {
-            var flag = base.Remove(user);
+            bool flag;
 
-            OnUserRemoved(user);
+            _lockState.EnterReadLock();
 
-            foreach (var item in _slaveServices)
+            try
             {
-                item.Remove(user);
-            }
+                flag = base.Remove(user);
 
-            Sender.Send(new NotificationContainer
-            {
-                Notifications = new[]
+                OnUserRemoved(user);
+
+                foreach (var item in _slaveServices)
                 {
-                    new Notification
+                    item.Remove(user);
+                }
+
+                Sender.Send(new NotificationContainer
+                {
+                    Notifications = new[]
                     {
-                        Type = NotificationType.DeleteUser,
-                        Action = new DeleteUserActionNotification
+                        new Notification
                         {
-                            User = user
+                            Type = NotificationType.DeleteUser,
+                            Action = new DeleteUserActionNotification
+                            {
+                                User = user
+                            }
                         }
                     }
-                }
-            });
+                });
+            }
+            finally
+            {
+                _lockState.ExitReadLock();
+            }
 
             return flag;
         }
