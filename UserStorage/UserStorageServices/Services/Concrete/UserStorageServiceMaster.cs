@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using UserStorageServices.Enums;
 using UserStorageServices.Notifications;
 using UserStorageServices.Repository.Interfaces;
@@ -18,7 +19,7 @@ namespace UserStorageServices.Services.Concrete
         private readonly IEnumerable<IUserStorageService> _slaveServices;
         private readonly HashSet<INotificationSubscriber> _subscribers;
         private readonly IValidator _validator;
-        private object _lockState = new object();
+        private ReaderWriterLockSlim _lockState = new ReaderWriterLockSlim();
 
         public UserStorageServiceMaster(IUserRepository repository, IValidator validator = null, IEnumerable<IUserStorageService> services = null)
             : base(repository)
@@ -49,8 +50,9 @@ namespace UserStorageServices.Services.Concrete
         public override void Add(User user)
         {
             _validator.Validate(user);
+            _lockState.EnterReadLock();
 
-            lock (_lockState)
+            try
             {
                 base.Add(user);
 
@@ -76,13 +78,19 @@ namespace UserStorageServices.Services.Concrete
                     }
                 });
             }
+            finally
+            {
+                _lockState.ExitReadLock();
+            }
         }
 
         public override bool Remove(User user)
         {
             bool flag;
 
-            lock (_lockState)
+            _lockState.EnterReadLock();
+
+            try
             {
                 flag = base.Remove(user);
 
@@ -108,6 +116,11 @@ namespace UserStorageServices.Services.Concrete
                     }
                 });
             }
+            finally
+            {
+                _lockState.ExitReadLock();
+            }
+
             return flag;
         }
 

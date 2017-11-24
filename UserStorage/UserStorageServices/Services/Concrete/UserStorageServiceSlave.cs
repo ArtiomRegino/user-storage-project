@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Linq;
+using System.Threading;
 using UserStorageServices.Enums;
 using UserStorageServices.Notifications;
 using UserStorageServices.Repository.Interfaces;
@@ -13,7 +14,7 @@ namespace UserStorageServices.Services.Concrete
     [MyApplicationService("UserStorageSlave")]
     public class UserStorageServiceSlave : UserStorageServiceBase, INotificationSubscriber
     {
-        private object _lockState = new object();
+        private ReaderWriterLockSlim _lockState = new ReaderWriterLockSlim();
 
         public UserStorageServiceSlave(IUserRepository repository) : base(repository)
         {
@@ -28,7 +29,8 @@ namespace UserStorageServices.Services.Concrete
 
         public override void Add(User user)
         {
-            lock (_lockState)
+            _lockState.EnterReadLock();
+            try
             {
                 if (HaveMaster())
                 {
@@ -39,11 +41,16 @@ namespace UserStorageServices.Services.Concrete
                     throw new NotSupportedException("This action is not allowed. Change service mode.");
                 }
             }
+            finally
+            {
+                _lockState.ExitReadLock();
+            }
         }
 
         public override bool Remove(User user)
         {
-            lock (_lockState)
+            _lockState.EnterReadLock();
+            try
             {
                 if (HaveMaster())
                 {
@@ -51,6 +58,10 @@ namespace UserStorageServices.Services.Concrete
                 }
 
                 throw new NotSupportedException("This action is not allowed. Change service mode.");
+            }
+            finally
+            {
+                _lockState.ExitReadLock();
             }
         }
 
